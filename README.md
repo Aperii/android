@@ -1,1 +1,1 @@
-# android
+# Official Aperii Android mobile client.
