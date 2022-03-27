@@ -11,10 +11,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-      
-    - name: Logging
-      run: |
-        echo "${{toJSON(github.event)}}"
         
     - name: Setup JDK
       uses: actions/setup-java@v1
@@ -25,7 +21,7 @@ jobs:
       uses: chkfung/android-version-actions@v1.1
       with:
         gradlePath: app/build.gradle
-        versionName: "1.00 - ${{ github.events.commits[0].sha }}"
+        versionName: "1.00 - ${{ github.events.commits[0].id }}"
         
     - name: Build Debug APK
       run: |
