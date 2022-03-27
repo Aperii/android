@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    env:
+      SHA6: ${GITHUB_SHA::6}
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -21,7 +23,7 @@ jobs:
       uses: chkfung/android-version-actions@v1.1
       with:
         gradlePath: app/build.gradle
-        versionName: "1.00 - ${{ github.events.commits[0].id }}"
+        versionName: "1.00 - $SHA6"
         
     - name: Build Debug APK
       run: |
