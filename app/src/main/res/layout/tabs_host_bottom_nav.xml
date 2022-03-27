@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="?android:attr/windowBackground"
+    style="@style/Aperii_ViewGroup_LinearLayout">
+
+    <View
+        android:background="@color/midgrey"
+        style="@style/Aperii_Divider"
+        />
+
+    <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/tabs_host_bottom_nav_container"
+        android:background="?android:attr/windowBackground"
+        android:baselineAligned="false"
+        android:weightSum="5"
+        style="@style/Aperii_ViewGroup_LinearLayout_Horizontal">
+
+        <FrameLayout
+            android:id="@+id/tabs_host_item_home"
+            style="@style/TabsBottomNavItem">
+            <ImageView
+                android:id="@+id/tabs_host_item_home_icon"
+                android:src="@drawable/ic_home_24dp"
+                style="@style/TabsBottomNavIcon" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/tabs_host_item_discover"
+            style="@style/TabsBottomNavItem">
+            <ImageView
+                android:id="@+id/tabs_host_item_discover_icon"
+                android:src="@drawable/ic_compass_24dp"
+                style="@style/TabsBottomNavIcon" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/tabs_host_item_groups"
+            style="@style/TabsBottomNavItem"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/tabs_host_item_groups_icon"
+                android:src="@drawable/ic_logo_24dp"
+                style="@style/TabsBottomNavIcon" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/tabs_host_item_notifications"
+            style="@style/TabsBottomNavItem">
+            <ImageView
+                android:id="@+id/tabs_host_item_notifications_icon"
+                android:src="@drawable/ic_bell_24dp"
+                style="@style/TabsBottomNavIcon" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/tabs_host_item_profile"
+            style="@style/TabsBottomNavItem">
+            <ImageView
+                android:id="@+id/tabs_host_item_profile_icon"
+                android:src="@drawable/ic_user_24dp"
+                style="@style/TabsBottomNavIcon" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

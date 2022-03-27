@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="badgeColor" format="color|reference" />
+    <attr name="bg_pressed_highlight" format="reference" />
+    <attr name="textOnBackground" format="color" />
+    <attr name="iconOnBackground" format="color" />
+    <attr name="colorSuccess" format="color" />
+    <attr name="colorInteractiveNormal" format="color" />
+    <attr name="dropdownBackground" format="color" />
+    <attr name="mentionAndLink" format="color" />
+
+    <declare-styleable name="WidgetPostList">
+        <attr name="source" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="Toolbar">
+        <attr name="menu" format="reference" />
+    </declare-styleable>
+
+</resources>

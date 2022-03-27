@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_tabs_host_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
+    tools:context=".widgets.tabs.WidgetTabsHost"
+    style="@style/Aperii_ViewGroup_Page">
+
+    <FrameLayout
+        android:id="@+id/widget_tabs_host_nav_host"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/widget_tabs_host_bottom_nav_view">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/widget_tabs_host_home"
+            android:tag="HOME"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.aperii.widgets.home.WidgetHome" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/widget_tabs_host_discover"
+            android:tag="DISCOVER"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.aperii.widgets.discover.WidgetDiscover" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/widget_tabs_host_notifications"
+            android:tag="NOTIFICATIONS"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.aperii.widgets.inbox.WidgetInbox" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/widget_tabs_host_profile"
+            android:tag="PROFILE"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.aperii.widgets.user.profile.WidgetProfile" />
+
+
+    </FrameLayout>
+
+    <com.aperii.widgets.tabs.TabsHostBottomNav
+        android:id="@+id/widget_tabs_host_bottom_nav_view"
+        android:background="?android:attr/windowBackground"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

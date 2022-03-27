@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/exp_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Experiment"
+            android:fontFamily="@font/arial_bold"
+            android:textColor="?attr/textOnBackground"
+            app:layout_constraintEnd_toStartOf="@+id/exp_bucket"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/exp_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="experiment_03_13_22"
+            android:textColor="@color/midgrey"
+            app:layout_constraintEnd_toStartOf="@+id/exp_bucket"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exp_name" />
+
+        <Spinner
+            android:id="@+id/exp_bucket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/exp_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/exp_name"/>
+
+        <TextView
+            android:id="@+id/exp_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/textOnBackground"
+            app:layout_constraintTop_toBottomOf="@+id/exp_id"
+            tools:layout_editor_absoluteX="10dp"
+            android:text="This is a description"
+            android:layout_marginTop="10dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

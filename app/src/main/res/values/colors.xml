@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="rustblood">#9d4d4d</color>
+    <color name="darkle">#0a0d0f</color>
+    <color name="darkle_bright_2">#263139</color>
+    <color name="midgrey">#888888</color>
+    <color name="mentionAndLink">#4eafff</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#3BA659</color>
+</resources>

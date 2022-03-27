@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Aperii_Button">
+        <item name="android:fontFamily">@font/arial_medium</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingLeft">18dp</item>
+        <item name="android:paddingRight">18dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="Aperii_Button_Primary" parent="Aperii_Button">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+    </style>
+    <style name="Aperii_Button_Secondary" parent="Aperii_Button">
+        <item name="backgroundTint">?android:attr/windowBackground</item>
+        <item name="android:textColor">?attr/textOnBackground</item>
+    </style>
+    <style name="Aperii_Divider">
+        <item name="android:background">@color/midgrey</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.25dp</item>
+    </style>
+    <style name="Aperii_Dropdown_Item">
+        <item name="background">?attr/bg_pressed_highlight</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_marginTop">2.5dp</item>
+        <item name="android:layout_marginBottom">2.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+    <style name="Aperii_ImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="contentDescription">@null</item>
+    </style>
+    <style name="Aperii_Popup" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:padding">0dp</item>
+        <item name="android:dropDownVerticalOffset">1px</item>
+        <item name="android:popupElevation">8dp</item>
+    </style>
+    <style name="Aperii_Thread_Spine">
+        <item name="android:layout_width">2dp</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+    <style name="Aperii_Thread_Spine.Top" parent="Aperii_Thread_Spine">
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="background">@drawable/thread_spine_top</item>
+    </style>
+    <style name="Aperii_Thread_Spine.Bottom" parent="Aperii_Thread_Spine">
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="background">@drawable/thread_spine_bottom</item>
+    </style>
+    <style name="Aperii_ViewGroup">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Aperii_ViewGroup_LinearLayout" parent="Aperii_ViewGroup">
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="Aperii_ViewGroup_LinearLayout_Horizontal" parent="Aperii_ViewGroup_LinearLayout">
+        <item name="android:orientation">@null</item>
+    </style>
+    <style name="Aperii_ViewGroup_Page" parent="Aperii_ViewGroup">
+        <item name="android:background">?android:attr/windowBackground</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="TabsBottomNavIcon" parent="Aperii_ImageView">
+        <item name="android:layout_gravity">center_horizontal|clip_horizontal</item>
+        <item name="tint">?attr/iconOnBackground</item>
+        <item name="android:layout_width">21dp</item>
+        <item name="android:layout_height">21dp</item>
+    </style>
+    <style name="TabsBottomNavItem">
+        <item name="android:layout_gravity">left|center_horizontal|clip_horizontal</item>
+        <item name="android:background">?attr/bg_pressed_highlight</item>
+        <item name="android:padding">18dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1.25</item>
+    </style>
+</resources>
