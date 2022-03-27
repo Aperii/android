@@ -10,7 +10,7 @@ on:
       versionCode:
         required: true
         description: This releases version code
-        default: 1000
+        default: "1000"
       title:
         required: true
         description: Title of this release
@@ -24,8 +24,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-      with:
-        path: src
         
     - name: Setup JDK
       uses: actions/setup-java@v1
@@ -35,13 +33,12 @@ jobs:
     - name: Set Version
       uses: chkfung/android-version-actions@v1.1
       with:
-        gradlePath: $GITHUB_WORKSPACE/src/app/build.gradle
+        gradlePath: app/build.gradle
         versionCode: ${{github.event.inputs.versionCode}}
         versionName: ${{github.event.inputs.versionName}}
 
     - name: Build
       run: |
-        cd $GITHUB_WORKSPACE/src
         echo "${{ secrets.keystore }}" > $GITHUB_WORKSPACE/signing-key.jks
         chmod +x ./gradlew
         ./gradlew assembleRelease
@@ -52,7 +49,6 @@ jobs:
         
     - name: Release
       run: |
-        cd $GITHUB_WORKSPACE/src
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions"
         tag="${{ github.event.inputs.versionName }}"
