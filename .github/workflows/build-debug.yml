@@ -21,7 +21,7 @@ jobs:
       uses: chkfung/android-version-actions@v1.1
       with:
         gradlePath: app/build.gradle
-        versionName: "1.00 - ${{GITHUB_SHA::6}}"
+        versionName: "1.00 - ${GITHUB_SHA::6}"
         
     - name: Build Debug APK
       run: |
