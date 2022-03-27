@@ -41,6 +41,7 @@ jobs:
       run: |
         echo "${{ secrets.keystore }}" > $GITHUB_WORKSPACE/signing-key.jks
         chmod +x ./gradlew
+        ./gradlew build
         ./gradlew assembleRelease
         -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/signing-key.jks 
         -Pandroid.injected.signing.store.password=${{ secrets.keystore_password }} 
