@@ -37,16 +37,13 @@ jobs:
         versionCode: ${{github.event.inputs.versionCode}}
         versionName: ${{github.event.inputs.versionName}}
 
-    - name: Build
-      run: |
-        echo ${{ secrets.keystore }} > $GITHUB_WORKSPACE/signing-key.jks
-        chmod +x ./gradlew
-        ./gradlew build
-        ./gradlew assembleRelease
-        -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/signing-key.jks 
-        -Pandroid.injected.signing.store.password=${{ secrets.keystore_password }} 
-        -Pandroid.injected.signing.key.alias=${{ secrets.key_alias }} 
-        -Pandroid.injected.signing.key.password=${{ secrets.key_password }}
+    - name: Build Signed APK
+      uses: victorbnl/build-signed-apk@main
+      with:
+        keystore: ${{ secrets.keystore }}
+        keystore_password: ${{ secrets.keystore_password }}
+        key_alias: ${{ secrets.key_alias }}
+        key_password: ${{ secrets.key_password }}
         
     - name: Release
       run: |
