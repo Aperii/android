@@ -13,7 +13,7 @@ jobs:
       uses: actions/checkout@master
       
     - name: Get short SHA
-      uses: benjlevesque/short-sha@v1.1
+      uses: benjlevesque/short-sha@v1.2
         
     - name: Setup JDK
       uses: actions/setup-java@v1
