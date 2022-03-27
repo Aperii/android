@@ -39,7 +39,7 @@ jobs:
 
     - name: Build
       run: |
-        echo "${{ secrets.keystore }}" > $GITHUB_WORKSPACE/signing-key.jks
+        echo "${{ secrets.keystore }}" | base64 -d > $GITHUB_WORKSPACE/signing-key.jks
         chmod +x ./gradlew
         ./gradlew build
         ./gradlew assembleRelease
