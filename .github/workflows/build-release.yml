@@ -1,0 +1,66 @@
+name: Build Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionName:
+        required: true
+        description: This releases version name
+        default: "1.00 - Stable"
+      versionCode:
+        required: true
+        description: This releases version code
+        default: 1000
+      title:
+        required: true
+        description: Title of this release
+      description:
+        required: false
+        description: Description of this release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+      with:
+        path: src
+        
+    - name: Setup JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+        
+    - name: Set Version
+      uses: chkfung/android-version-actions@v1.1
+      with:
+        gradlePath: $GITHUB_WORKSPACE/src/app/build.gradle
+        versionCode: ${{github.event.inputs.versionCode}}
+        versionName: ${{github.event.inputs.versionName}}
+
+    - name: Build
+      run: |
+        cd $GITHUB_WORKSPACE/src
+        echo "${{ secrets.keystore }}" > $GITHUB_WORKSPACE/signing-key.jks
+        chmod +x ./gradlew
+        ./gradlew assembleRelease
+        -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/signing-key.jks 
+        -Pandroid.injected.signing.store.password=${{ secrets.keystore_password }} 
+        -Pandroid.injected.signing.key.alias=${{ secrets.key_alias }} 
+        -Pandroid.injected.signing.key.password=${{ secrets.key_password }}
+        
+    - name: Release
+      run: |
+        cd $GITHUB_WORKSPACE/src
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Actions"
+        tag="${{ github.event.inputs.versionName }}"
+        git tag "$tag"
+        git push origin "$tag"
+        gh release create "$tag" \
+          --title "${{ github.event.inputs.title }}" \
+          --notes "${{ github.event.inputs.description }}" \
+          app/build/outputs/apk/release/app-release.apk
+      env:
+        GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
