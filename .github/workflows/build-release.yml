@@ -11,9 +11,6 @@ on:
         required: true
         description: This releases version code
         default: "1000"
-      title:
-        required: true
-        description: Title of this release
       description:
         required: false
         description: Description of this release
@@ -47,11 +44,11 @@ jobs:
       run: |
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions"
-        tag="${{ github.event.inputs.versionName }}"
+        tag="${{ github.event.inputs.versionCode }}"
         git tag "$tag"
         git push origin "$tag"
         gh release create "$tag" \
-          --title "${{ github.event.inputs.title }}" \
+          --title "v${{ github.event.inputs.versionName }}" \
           --notes "${{ github.event.inputs.description }}" \
           app/build/outputs/apk/release/app-release.apk
       env:
