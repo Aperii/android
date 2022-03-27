@@ -7,10 +7,13 @@ on:
       
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@master
+      
+    - name: Get short SHA
+      uses: benjlevesque/short-sha@v1.1
         
     - name: Setup JDK
       uses: actions/setup-java@v1
@@ -21,7 +24,7 @@ jobs:
       uses: chkfung/android-version-actions@v1.1
       with:
         gradlePath: app/build.gradle
-        versionName: "1.00 - ${GITHUB_SHA::6}"
+        versionName: "1.00 - ${{steps.short-sha.outputs.sha}}"
         
     - name: Build Debug APK
       run: |
