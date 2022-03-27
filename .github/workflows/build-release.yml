@@ -41,11 +41,7 @@ jobs:
       run: |
         echo "${{ inputs.keystore }}" | base64 -d > signing-key.jks
         chmod +x ./gradlew
-        ./gradlew assembleRelease
-        -Pandroid.injected.signing.store.file=signing-key.jks 
-        -Pandroid.injected.signing.store.password=${{ inputs.keystore_password }} 
-        -Pandroid.injected.signing.key.alias=${{ inputs.key_alias }} 
-        -Pandroid.injected.signing.key.password=${{ inputs.key_password }}
+        ./gradlew assembleRelease= -Pandroid.injected.signing.store.file=signing-key.jks -Pandroid.injected.signing.store.password=${{ inputs.keystore_password }} -Pandroid.injected.signing.key.alias=${{ inputs.key_alias }} -Pandroid.injected.signing.key.password=${{ inputs.key_password }}
         
     - name: Release
       run: |
