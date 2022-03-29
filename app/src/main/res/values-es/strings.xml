@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Aperii</string>
-    <string name="title_home">Home</string>
-    <string name="title_discover">Discover</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_discover">Descubrir</string>
+    <string name="title_notifications">Notificaciones</string>
+    <string name="title_profile">Perfil</string>
     <string name="username">\@%1$s</string>
-    <string name="crash_title">A Crash Has Occurred</string>
-    <string name="debug">Debug</string>
-    <string name="coming_soon">Coming Soon!</string>
-    <string name="login">Log In</string>
-    <string name="signup">Sign Up</string>
-    <string name="label_username">Username</string>
-    <string name="password">Password</string>
-    <string name="back">Back</string>
-    <string name="post">Post</string>
-    <string name="filter">Filter</string>
+    <string name="crash_title">Ha ocurrido un error</string>
+    <string name="debug">Depuración</string>
+    <string name="coming_soon">¡Próximamente!</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="signup">Regístrate</string>
+    <string name="label_username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="back">Volver</string>
+    <string name="post">Publicar</string>
+    <string name="filter">Filtrar</string>
     <string name="separated">\• %1$s</string>
 </resources>
