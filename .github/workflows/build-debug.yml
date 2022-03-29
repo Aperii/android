@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - localization
       
 jobs:
   build:
@@ -25,6 +26,7 @@ jobs:
       uses: chkfung/android-version-actions@v1.1
       with:
         gradlePath: app/build.gradle
+        versionCode: "1300"
         versionName: "1.00 - ${{ steps.short-sha.outputs.sha }}"
         
     - name: Build Debug APK
