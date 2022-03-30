@@ -39,66 +39,20 @@
         app:layout_constraintStart_toEndOf="@id/avatar"
         app:layout_constraintTop_toTopOf="parent">
 
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/user_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toStartOf="@id/username"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/display_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lines="1"
-                android:textColor="?attr/textOnBackground"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toStartOf="@id/badge"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/badge"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="5dp"
-                android:src="@drawable/ic_badge_20dp"
-                android:visibility="gone"
-                app:layout_constrainedWidth="true"
-
-                app:layout_constraintTop_toTopOf="@id/display_name"
-                app:layout_constraintBottom_toBottomOf="@id/display_name"
-                app:layout_constraintStart_toEndOf="@id/display_name"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/display_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:lines="1"
-            android:maxLength="12"
             android:textColor="@color/midgrey"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:ellipsize="end"
-            app:layout_constrainedWidth="true"
+            android:textSize="14sp"
+            android:drawablePadding="5dp"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/user_details"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@id/timestamp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
         <TextView
             android:id="@+id/timestamp"
@@ -108,11 +62,11 @@
             android:textColor="@color/midgrey"
             android:textSize="14sp"
             app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@id/user_details"
+            app:layout_constraintBottom_toBottomOf="@id/display_name"
             app:layout_constraintEnd_toStartOf="@id/pronouns"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/username"
-            app:layout_constraintTop_toTopOf="@id/user_details" />
+            app:layout_constraintStart_toEndOf="@id/display_name"
+            app:layout_constraintTop_toTopOf="@id/display_name" />
 
         <TextView
             android:id="@+id/pronouns"
@@ -122,13 +76,28 @@
             android:textColor="@color/midgrey"
             android:textSize="14sp"
             app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@id/user_details"
+            app:layout_constraintBottom_toBottomOf="@id/display_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@id/timestamp"
-            app:layout_constraintTop_toTopOf="@id/user_details" />
+            app:layout_constraintTop_toTopOf="@id/display_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <TextView-->
+<!--        android:id="@+id/post_header"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:textSize="15sp"-->
+<!--        android:textColor="@color/midgrey"-->
+<!--        android:singleLine="true"-->
+<!--        android:layout_marginEnd="15dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/avatar"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/post_body_spannable"/>-->
 
     <TextView
         android:id="@+id/post_body_spannable"
