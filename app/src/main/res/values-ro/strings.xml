@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aperii</string>
+    <string name="title_home">Acasă</string>
+    <string name="title_discover">Descoperă</string>
+    <string name="title_notifications">Notificări</string>
+    <string name="title_profile">Profil</string>
+    <string name="username">\@%1$s</string>
+    <string name="crash_title">A apărut o eroare</string>
+    <string name="debug">Debug</string>
+    <string name="coming_soon">În curând!</string>
+    <string name="login">Conectează-te</string>
+    <string name="signup">Înregistrează-te</string>
+    <string name="label_username">Nume</string>
+    <string name="password">Parolă</string>
+    <string name="back">Înapoi</string>
+    <string name="post">Postează</string>
+    <string name="filter">Filtru</string>
+    <string name="separated">\• %1$s</string>
+</resources>
