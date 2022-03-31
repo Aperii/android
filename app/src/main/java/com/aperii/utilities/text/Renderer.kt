@@ -7,10 +7,11 @@ import com.discord.simpleast.core.node.Node
 import com.discord.simpleast.core.parser.Parser
 import com.discord.simpleast.core.simple.SimpleMarkdownRules
 
-object AperiiRenderer {
+object Renderer {
     private val mParser = createParser()
 
     private fun createParser() = Parser<BaseRenderContext, Node<BaseRenderContext>, Any?>(false).apply {
+        addRule(Rules.createUrlRule())
         addRule(Rules.createMentionRule())
         addRule(SimpleMarkdownRules.createTextRule())
     }

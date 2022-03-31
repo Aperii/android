@@ -3,6 +3,8 @@ package com.aperii.utilities
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
@@ -20,6 +22,10 @@ object Utils {
 
     fun showToast(text: String) {
         Toast.makeText(appContext, text, Toast.LENGTH_SHORT).show()
+    }
+
+    fun openUrl(url: String) {
+        appActivity.startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
     }
 
 }

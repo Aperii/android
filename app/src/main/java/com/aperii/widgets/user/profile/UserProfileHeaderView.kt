@@ -11,7 +11,7 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import com.aperii.R
 import com.aperii.databinding.UserProfileHeaderViewBinding
-import com.aperii.utilities.text.AperiiRenderer
+import com.aperii.utilities.text.Renderer
 import com.aperii.utilities.text.nodes.BioRenderContext
 
 class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
@@ -58,7 +58,7 @@ class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
 
     private fun configureBio(loaded: UserProfileHeaderViewModel.ViewState.Loaded) = binding.bio.apply {
         visibility = if(loaded.user.bio.isNotEmpty()) VISIBLE else GONE
-        text = AperiiRenderer.render(loaded.user.bio, BioRenderContext(context))
+        text = Renderer.render(loaded.user.bio, BioRenderContext(context))
         movementMethod = LinkMovementMethod()
     }
 
