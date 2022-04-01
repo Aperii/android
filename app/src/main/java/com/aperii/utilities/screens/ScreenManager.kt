@@ -17,10 +17,16 @@ object ScreenManager {
             R.anim.slide_to_right
         )
         val SCALE_CENTER = listOf(
-            R.anim.scale_from_center,
-            0,
-            R.anim.scale_from_center,
-            R.anim.scale_to_center
+            R.anim.fade_open_in,
+            R.anim.fade_open_out,
+            R.anim.fade_close_in,
+            R.anim.fade_close_out
+        )
+        val TEST = listOf(
+            android.R.anim.slide_out_right,
+            android.R.anim.slide_out_right,
+            android.R.anim.slide_out_right,
+            android.R.anim.slide_out_right
         )
     }
 

@@ -10,6 +10,7 @@ import com.aperii.databinding.WidgetPostBinding
 import com.aperii.models.threads.Thread.Companion.toThread
 import com.aperii.stores.StoreShelves
 import com.aperii.utilities.Utils
+import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.widgets.posts.list.WidgetPostList
 

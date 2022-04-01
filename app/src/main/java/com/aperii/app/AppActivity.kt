@@ -18,13 +18,16 @@ import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.utilities.update.UpdateUtils
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.auth.WidgetSplash
 import com.aperii.widgets.debugging.WidgetDebugging
 import com.aperii.widgets.debugging.WidgetFatalCrash
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.tabs.WidgetTabsHost
+import kotlinx.coroutines.coroutineScope
 import retrofit2.HttpException
+import kotlin.concurrent.thread
 
 open class AppActivity : AppCompatActivity() {
 
@@ -36,7 +39,6 @@ open class AppActivity : AppCompatActivity() {
         try {
             openScreen<WidgetSplash>()
             prefs = SettingsUtils(getSharedPreferences("PREFS", MODE_PRIVATE))
-            configureAuth()
             Coil.setImageLoader(
                 ImageLoader.Builder(this@AppActivity).componentRegistry {
                     if (Build.VERSION.SDK_INT >= 28) {
@@ -47,6 +49,7 @@ open class AppActivity : AppCompatActivity() {
                 }.crossfade(true).build()
             )
             Utils.appActivity = this
+            checkForUpdate()
             Logger.log("Application activity initialized")
         } catch (error: Throwable) {
             Logger.default.error("Error initializing activity", error)
@@ -60,6 +63,13 @@ open class AppActivity : AppCompatActivity() {
                 allowBack = true,
                 animation = ScreenManager.Animations.SCALE_CENTER
             )
+        }
+    }
+
+    fun checkForUpdate() {
+        thread {
+            val (hasUpdate, release) = UpdateUtils.checkUpdate()
+            if(hasUpdate) UpdateUtils.downloadUpdate(this, release!!) else configureAuth()
         }
     }
 
@@ -87,6 +97,7 @@ open class AppActivity : AppCompatActivity() {
 
             }
         }
+
     }
 
     class Action : AppActivity() {

@@ -28,6 +28,7 @@ import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.utilities.update.UpdateUtils
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.tabs.WidgetTabsHost
 import com.google.gson.GsonBuilder
@@ -163,6 +164,7 @@ class WidgetDebugging : AppFragment() {
             "am" -> am(parsedArgs)
             "ai" -> ai()
             "echo" -> send(args.drop(1).joinToString(" "))
+            "dl" -> UpdateUtils.downloadUpdate(requireContext(), UpdateUtils.Release(1000, "v1.00 - Stable"))
             "clear" -> {
                 adp.data.clear()
                 adp.notifyDataSetChanged()
