@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".widgets.posts.create.WidgetPostCreate"
+    android:backgroundTint="?android:attr/windowBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.aperii.views.Toolbar

@@ -11,6 +11,7 @@
         android:id="@+id/widget_host_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:backgroundTint="?android:attr/windowBackground"
         tools:layout="@layout/widget_tabs_host" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
