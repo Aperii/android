@@ -1,5 +1,6 @@
 package com.aperii.widgets.user.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,9 +29,9 @@ class WidgetProfile : AppFragment() {
     companion object {
         const val EXTRA_USER = "com.aperii.intents.extras.USER"
 
-        fun open(id: String) = Bundle().run {
+        fun open(context: Context, id: String) = Bundle().run {
             putString(EXTRA_USER, id)
-            Utils.appActivity.openScreen<WidgetProfile>(allowBack = true, data = this)
+            openScreen<WidgetProfile>(context, allowBack = true, data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
         }
 
     }
@@ -56,10 +57,10 @@ class WidgetProfile : AppFragment() {
     private fun configurePostFab(viewState: WidgetProfileViewModel.ViewState) = binding.createPostFab.run {
         when(viewState) {
             is WidgetProfileViewModel.ViewState.Loading -> setOnClickListener {
-                WidgetPostCreate.open()
+                WidgetPostCreate.open(context)
             }
             is WidgetProfileViewModel.ViewState.Loaded -> setOnClickListener {
-                WidgetPostCreate.open(if(viewState.user.id != profileViewModel.me.id) "@${viewState.user.username} " else "")
+                WidgetPostCreate.open(context, if(viewState.user.id != profileViewModel.me.id) "@${viewState.user.username} " else "")
             }
         }
     }

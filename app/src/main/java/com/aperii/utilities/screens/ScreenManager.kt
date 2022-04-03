@@ -1,13 +1,23 @@
 package com.aperii.utilities.screens
 
+import android.app.ActivityOptions
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.*
 import com.aperii.R
+import com.aperii.app.AppActivity
 import com.aperii.utilities.Logger
 
 object ScreenManager {
 
     val logger = Logger("ScreenManager")
+
+    const val EXTRA_SCREEN = "com.aperii.intents.extras.EXTRA_SCREEN"
+    const val EXTRA_BACK = "com.aperii.intents.extras.EXTRA_ALLOW_BACK"
+    const val EXTRA_ANIM = "com.aperii.intents.extras.EXTRA_ANIMATION"
+    const val EXTRA_DATA = "com.aperii.intents.extras.EXTRA_DATA"
+
 
     object Animations {
         val SLIDE_FROM_RIGHT = listOf(
@@ -30,6 +40,17 @@ object ScreenManager {
         )
     }
 
+    inline fun <reified T: Fragment> openScreen(ctx: Context, allowBack: Boolean = false, animation: List<Int> = listOf(), data: Bundle = Bundle()) {
+        Intent(Intent.ACTION_VIEW).apply {
+            putExtra(EXTRA_SCREEN, T::class.java)
+            putExtra(EXTRA_BACK, allowBack)
+            putExtra(EXTRA_ANIM, animation.toIntArray())
+            putExtra(EXTRA_DATA, data)
+            setClass(ctx, AppActivity.Main::class.java)
+            ctx.startActivity(this)
+        }
+    }
+
     fun FragmentActivity.openScreen(
         screen: Fragment,
         allowBack: Boolean = false,
@@ -50,7 +71,6 @@ object ScreenManager {
     ) = supportFragmentManager.commit {
         logger.verbose("Opening page ${T::class.java.simpleName}")
         setCustomAnimations(animation)
-
         replace<T>(R.id.widget_host_fragment, args = data)
         if (allowBack) addToBackStack(null) else supportFragmentManager.popBackStack()
     }

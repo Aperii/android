@@ -35,10 +35,7 @@ class WidgetDiscover : AppFragment() {
 
     private fun configureUI(state: WidgetDiscoverViewModel.ViewState) {
         binding.createPostFab.setOnClickListener {
-            appActivity.openScreen<WidgetPostCreate>(
-                allowBack = true,
-                animation = ScreenManager.Animations.SCALE_CENTER
-            )
+            WidgetPostCreate.open(it.context)
         }
     }
 }

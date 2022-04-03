@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import coil.Coil
 import coil.ImageLoader
 import coil.decode.GifDecoder
@@ -25,7 +26,6 @@ import com.aperii.widgets.debugging.WidgetDebugging
 import com.aperii.widgets.debugging.WidgetFatalCrash
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.tabs.WidgetTabsHost
-import kotlinx.coroutines.coroutineScope
 import retrofit2.HttpException
 import kotlin.concurrent.thread
 
@@ -36,25 +36,7 @@ open class AppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        try {
-            openScreen<WidgetSplash>()
-            prefs = SettingsUtils(getSharedPreferences("PREFS", MODE_PRIVATE))
-            Coil.setImageLoader(
-                ImageLoader.Builder(this@AppActivity).componentRegistry {
-                    if (Build.VERSION.SDK_INT >= 28) {
-                        add(ImageDecoderDecoder(this@AppActivity))
-                    } else {
-                        add(GifDecoder())
-                    }
-                }.crossfade(true).build()
-            )
-            Utils.appActivity = this
-            checkForUpdate()
-            Logger.log("Application activity initialized")
-        } catch (error: Throwable) {
-            Logger.default.error("Error initializing activity", error)
-            openScreen<WidgetFatalCrash>()
-        }
+        prefs = SettingsUtils(getSharedPreferences("PREFS", MODE_PRIVATE))
     }
 
     open fun onAction(action: String?, isAuthed: Boolean) {
@@ -94,7 +76,43 @@ open class AppActivity : AppCompatActivity() {
                         }
                     }
                 })
+            }
+        }
+    }
 
+    class Main : AppActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            try {
+                openScreen<WidgetSplash>()
+                Coil.setImageLoader(
+                    ImageLoader.Builder(this@Main).componentRegistry {
+                        if (Build.VERSION.SDK_INT >= 28) {
+                            add(ImageDecoderDecoder(this@Main))
+                        } else {
+                            add(GifDecoder())
+                        }
+                    }.crossfade(true).build()
+                )
+                Utils.appActivity = this
+                checkForUpdate()
+                Logger.log("Application activity initialized")
+            } catch (error: Throwable) {
+                Logger.default.error("Error initializing activity", error)
+                openScreen<WidgetFatalCrash>()
+            }
+        }
+
+        override fun onNewIntent(intent: Intent?) {
+            super.onNewIntent(intent)
+            val screen = intent?.extras?.get(ScreenManager.EXTRA_SCREEN ) as Class<Fragment>?
+            if (screen != null) {
+                openScreen(
+                    screen.newInstance(),
+                    intent?.extras?.getBoolean(ScreenManager.EXTRA_BACK) ?: false,
+                    intent?.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: listOf(0,0,0,0),
+                    intent?.extras?.getBundle(ScreenManager.EXTRA_DATA) ?: Bundle()
+                )
             }
         }
 
@@ -102,24 +120,15 @@ open class AppActivity : AppCompatActivity() {
 
     class Action : AppActivity() {
 
-        override fun configureAuth() {
-            onAction(intent.action, false)
-            prefs["APR_auth_tok", ""].run {
-                if (isBlank())
-                    openScreen<WidgetAuthLanding>()
-                else {
-                    RestAPI.getInstance(this).getMe().observeAndCatch({
-                        StoreShelves.users.me = MeUser.fromApi(this)
-                        openScreen<WidgetTabsHost>()
-                        onAction(intent.action, true)
-                    }, {
-                        if (this is HttpException && code() == 403) {
-                            prefs.clear("APR_auth_tok")
-                            openScreen<WidgetAuthLanding>()
-                        } else openScreen<WidgetFatalCrash>()
-                    })
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            configureAuth()
+        }
 
-                }
+        override fun onNewIntent(intent: Intent?) {
+            super.onNewIntent(intent)
+            intent?.run {
+                onAction(action, true)
             }
         }
 

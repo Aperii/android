@@ -38,10 +38,7 @@ class WidgetHome : AppFragment() {
 
     private fun configureUI(viewState: WidgetHomeViewModel.ViewState) {
         binding.createPostFab.setOnClickListener {
-            appActivity.openScreen<WidgetPostCreate>(
-                allowBack = true,
-                animation = ScreenManager.Animations.SCALE_CENTER
-            )
+            WidgetPostCreate.open(it.context)
         }
         when (viewState) {
             is WidgetHomeViewModel.ViewState.Loaded -> (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {

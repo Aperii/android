@@ -36,10 +36,7 @@ class WidgetInbox : AppFragment() {
 
     private fun configureUI(state: WidgetInboxViewModel.ViewState) {
         binding.createPostFab.setOnClickListener {
-            appActivity.openScreen<WidgetPostCreate>(
-                allowBack = true,
-                animation = ScreenManager.Animations.SCALE_CENTER
-            )
+            WidgetPostCreate.open(it.context)
         }
     }
 }

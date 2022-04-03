@@ -12,7 +12,7 @@ class MentionNode<RC: BaseRenderContext>(private val username: String): Node<RC>
 
     override fun render(builder: SpannableStringBuilder, renderContext: RC) {
         val span = ClickableSpan(renderContext.context.getThemedColor(R.attr.mentionAndLink), false, {
-            WidgetProfile.open("@${username}")
+            WidgetProfile.open(renderContext.context, "@${username}")
         }, null)
         val i = builder.length
         builder.append("@$username")

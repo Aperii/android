@@ -12,6 +12,7 @@ import com.aperii.stores.StoreShelves
 import com.aperii.utilities.Utils
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.posts.list.WidgetPostList
 
 class WidgetPost : AppFragment(R.layout.widget_post) {
@@ -38,6 +39,7 @@ class WidgetPost : AppFragment(R.layout.widget_post) {
 
     private fun configureUI() {
         configureToolbar()
+        configureReplyFab()
         arguments?.getString(EXTRA_POST)?.run {
             (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {
                 StoreShelves.posts.fetchPost(this@run)?.run {
@@ -45,6 +47,10 @@ class WidgetPost : AppFragment(R.layout.widget_post) {
                 }
             }
         }
+    }
+
+    private fun configureReplyFab() = binding.createPostFab.setOnClickListener {
+        WidgetPostCreate.open(it.context, "", arguments?.getString(EXTRA_POST) ?: "")
     }
 
     private fun configureToolbar() = binding.toolbar.run {

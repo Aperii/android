@@ -19,6 +19,7 @@
         android:id="@+id/log_items"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:backgroundTint="?android:attr/windowBackground"
         app:layout_constraintBottom_toTopOf="@id/input_area"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 

@@ -84,7 +84,7 @@ class PostListEntryText(root: ViewGroup, private val shouldJumbo: Boolean) : Pos
 
     private fun configureAvatar(user: User) = avatar.apply {
         setOnClickListener {
-            WidgetProfile.open(user.id)
+            WidgetProfile.open(it.context, user.id)
         }
         load(if (user.avatar.isNotEmpty()) "https://api.aperii.com/cdn/avatars/${user.avatar}" else "https://aperii.com/av.png") {
             transformations(CircleCropTransformation())

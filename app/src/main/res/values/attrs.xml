@@ -6,6 +6,7 @@
     <attr name="iconOnBackground" format="color" />
     <attr name="colorSuccess" format="color" />
     <attr name="colorInteractiveNormal" format="color" />
+    <attr name="colorBackgroundSecondary" format="color" />
     <attr name="dropdownBackground" format="color" />
     <attr name="mentionAndLink" format="color" />
 

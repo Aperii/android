@@ -11,7 +11,7 @@ class Logger(private val tag: String) {
     fun warn(message: String) = log(LoggedItem.Type.WARN, message)
     fun error(message: String, th: Throwable? = null) = log(LoggedItem.Type.ERROR, message, th)
 
-    fun logObject(type: LoggedItem.Type, obj: Any) =
+    fun logObject(type: LoggedItem.Type, obj: Any?) =
         log(type, GsonBuilder().setPrettyPrinting().create().toJson(obj))
 
     private fun log(type: LoggedItem.Type, message: String, th: Throwable? = null) {

@@ -18,7 +18,7 @@
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
         </provider>
         <activity
-            android:name=".app.AppActivity"
+            android:name=".app.AppActivity$Main"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>

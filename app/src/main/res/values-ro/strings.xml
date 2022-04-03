@@ -17,4 +17,5 @@
     <string name="post">Postează</string>
     <string name="filter">Filtru</string>
     <string name="separated">\• %1$s</string>
+    <string name="replyTo">Replying to @%1$s</string>
 </resources>
