@@ -3,10 +3,10 @@ package com.aperii.utilities
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import com.aperii.utilities.Utils.appContext
+import kotlin.properties.Delegates
 
 object DimenUtils {
-    private val density = appContext.resources.displayMetrics.density
+    var density by Delegates.notNull<Float>()
 
     val Int.dp: Int
         get() = (this * density + 0.5f).toInt()

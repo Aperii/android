@@ -1,5 +1,6 @@
 package com.aperii.widgets.posts
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,6 @@ import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetPostBinding
 import com.aperii.models.threads.Thread.Companion.toThread
 import com.aperii.stores.StoreShelves
-import com.aperii.utilities.Utils
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.widgets.posts.create.WidgetPostCreate
@@ -22,9 +22,9 @@ class WidgetPost : AppFragment(R.layout.widget_post) {
     companion object {
         const val EXTRA_POST = "com.aperii.intents.extras.EXTRA_POST"
 
-        fun open(id: String) = Bundle().run {
+        fun open(context: Context, id: String) = Bundle().run {
             putString(EXTRA_POST, id)
-            Utils.appActivity.openScreen<WidgetPost>(allowBack = true, data = this)
+            openScreen<WidgetPost>(context, allowBack = true, data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
         }
     }
 

@@ -1,6 +1,5 @@
 package com.aperii.utilities.text
 
-import android.content.Context
 import com.aperii.utilities.text.nodes.BaseRenderContext
 import com.aperii.utilities.text.nodes.MentionNode
 import com.aperii.utilities.text.nodes.UrlNode

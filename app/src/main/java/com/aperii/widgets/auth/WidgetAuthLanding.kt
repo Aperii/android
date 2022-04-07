@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.aperii.R
 import com.aperii.app.AppFragment
-import com.aperii.utilities.Utils
+import com.aperii.utilities.Utils.showToast
 import com.aperii.utilities.screens.ScreenManager.openScreen
 
 class WidgetAuthLanding : AppFragment(R.layout.widget_auth_landing) {
@@ -32,7 +32,7 @@ class WidgetAuthLanding : AppFragment(R.layout.widget_auth_landing) {
 
     private fun configureSignupButton() {
         root.findViewById<Button>(R.id.auth_button_signup).setOnClickListener {
-            Utils.showToast("Currently Unavailable")
+            it.context.showToast("Currently Unavailable")
         }
     }
 

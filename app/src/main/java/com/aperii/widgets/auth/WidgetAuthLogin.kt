@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
 import com.aperii.R
+import com.aperii.app.AppActivity
 import com.aperii.app.AppFragment
 import com.aperii.models.user.MeUser
 import com.aperii.rest.RestAPIParams
@@ -57,7 +58,7 @@ class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login) {
 
             AuthAPI.getInstance().login(RestAPIParams.LoginBody(username, password))
                 .observeAndCatch({
-                    appActivity.prefs["APR_auth_tok"] = token
+                    AppActivity.prefs["APR_auth_tok"] = token
                     error.visibility = View.GONE
                     RestAPI.getInstance(token).getMe().observe {
                         StoreShelves.users.me = MeUser.fromApi(this)

@@ -13,10 +13,9 @@ import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetPostCreateBinding
 import com.aperii.rest.RestAPIParams
-import com.aperii.stores.StorePosts
 import com.aperii.stores.StoreShelves
 import com.aperii.utilities.Logger
-import com.aperii.utilities.Utils
+import com.aperii.utilities.Utils.showToast
 import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
@@ -78,7 +77,7 @@ class WidgetPostCreate : AppFragment() {
         RestAPI.INSTANCE.createPost(RestAPIParams.PostBody(text), arguments?.getString(REPLY_TO) ?: "").observeAndCatch({
             appActivity.onBackPressed()
         }) {
-            Utils.showToast("An error occurred while making that post")
+            it.context.showToast("An error occurred while making that post")
             binding.postBtn.isLoading = false
             Logger("Error").error("An error has occurred", this)
         }

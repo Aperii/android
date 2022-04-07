@@ -1,8 +1,9 @@
 package com.aperii.utilities
 
 import android.content.SharedPreferences
+import java.io.Serializable
 
-class SettingsUtils(val prefs: SharedPreferences) {
+class SettingsUtils(val prefs: SharedPreferences) : Serializable {
 
     inline operator fun <reified T> get(key: String, defaultValue: T) =
         prefs.all[key] as T? ?: defaultValue

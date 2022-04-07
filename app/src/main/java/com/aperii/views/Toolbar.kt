@@ -14,9 +14,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.aperii.R
+import com.aperii.app.AppActivity
 import com.aperii.stores.StoreShelves
 import com.aperii.utilities.DimenUtils.dp
-import com.aperii.utilities.Utils.appActivity
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.widgets.auth.WidgetAuthLanding
@@ -138,7 +138,8 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
         dropdown.findViewById<View>(R.id.item_debug).apply {
             if (isDeveloper) visibility = View.VISIBLE
             setOnClickListener {
-                appActivity.openScreen<WidgetDebugging>(
+                openScreen<WidgetDebugging>(
+                    context,
                     allowBack = true,
                     animation = ScreenManager.Animations.SCALE_CENTER
                 )
@@ -147,9 +148,10 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
         }
 
         dropdown.findViewById<View>(R.id.item_logout).setOnClickListener {
-            appActivity.prefs.clear("APR_auth_tok")
+            AppActivity.prefs.clear("APR_auth_tok")
             StoreShelves.navigation.navigationTab = NavigationTab.HOME
-            appActivity.openScreen<WidgetAuthLanding>(
+            openScreen<WidgetAuthLanding>(
+                it.context,
                 allowBack = false,
                 animation = ScreenManager.Animations.SCALE_CENTER
             )

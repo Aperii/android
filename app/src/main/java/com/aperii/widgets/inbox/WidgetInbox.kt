@@ -10,8 +10,6 @@ import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetInboxBinding
 import com.aperii.utilities.rx.RxUtils.observe
-import com.aperii.utilities.screens.ScreenManager
-import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.widgets.posts.create.WidgetPostCreate
 
 class WidgetInbox : AppFragment() {

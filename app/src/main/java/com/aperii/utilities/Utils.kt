@@ -8,24 +8,16 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import com.aperii.app.AppActivity
 
 object Utils {
-    lateinit var appContext: Context
-    lateinit var appActivity: AppActivity
-    val mainThread = Handler(Looper.getMainLooper())
-
-    fun setClipboard(content: String) {
-        val clipboard = appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    fun Context.setClipboard(content: String) {
+        val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboard.setPrimaryClip(ClipData.newPlainText("Aperii", content))
     }
 
-    fun showToast(text: String) {
-        Toast.makeText(appContext, text, Toast.LENGTH_SHORT).show()
+    fun Context.showToast(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
-    fun openUrl(url: String) {
-        appActivity.startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
-    }
-
+    fun Context.openUrl(url: String) = startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
 }

@@ -1,18 +1,13 @@
 package com.aperii.widgets.debugging
 
-import android.content.Context
+import androidx.lifecycle.SavedStateHandle
 import com.aperii.app.AppViewModel
 import com.aperii.utilities.SettingsUtils
-import com.aperii.utilities.Utils
 
-class WidgetExperimentsViewModel : AppViewModel<WidgetExperimentsViewModel.ViewState>() {
-    val prefs = SettingsUtils(
-        Utils.appActivity.getSharedPreferences(
-            "StoreExperiments",
-            Context.MODE_PRIVATE
-        )
-    )
-    val experiments = listOf<Experiment>(
+class WidgetExperimentsViewModel(state: SavedStateHandle) : AppViewModel<WidgetExperimentsViewModel.ViewState>() {
+    val prefs = state.get<SettingsUtils>("prefs")!!
+
+    val experiments = listOf(
         Experiment(
             "Show Groups Tab",
             "groups_tab_03_13_22",

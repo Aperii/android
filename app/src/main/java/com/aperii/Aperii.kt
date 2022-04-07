@@ -1,8 +1,8 @@
 package com.aperii
 
 import android.app.Application
+import com.aperii.utilities.DimenUtils
 import com.aperii.utilities.Logger
-import com.aperii.utilities.Utils.appContext
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -12,7 +12,7 @@ class Aperii : Application() {
         startKoin {
             androidContext(this@Aperii)
         }
-        appContext = this
+        DimenUtils.density = resources.displayMetrics.density
         Logger.log("Application Initialized")
     }
 

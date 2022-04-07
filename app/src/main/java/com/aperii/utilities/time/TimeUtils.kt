@@ -1,6 +1,5 @@
 package com.aperii.utilities.time
 
-import com.aperii.utilities.Logger
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import java.util.*

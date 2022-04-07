@@ -1,11 +1,9 @@
 package com.aperii.widgets.posts.list.entries
 
-import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Build
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.StaticLayout
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.DynamicDrawableSpan
@@ -16,17 +14,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.aperii.BuildConfig
 import com.aperii.R
 import com.aperii.api.post.Post
 import com.aperii.api.user.User
 import com.aperii.stores.StoreShelves
-import com.aperii.utilities.DimenUtils.dp
 import com.aperii.utilities.DimenUtils.getResizedDrawable
-import com.aperii.utilities.Logger
 import com.aperii.utilities.color.ColorUtils.getThemedColor
 import com.aperii.utilities.text.TextUtils.renderPost
 import com.aperii.utilities.time.TimeUtils
@@ -62,7 +56,7 @@ class PostListEntryText(root: ViewGroup, private val shouldJumbo: Boolean) : Pos
         configureTimestamp(post.createdTimestamp)
 
         itemView.setOnClickListener {
-            if (!shouldJumbo) WidgetPost.open(post.id)
+            if (!shouldJumbo) WidgetPost.open(it.context, post.id)
         }
     }
 

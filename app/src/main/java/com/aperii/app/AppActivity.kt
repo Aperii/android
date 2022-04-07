@@ -14,7 +14,6 @@ import com.aperii.models.user.MeUser
 import com.aperii.stores.StoreShelves
 import com.aperii.utilities.Logger
 import com.aperii.utilities.SettingsUtils
-import com.aperii.utilities.Utils
 import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager
@@ -31,7 +30,9 @@ import kotlin.concurrent.thread
 
 open class AppActivity : AppCompatActivity() {
 
-    lateinit var prefs: SettingsUtils
+    companion object {
+        lateinit var prefs: SettingsUtils
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,7 +95,6 @@ open class AppActivity : AppCompatActivity() {
                         }
                     }.crossfade(true).build()
                 )
-                Utils.appActivity = this
                 checkForUpdate()
                 Logger.log("Application activity initialized")
             } catch (error: Throwable) {

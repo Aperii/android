@@ -7,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.SavedStateViewModelFactory
-import androidx.recyclerview.widget.RecyclerView
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetProfileBinding
 import com.aperii.models.threads.Thread
-import com.aperii.utilities.Utils
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen

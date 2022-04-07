@@ -1,6 +1,5 @@
 package com.aperii.utilities.text
 
-import android.content.Context
 import android.text.SpannableStringBuilder
 import com.aperii.utilities.text.nodes.BaseRenderContext
 import com.discord.simpleast.core.node.Node

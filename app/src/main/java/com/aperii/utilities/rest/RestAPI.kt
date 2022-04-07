@@ -6,7 +6,6 @@ import com.aperii.api.user.UserFlags
 import com.aperii.models.user.MeUser
 import com.aperii.rest.RestAPIParams
 import com.aperii.utilities.Logger
-import com.aperii.utilities.Utils
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -79,7 +78,7 @@ class RestAPI(private val token: String) {
         }
         .cache(
             Cache(
-                directory = File(Utils.appContext.cacheDir, "apr_ch"),
+                directory = File("apr_ch"),
                 maxSize = 50L * 1024L * 1024L
             )
         )

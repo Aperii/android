@@ -1,31 +1,18 @@
 package com.aperii.utilities.update
 
-import android.app.DownloadManager
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import androidx.core.content.FileProvider
-import androidx.core.content.getSystemService
-import androidx.core.net.toFile
-import androidx.core.net.toUri
 import com.aperii.BuildConfig
-import com.aperii.app.AppActivity
 import com.aperii.utilities.Logger
-import com.aperii.utilities.Utils
-import com.aperii.utilities.rest.RestAPI
-import com.aperii.utilities.rx.RxUtils.await
-import com.aperii.utilities.rx.RxUtils.observe
+import com.aperii.utilities.Utils.showToast
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.google.gson.annotations.SerializedName
 import io.reactivex.Observable
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,12 +54,6 @@ object UpdateUtils {
         .create(GithubApi::class.java)
 
     private fun provideOkHttp() = OkHttpClient.Builder()
-        .cache(
-            Cache(
-                directory = File(Utils.appContext.cacheDir, "apr_ch"),
-                maxSize = 50L * 1024L * 1024L
-            )
-        )
         .retryOnConnectionFailure(true)
         .build()
 
@@ -117,7 +98,7 @@ object UpdateUtils {
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Utils.showToast("Couldn't update the app")
+                    context.showToast("Couldn't update the app")
                 }
             })
         }

@@ -1,5 +1,6 @@
 package com.aperii.widgets.debugging
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,18 +9,22 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetExperimentsBinding
+import com.aperii.utilities.SettingsUtils
 import com.aperii.utilities.rx.RxUtils.observe
 
 class WidgetExperiments : AppFragment() {
 
     private lateinit var binding: WidgetExperimentsBinding
-    private lateinit var viewModel: WidgetExperimentsViewModel
+    private val viewModel by viewModels<WidgetExperimentsViewModel> {
+        SavedStateViewModelFactory(null, this, Bundle().apply { putSerializable("prefs", SettingsUtils(appActivity.getSharedPreferences("StoreExperiments", Context.MODE_PRIVATE))) })
+    }
 
     inner class ExpAdapter(private val mData: List<WidgetExperimentsViewModel.Experiment>) :
         RecyclerView.Adapter<ExpAdapter.ViewHolder>() {
@@ -76,7 +81,6 @@ class WidgetExperiments : AppFragment() {
     ): View {
         val root = inflater.inflate(R.layout.widget_experiments, container, false)
         binding = WidgetExperimentsBinding.bind(root)
-        viewModel = ViewModelProvider(this)[WidgetExperimentsViewModel::class.java]
         viewModel.observeViewState().observe(this::configureUI)
         return root
     }

@@ -14,13 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aperii.BuildConfig
 import com.aperii.R
+import com.aperii.app.AppActivity
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetDebuggingBinding
 import com.aperii.models.user.MeUser
 import com.aperii.rest.RestAPIParams
 import com.aperii.stores.StoreShelves
 import com.aperii.utilities.Logger
-import com.aperii.utilities.Utils
+import com.aperii.utilities.Utils.setClipboard
+import com.aperii.utilities.Utils.showToast
 import com.aperii.utilities.color.ColorUtils.getThemedColor
 import com.aperii.utilities.rest.AuthAPI
 import com.aperii.utilities.rest.RestAPI
@@ -44,8 +46,8 @@ class WidgetDebugging : AppFragment() {
         inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             fun bind(position: Int) {
                 itemView.setOnLongClickListener {
-                    Utils.setClipboard(data[position].message)
-                    Utils.showToast("Copied to clipboard")
+                    it.context.setClipboard(data[position].message)
+                    it.context.showToast("Copied to clipboard")
                     true
                 }
                 view.findViewById<TextView?>(R.id.log_message)?.apply {
@@ -254,10 +256,10 @@ class WidgetDebugging : AppFragment() {
         val password = args["p"] ?: args["-pass"] ?: args["-password"]
         val token = args["t"] ?: args["-token"]
         when (args.subcommand.lowercase()) {
-            "token" -> send(appActivity.prefs["APR_auth_tok", ""])
+            "token" -> send(AppActivity.prefs["APR_auth_tok", ""])
             "me" -> send(GsonBuilder().setPrettyPrinting().create().toJson(StoreShelves.users.me))
             "logout" -> {
-                appActivity.prefs.clear("APR_auth_tok")
+                AppActivity.prefs.clear("APR_auth_tok")
                 appActivity.openScreen<WidgetAuthLanding>(
                     allowBack = false,
                     animation = ScreenManager.Animations.SCALE_CENTER
@@ -267,7 +269,7 @@ class WidgetDebugging : AppFragment() {
                 if (!(username.isNullOrBlank() || password.isNullOrBlank())) AuthAPI.getInstance()
                     .login(RestAPIParams.LoginBody(username, password))
                     .observeAndCatch({
-                        appActivity.prefs["APR_auth_tok"] = token
+                        AppActivity.prefs["APR_auth_tok"] = token
                         RestAPI.getInstance(this.token).getMe().observe {
                             StoreShelves.users.me = MeUser.fromApi(this)
                             appActivity.openScreen<WidgetTabsHost>(
@@ -281,7 +283,7 @@ class WidgetDebugging : AppFragment() {
                     if (token.isNullOrBlank()) return send("No login information provided")
                     RestAPI.getInstance(token).getMe().observeAndCatch({
                         StoreShelves.users.me = MeUser.fromApi(this)
-                        appActivity.prefs["APR_auth_tok"] = token
+                        AppActivity.prefs["APR_auth_tok"] = token
                         appActivity.openScreen<WidgetTabsHost>(
                             allowBack = false,
                             animation = ScreenManager.Animations.SCALE_CENTER
