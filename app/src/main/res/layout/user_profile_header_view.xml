@@ -14,17 +14,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/party_hat"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/img_hat_aniv"
-        app:layout_constraintBottom_toBottomOf="@+id/avatar"
-        app:layout_constraintEnd_toEndOf="@+id/avatar"
-        app:layout_constraintTop_toTopOf="@id/avatar"
-        app:layout_constraintStart_toStartOf="@id/avatar"
-        android:translationZ="4dp"/>
-
-    <ImageView
         android:id="@+id/avatar"
         android:layout_width="90dp"
         android:layout_height="90dp"
