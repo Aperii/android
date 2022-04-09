@@ -102,6 +102,7 @@ object UpdateUtils {
                         FileOutputStream(apk).run {
                             write(stream.readBytes())
                             close()
+                            stream.close()
                         }
                     }
 
