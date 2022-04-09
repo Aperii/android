@@ -3,8 +3,11 @@ package com.aperii.utilities.update
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
+import android.widget.ProgressBar
 import androidx.core.content.FileProvider
+import androidx.loader.content.AsyncTaskLoader
 import com.aperii.BuildConfig
 import com.aperii.utilities.Logger
 import com.aperii.utilities.Utils.showToast
@@ -24,6 +27,7 @@ import retrofit2.http.Path
 import retrofit2.http.Streaming
 import java.io.File
 import java.io.FileOutputStream
+import java.io.InputStream
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.concurrent.thread
@@ -79,16 +83,28 @@ object UpdateUtils {
         return resRef.get() to releaseRef.get()
     }
 
-    fun downloadUpdate(context: Context, release: Release) {
+    fun downloadUpdate(context: Context, release: Release, progressBar: ProgressBar? = null) {
         val apk = File(context.filesDir,"update.apk")
-        thread(start = true) {
+        val uri =
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+                FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", apk)
+            else
+                Uri.fromFile(apk)
+        if(apk.exists()) apk.delete()
+        thread(start = true, isDaemon = true) {
             ghApi.downloadRelease(release.versionCode).enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    val uri = if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M) FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", apk) else Uri.fromFile(apk)
-                    FileOutputStream(apk).run {
-                        write(response.body()?.bytes())
-                        close()
+                    progressBar?.max = response.headers()["Content-Length"]?.toInt() ?: 0
+                    response.body()?.byteStream()?.let { stream ->
+                        ObservableInputStream(stream) {
+                            progressBar?.progress = it.toInt()
+                        }
+                        FileOutputStream(apk).run {
+                            write(stream.readBytes())
+                            close()
+                        }
                     }
+
                     Intent(Intent.ACTION_VIEW).run {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

@@ -166,7 +166,7 @@ class WidgetDebugging : AppFragment() {
             "am" -> am(parsedArgs)
             "ai" -> ai()
             "echo" -> send(args.drop(1).joinToString(" "))
-            "dl" -> UpdateUtils.downloadUpdate(requireContext(), UpdateUtils.Release(1000, "v1.00 - Stable"))
+            "dl" -> UpdateUtils.downloadUpdate(requireContext(), UpdateUtils.Release(1015, "v1.15 - Stable"))
             "clear" -> {
                 adp.data.clear()
                 adp.notifyDataSetChanged()
