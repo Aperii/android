@@ -22,6 +22,7 @@ import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.text.TextUtils.renderPost
+import com.aperii.widgets.posts.preview.WidgetPostPreview
 
 class WidgetPostCreate : AppFragment() {
 
@@ -93,6 +94,9 @@ class WidgetPostCreate : AppFragment() {
     private fun configureReplyTo() {
         arguments?.getString(REPLY_TO)?.run {
             binding.replyHeader.visibility = if(this.isNotEmpty()) View.VISIBLE else View.GONE
+            binding.replyHeader.setOnClickListener {
+                WidgetPostPreview.open(parentFragmentManager, this)
+            }
             val post = StoreShelves.posts.fetchPost(this)
             binding.replyToText.run {
                 renderPost(context.getString(R.string.replyTo, post?.author?.username))

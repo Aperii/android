@@ -60,10 +60,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:background="?attr/colorBackgroundSecondary"
+        android:background="@drawable/ripple_background_pressed"
         app:layout_constraintTop_toBottomOf="@id/compose_scrollview"
         app:layout_constraintBottom_toTopOf="@id/footer"
-        android:padding="13dp">
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/reply_to_text"
@@ -71,6 +71,8 @@
             android:layout_height="wrap_content"
             android:textColor="?attr/textOnBackground"
             android:textSize="13sp"
+            android:gravity="center_vertical"
+            android:drawableEnd="@drawable/ic_chevron_up_12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

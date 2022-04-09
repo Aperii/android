@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Aperii_BottomSheet" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Aperii_BottomSheetStyle</item>
+    </style>
+    <style name="Aperii_BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="background">?android:attr/windowBackground</item>
+        <item name="backgroundTint">?android:attr/windowBackground</item>
+    </style>
     <style name="Aperii_Button">
         <item name="android:fontFamily">@font/arial_medium</item>
         <item name="android:paddingTop">12dp</item>

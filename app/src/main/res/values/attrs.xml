@@ -9,6 +9,7 @@
     <attr name="colorBackgroundSecondary" format="color" />
     <attr name="dropdownBackground" format="color" />
     <attr name="mentionAndLink" format="color" />
+    <attr name="bottomSheetBackground" format="color" />
 
     <declare-styleable name="WidgetPostList">
         <attr name="source" format="string" />
