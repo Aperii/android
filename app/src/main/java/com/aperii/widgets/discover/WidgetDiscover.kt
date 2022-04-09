@@ -8,10 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetDiscoverBinding
+import com.aperii.utilities.Logger
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.widgets.posts.create.WidgetPostCreate
+import com.aperii.widgets.tabs.TabbedFragment
 
-class WidgetDiscover : AppFragment() {
+class WidgetDiscover : TabbedFragment() {
 
     private lateinit var viewModel: WidgetDiscoverViewModel
     private lateinit var binding: WidgetDiscoverBinding
@@ -36,4 +38,6 @@ class WidgetDiscover : AppFragment() {
             WidgetPostCreate.open(it.context)
         }
     }
+
+    override fun onTabSelected(previouslySelected: Boolean) {}
 }

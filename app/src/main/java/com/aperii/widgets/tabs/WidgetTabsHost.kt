@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.findFragment
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.stores.StoreShelves
@@ -15,9 +16,8 @@ import com.aperii.utilities.color.ColorUtils.getThemedColor
 import kotlin.collections.set
 
 class WidgetTabsHost : AppFragment() {
-    private val navTabToFragment = HashMap<NavigationTab, FragmentContainerView>()
-    private val navTabToIcon = HashMap<NavigationTab, ImageView>()
-    private var currentTab: NavigationTab = NavigationTab.HOME
+    private var navTabToFragment = HashMap<NavigationTab, FragmentContainerView>()
+    private var navTabToIcon = HashMap<NavigationTab, ImageView>()
 
     private lateinit var root: View
     private lateinit var tabs: TabsHostBottomNav
@@ -40,21 +40,19 @@ class WidgetTabsHost : AppFragment() {
     }
 
     private fun configureTabs() {
-        navTabToFragment.run {
-            this[NavigationTab.HOME] = root.findViewById(R.id.widget_tabs_host_home)
-            this[NavigationTab.DISCOVER] = root.findViewById(R.id.widget_tabs_host_discover)
-            this[NavigationTab.INBOX] =
-                root.findViewById(R.id.widget_tabs_host_notifications)
-            this[NavigationTab.PROFILE] = root.findViewById(R.id.widget_tabs_host_profile)
-        }
+        navTabToFragment = hashMapOf(
+            NavigationTab.HOME to root.findViewById(R.id.widget_tabs_host_home),
+            NavigationTab.DISCOVER to root.findViewById(R.id.widget_tabs_host_discover),
+            NavigationTab.INBOX to root.findViewById(R.id.widget_tabs_host_notifications),
+            NavigationTab.PROFILE to root.findViewById(R.id.widget_tabs_host_profile)
+        )
 
-        navTabToIcon.run {
-            this[NavigationTab.HOME] = tabs.findViewById(R.id.tabs_host_item_home_icon)
-            this[NavigationTab.DISCOVER] = tabs.findViewById(R.id.tabs_host_item_discover_icon)
-            this[NavigationTab.INBOX] =
-                tabs.findViewById(R.id.tabs_host_item_notifications_icon)
-            this[NavigationTab.PROFILE] = tabs.findViewById(R.id.tabs_host_item_profile_icon)
-        }
+        navTabToIcon = hashMapOf(
+            NavigationTab.HOME to tabs.findViewById(R.id.tabs_host_item_home_icon),
+            NavigationTab.DISCOVER to tabs.findViewById(R.id.tabs_host_item_discover_icon),
+            NavigationTab.INBOX to tabs.findViewById(R.id.tabs_host_item_notifications_icon),
+            NavigationTab.PROFILE to tabs.findViewById(R.id.tabs_host_item_profile_icon),
+        )
 
         updateNavIcons()
         navigateToTab(StoreShelves.navigation.navigationTab)
@@ -83,8 +81,12 @@ class WidgetTabsHost : AppFragment() {
     }
 
     private fun navigateToTab(tab: NavigationTab) {
-        for (navTab in navTabToFragment)
+        for (navTab in navTabToFragment) {
             navTab.value.visibility = if (navTab.key == tab) View.VISIBLE else View.GONE
+            if(navTab.key == tab) {
+                (childFragmentManager.findFragmentById(navTab.value.id) as TabbedFragment).onTabSelected(StoreShelves.navigation.navigationTab == tab)
+            }
+        }
         if(StoreShelves.navigation.navigationTab != tab) Logger("WidgetTabHost").verbose("Switched to tab ${tab.javaClass.simpleName}.${tab.name}")
         StoreShelves.navigation.navigationTab = tab
     }

@@ -9,10 +9,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetInboxBinding
+import com.aperii.utilities.Logger
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.widgets.posts.create.WidgetPostCreate
+import com.aperii.widgets.tabs.TabbedFragment
 
-class WidgetInbox : AppFragment() {
+class WidgetInbox : TabbedFragment() {
 
     private lateinit var viewModel: WidgetInboxViewModel
     private lateinit var binding: WidgetInboxBinding
@@ -37,4 +39,6 @@ class WidgetInbox : AppFragment() {
             WidgetPostCreate.open(it.context)
         }
     }
+
+    override fun onTabSelected(previouslySelected: Boolean) {}
 }

@@ -11,13 +11,15 @@ import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetProfileBinding
 import com.aperii.models.threads.Thread
+import com.aperii.utilities.Logger
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.posts.list.WidgetPostList
+import com.aperii.widgets.tabs.TabbedFragment
 
-class WidgetProfile : AppFragment() {
+class WidgetProfile : TabbedFragment() {
 
     private val profileViewModel by viewModels<WidgetProfileViewModel> {
         SavedStateViewModelFactory(null, this, arguments)
@@ -73,4 +75,6 @@ class WidgetProfile : AppFragment() {
             }
         }
     }
+
+    override fun onTabSelected(previouslySelected: Boolean) {}
 }

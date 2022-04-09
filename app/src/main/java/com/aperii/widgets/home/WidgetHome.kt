@@ -9,15 +9,18 @@ import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetHomeBinding
 import com.aperii.models.threads.Thread
+import com.aperii.utilities.Logger
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.posts.list.WidgetPostList
+import com.aperii.widgets.tabs.TabbedFragment
 
-class WidgetHome : AppFragment() {
+class WidgetHome : TabbedFragment() {
 
     private lateinit var homeViewModel: WidgetHomeViewModel
     private lateinit var root: View
     lateinit var binding: WidgetHomeBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +46,8 @@ class WidgetHome : AppFragment() {
                 setSource(Thread.fromList(viewState.posts), null)
             }
         }
-
     }
+
+    override fun onTabSelected(previouslySelected: Boolean) {}
+
 }
