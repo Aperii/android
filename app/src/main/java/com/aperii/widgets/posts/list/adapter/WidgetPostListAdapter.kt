@@ -7,7 +7,7 @@ import com.aperii.widgets.posts.list.adapter.items.*
 import com.aperii.widgets.posts.list.entries.*
 
 class WidgetPostListAdapter : RecyclerView.Adapter<PostListEntry>() {
-    private var mItems: List<PostListItem> = listOf()
+    private var mItems: MutableList<PostListItem> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostListEntry {
         return when (viewType) {
@@ -34,9 +34,20 @@ class WidgetPostListAdapter : RecyclerView.Adapter<PostListEntry>() {
         }
     }
 
+    fun addItem(item: PostListItem) {
+        mItems.add(item)
+        notifyItemInserted(mItems.lastIndex)
+    }
+
+    fun addItems(items: List<PostListItem>) {
+        for (item in items)
+            addItem(item)
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun setItems(items: List<PostListItem>) {
-        mItems = items
+        mItems.clear()
+        addItems(items)
         notifyDataSetChanged()
     }
 }

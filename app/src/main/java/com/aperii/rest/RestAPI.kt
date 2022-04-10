@@ -23,6 +23,9 @@ interface RestAPI {
     @GET("posts/{id}")
     fun getPost(@Path("id") id: String): Observable<Post>
 
+    @GET("posts/{id}/replies")
+    fun getReplies(@Path("id") id: String): Observable<List<Post>>
+
     @POST("users/@me/posts")
     fun createPost(@Body body: RestAPIParams.PostBody, @Query("replyto") replyTo: String = ""): Observable<PostPartial>
 

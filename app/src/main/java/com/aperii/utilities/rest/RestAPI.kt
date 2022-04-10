@@ -99,6 +99,8 @@ class RestAPI(private val token: String) {
 
     fun getPost(id: String) = restApi.getPost(id)
 
+    fun getReplies(id: String) = restApi.getReplies(id)
+
     fun createPost(body: RestAPIParams.PostBody, replyTo: String = "") = restApi.createPost(body, replyTo)
 
     fun getFeed() = restApi.getFeed()

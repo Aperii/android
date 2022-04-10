@@ -43,16 +43,8 @@ class WidgetPostPreview : BottomSheetDialogFragment() {
                 findViewById<View?>(R.id.design_bottom_sheet)?.setBackgroundColor(context.getThemedColor(R.attr.bottomSheetBackground))
             }
         }
-        binding.root.setBackgroundColor(binding.root.context.getThemedColor(android.R.attr.windowBackground))
         return binding.root
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.Aperii_BottomSheet)
-    }
-
-//    override fun getTheme() = R.style.Aperii_BottomSheet
 
     private fun configureUI() {
         if(arguments == null || arguments?.getString(EXTRA_POST) == null) dismiss()

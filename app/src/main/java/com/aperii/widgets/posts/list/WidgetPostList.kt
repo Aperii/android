@@ -54,6 +54,11 @@ class WidgetPostList : AppFragment() {
         adapter?.setItems(getPostItems(thread, user))
     }
 
+    fun addPosts(posts: List<Post>) {
+        mShowSpine = false
+        adapter?.addItems(getPostItems(Thread.fromList(posts), null))
+    }
+
     private fun createAdapter() {
         adapter = WidgetPostListAdapter().apply {
             setItems(listOf(PostListItemLoading()))
