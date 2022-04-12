@@ -70,9 +70,11 @@ class WidgetProfile : TabbedFragment() {
 
         if (viewState is WidgetProfileViewModel.ViewState.Loaded) {
             configureToolbar(viewState)
-            (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {
-                setSource(Thread.fromList(viewState.posts), viewState.user)
-            }
+            try {
+                (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {
+                    setSource(Thread.fromList(viewState.posts), viewState.user)
+                }
+            } catch (_: Throwable) {}
         }
     }
 

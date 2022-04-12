@@ -5,11 +5,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.widget.ProgressBar
 import androidx.core.content.FileProvider
 import androidx.loader.content.AsyncTaskLoader
 import com.aperii.BuildConfig
 import com.aperii.utilities.Logger
+import com.aperii.utilities.Utils
 import com.aperii.utilities.Utils.showToast
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.google.gson.annotations.SerializedName
@@ -28,6 +31,7 @@ import retrofit2.http.Streaming
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.io.Serializable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.concurrent.thread
@@ -37,8 +41,13 @@ object UpdateUtils {
 
     data class Release(
         @SerializedName("tag_name") val versionCode: Int,
-        @SerializedName("name") val versionName: String
-    )
+        @SerializedName("name") val versionName: String,
+        @SerializedName("assets") val assets: List<Asset>
+    ) : Serializable
+
+    data class Asset(
+        @SerializedName("size") val size: Long
+    ) : Serializable
 
     interface GithubApi {
         @GET("repos/Aperii/android/releases/latest")
@@ -91,18 +100,16 @@ object UpdateUtils {
             else
                 Uri.fromFile(apk)
         if(apk.exists()) apk.delete()
-        thread(start = true, isDaemon = true) {
+        Utils.runInThread {
             ghApi.downloadRelease(release.versionCode).enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    progressBar?.max = response.headers()["Content-Length"]?.toInt() ?: 0
-                    response.body()?.byteStream()?.let { stream ->
-                        ObservableInputStream(stream) {
+                    response.body()?.byteStream()?.let { s ->
+                        val stream = ObservableInputStream(s) {
                             progressBar?.progress = it.toInt()
                         }
                         FileOutputStream(apk).run {
                             write(stream.readBytes())
                             close()
-                            stream.close()
                         }
                     }
 

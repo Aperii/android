@@ -33,6 +33,8 @@ import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.update.UpdateUtils
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.tabs.WidgetTabsHost
+import com.aperii.widgets.updater.WidgetUpdater
+import com.aperii.widgets.updater.WidgetUpdater.Companion.EXTRA_RELEASE
 import com.google.gson.GsonBuilder
 
 class WidgetDebugging : AppFragment() {
@@ -166,7 +168,11 @@ class WidgetDebugging : AppFragment() {
             "am" -> am(parsedArgs)
             "ai" -> ai()
             "echo" -> send(args.drop(1).joinToString(" "))
-            "dl" -> UpdateUtils.downloadUpdate(requireContext(), UpdateUtils.Release(1015, "v1.15 - Stable"))
+            "dl" -> Bundle().run {
+                putSerializable(EXTRA_RELEASE, UpdateUtils.Release(1020, "v1.20 - Stable", listOf(
+                    UpdateUtils.Asset(9266387L))))
+                openScreen<WidgetUpdater>(binding.root.context, true, ScreenManager.Animations.SLIDE_FROM_RIGHT, this)
+            }
             "clear" -> {
                 adp.data.clear()
                 adp.notifyDataSetChanged()

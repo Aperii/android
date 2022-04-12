@@ -49,13 +49,6 @@ open class AppActivity : AppCompatActivity() {
         }
     }
 
-    fun checkForUpdate() {
-        thread {
-            val (hasUpdate, release) = UpdateUtils.checkUpdate()
-            if(hasUpdate) UpdateUtils.downloadUpdate(this, release!!) else configureAuth()
-        }
-    }
-
     open fun configureAuth() {
         prefs["APR_auth_tok", ""].run {
             if (isBlank())
@@ -95,7 +88,7 @@ open class AppActivity : AppCompatActivity() {
                         }
                     }.crossfade(true).build()
                 )
-                checkForUpdate()
+                configureAuth()
                 Logger.log("Application activity initialized")
             } catch (error: Throwable) {
                 Logger.default.error("Error initializing activity", error)

@@ -5,6 +5,7 @@
     <string name="title_discover">Discover</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_profile">Profile</string>
+    <string name="title_updater">Updater</string>
 
     <string name="username">\@%1$s</string>
     <string name="crash_title">A Crash Has Occurred</string>
@@ -22,4 +23,10 @@
 
     <string name="separated">\• %1$s</string>
     <string name="replyTo">Replying to @%1$s</string>
+
+    <string name="updating">Updating…</string>
+    <string name="new_update">New update is available!</string>
+    <string name="version_change"><![CDATA[%1$s -> %2$s]]></string>
+    <string name="update_now">Update Now</string>
+
 </resources>

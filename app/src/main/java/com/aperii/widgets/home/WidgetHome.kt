@@ -14,6 +14,7 @@ import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.posts.list.WidgetPostList
 import com.aperii.widgets.tabs.TabbedFragment
+import com.aperii.widgets.updater.WidgetUpdateDialog
 
 class WidgetHome : TabbedFragment() {
 
@@ -42,8 +43,15 @@ class WidgetHome : TabbedFragment() {
             WidgetPostCreate.open(it.context)
         }
         when (viewState) {
-            is WidgetHomeViewModel.ViewState.Loaded -> (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {
-                setSource(Thread.fromList(viewState.posts), null)
+            is WidgetHomeViewModel.ViewState.Loaded -> {
+                try {
+                    (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList?)?.apply {
+                        if(viewState.posts.isNotEmpty()) setSource(Thread.fromList(viewState.posts), null)
+                    }
+                } catch (_: Throwable) {}
+                if(viewState.showUpdateDialog) {
+                    WidgetUpdateDialog(requireContext(), homeViewModel.update!!).show()
+                }
             }
         }
     }
