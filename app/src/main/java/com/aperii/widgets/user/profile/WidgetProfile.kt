@@ -15,6 +15,7 @@ import com.aperii.utilities.Logger
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.utilities.screens.extras
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.posts.list.WidgetPostList
 import com.aperii.widgets.tabs.TabbedFragment
@@ -27,7 +28,7 @@ class WidgetProfile : TabbedFragment() {
     private lateinit var binding: WidgetProfileBinding
 
     companion object {
-        const val EXTRA_USER = "com.aperii.intents.extras.USER"
+        val EXTRA_USER by extras()
 
         fun open(context: Context, id: String) = Bundle().run {
             putString(EXTRA_USER, id)

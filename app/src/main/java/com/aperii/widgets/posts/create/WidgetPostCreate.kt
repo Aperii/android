@@ -21,6 +21,7 @@ import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.utilities.screens.extras
 import com.aperii.utilities.text.TextUtils.renderPost
 import com.aperii.widgets.posts.preview.WidgetPostPreview
 
@@ -30,9 +31,9 @@ class WidgetPostCreate : AppFragment() {
     lateinit var binding: WidgetPostCreateBinding
 
     companion object {
-        const val EXTRA_MESSAGE = "com.aperii.intents.extras.MESSAGE"
-        const val EXTRA_CLOSE_ON_EXIT = "com.aperii.intents.extras.CLOSE_ON_EXIT"
-        const val REPLY_TO = "com.aperii.intents.extras.REPLY_TO"
+        val EXTRA_MESSAGE by extras()
+        val EXTRA_CLOSE_ON_EXIT by extras()
+        val REPLY_TO by extras()
 
         fun open(context: Context, text: String = "", replyTo: String = "") = Bundle().run {
             putString(EXTRA_MESSAGE, text)
