@@ -11,6 +11,7 @@ import com.aperii.databinding.WidgetUpdaterBinding
 import com.aperii.utilities.Logger
 import com.aperii.utilities.Utils.runInThread
 import com.aperii.utilities.screens.ScreenManager
+import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.screens.extras
 import com.aperii.utilities.update.UpdateUtils
 
@@ -23,7 +24,7 @@ class WidgetUpdater: AppFragment() {
 
         fun open(context: Context, release: UpdateUtils.Release?) = with(Bundle()) {
             putSerializable(EXTRA_RELEASE, release)
-            ScreenManager.openScreen<WidgetUpdater>(context, true, ScreenManager.Animations.SCALE_CENTER, this)
+            context.openScreen<WidgetUpdater>(true, ScreenManager.Animations.SCALE_CENTER, this)
         }
 
     }

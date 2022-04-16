@@ -168,11 +168,8 @@ class WidgetDebugging : AppFragment() {
             "am" -> am(parsedArgs)
             "ai" -> ai()
             "echo" -> send(args.drop(1).joinToString(" "))
-            "dl" -> Bundle().run {
-                putSerializable(EXTRA_RELEASE, UpdateUtils.Release(1020, "v1.20 - Stable", listOf(
-                    UpdateUtils.Asset(9266387L))))
-                openScreen<WidgetUpdater>(binding.root.context, true, ScreenManager.Animations.SLIDE_FROM_RIGHT, this)
-            }
+            "dl" -> WidgetUpdater.open(requireContext(), UpdateUtils.Release(1020, "v1.20 - Stable", listOf(
+                UpdateUtils.Asset(9266387L))))
             "clear" -> {
                 adp.data.clear()
                 adp.notifyDataSetChanged()
@@ -247,7 +244,7 @@ class WidgetDebugging : AppFragment() {
                 try {
                     val c = Class.forName(className)
                     if (c.newInstance() !is Fragment) return send("Class has to be a fragment")
-                    appActivity.openScreen(c.newInstance() as Fragment, allowBack)
+                    requireContext().openScreen(allowBack, screen = c.newInstance() as Fragment, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
                 } catch (err: ReflectiveOperationException) {
                     return send("Class not found")
                 }

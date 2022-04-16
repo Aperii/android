@@ -17,10 +17,11 @@
         <provider android:name="androidx.core.content.FileProvider" android:exported="false" android:authorities="com.aperii.provider" android:grantUriPermissions="true">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
         </provider>
+        <activity android:name=".app.AppActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".app.AppActivity$Main"
             android:exported="true"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

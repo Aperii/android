@@ -31,7 +31,7 @@ class WidgetPost : AppFragment(R.layout.widget_post) {
 
         fun open(context: Context, id: String) = Bundle().run {
             putString(EXTRA_POST, id)
-            openScreen<WidgetPost>(context, allowBack = true, data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
+            context.openScreen<WidgetPost>(allowBack = true, data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
         }
     }
 

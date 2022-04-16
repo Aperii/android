@@ -3,20 +3,22 @@ package com.aperii.utilities.screens
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.*
 import com.aperii.R
 import com.aperii.app.AppActivity
+import com.aperii.app.AppComponent
 import com.aperii.utilities.Logger
+
 
 object ScreenManager {
 
     val logger = Logger("ScreenManager")
 
-    const val EXTRA_SCREEN = "com.aperii.intents.extras.EXTRA_SCREEN"
-    const val EXTRA_BACK = "com.aperii.intents.extras.EXTRA_ALLOW_BACK"
-    const val EXTRA_ANIM = "com.aperii.intents.extras.EXTRA_ANIMATION"
-    const val EXTRA_DATA = "com.aperii.intents.extras.EXTRA_DATA"
-
+    val EXTRA_SCREEN by extras()
+    val EXTRA_BACK by extras()
+    val EXTRA_ANIM by extras()
+    val EXTRA_DATA by extras()
 
     object Animations {
         val SLIDE_FROM_RIGHT = listOf(
@@ -39,14 +41,15 @@ object ScreenManager {
         )
     }
 
-    inline fun <reified T: Fragment> openScreen(ctx: Context, allowBack: Boolean = false, animation: List<Int> = listOf(), data: Bundle = Bundle()) {
+    inline fun <reified T: Fragment> Context.openScreen(allowBack: Boolean = true, animation: List<Int> = Animations.SCALE_CENTER, data: Bundle = Bundle(), screen: T? = null) {
         Intent(Intent.ACTION_VIEW).apply {
-            putExtra(EXTRA_SCREEN, T::class.java)
+            putExtra(EXTRA_SCREEN, if(screen != null) screen::class.java else T::class.java)
             putExtra(EXTRA_BACK, allowBack)
             putExtra(EXTRA_ANIM, animation.toIntArray())
             putExtra(EXTRA_DATA, data)
-            setClass(ctx, AppActivity.Main::class.java)
-            ctx.startActivity(this)
+            setClass(this@openScreen, AppActivity::class.java)
+            logger.verbose("[${this@openScreen::class.java.simpleName}] > [${T::class.java.simpleName}]")
+            this@openScreen.startActivity(this)
         }
     }
 
@@ -56,7 +59,6 @@ object ScreenManager {
         animation: List<Int> = Animations.SLIDE_FROM_RIGHT,
         data: Bundle = Bundle()
     ) = supportFragmentManager.commit {
-        logger.verbose("Opening page ${screen::class.java.simpleName}")
         setCustomAnimations(animation)
         screen.arguments = data
         replace(R.id.widget_host_fragment, screen)
@@ -68,7 +70,6 @@ object ScreenManager {
         animation: List<Int> = Animations.SLIDE_FROM_RIGHT,
         data: Bundle = Bundle()
     ) = supportFragmentManager.commit {
-        logger.verbose("Opening page ${T::class.java.simpleName}")
         setCustomAnimations(animation)
         replace<T>(R.id.widget_host_fragment, args = data)
         if (allowBack) addToBackStack(null) else supportFragmentManager.popBackStack()

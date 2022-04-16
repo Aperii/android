@@ -1,5 +1,6 @@
 package com.aperii.app
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -29,7 +30,8 @@ import retrofit2.HttpException
 import kotlin.concurrent.thread
 
 open class AppActivity : AppCompatActivity() {
-
+    var transition = ScreenManager.Animations.SCALE_CENTER
+    var allowBack = true
     companion object {
         lateinit var prefs: SettingsUtils
     }
@@ -38,11 +40,31 @@ open class AppActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         prefs = SettingsUtils(getSharedPreferences("PREFS", MODE_PRIVATE))
+        navigate(intent)
+    }
+
+    override fun onBackPressed() {
+        if(!allowBack) return finishAffinity()
+        super.onBackPressed()
+        overridePendingTransition(transition[2], transition[3])
+    }
+
+    private fun navigate(intent: Intent) {
+        (intent.extras?.get(ScreenManager.EXTRA_SCREEN ) as Class<Fragment>?)?.run {
+            transition = intent.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: transition
+            allowBack = intent.extras?.getBoolean(ScreenManager.EXTRA_BACK) ?: false
+            overridePendingTransition(transition[0], transition[1])
+            openScreen(
+                newInstance(),
+                animation = listOf(0,0,0,0),
+                data = intent.extras?.getBundle(ScreenManager.EXTRA_DATA) ?: Bundle()
+            )
+        }
     }
 
     open fun onAction(action: String?, isAuthed: Boolean) {
         when (action) {
-            "com.aperii.intents.actions.DEBUG" -> openScreen<WidgetDebugging>(
+            "com.aperii.intents.actions.DEBUG" -> (this as Context).openScreen<WidgetDebugging>(
                 allowBack = true,
                 animation = ScreenManager.Animations.SCALE_CENTER
             )
@@ -96,18 +118,20 @@ open class AppActivity : AppCompatActivity() {
             }
         }
 
-        override fun onNewIntent(intent: Intent?) {
-            super.onNewIntent(intent)
-            val screen = intent?.extras?.get(ScreenManager.EXTRA_SCREEN ) as Class<Fragment>?
-            if (screen != null) {
-                openScreen(
-                    screen.newInstance(),
-                    intent?.extras?.getBoolean(ScreenManager.EXTRA_BACK) ?: false,
-                    intent?.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: listOf(0,0,0,0),
-                    intent?.extras?.getBundle(ScreenManager.EXTRA_DATA) ?: Bundle()
-                )
-            }
-        }
+//        override fun onNewIntent(intent: Intent?) {
+//            super.onNewIntent(intent)
+//            val screen = intent?.extras?.get(ScreenManager.EXTRA_SCREEN ) as Class<Fragment>?
+//            if (screen != null) {
+//                val anim = intent?.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: listOf(0,0,0,0)
+//                overridePendingTransition(anim[0], anim[2])
+//                openScreen(
+//                    screen.newInstance(),
+//                    intent?.extras?.getBoolean(ScreenManager.EXTRA_BACK) ?: false,
+//                    intent?.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: listOf(0,0,0,0),
+//                    intent?.extras?.getBundle(ScreenManager.EXTRA_DATA) ?: Bundle()
+//                )
+//            }
+//        }
 
     }
 
