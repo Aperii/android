@@ -8,19 +8,4 @@ import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.utilities.screens.ScreenManager.openScreen
 
-class WidgetFatalCrash : AppFragment(R.layout.widget_fatal_crash) {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        appActivity.supportActionBar?.hide()
-        view?.findViewById<View>(R.id.crash_action_restart)?.setOnClickListener {
-            activity?.openScreen<WidgetFatalCrash>(allowBack = false)
-        }
-        return view
-    }
-
-}
+class WidgetFatalCrash : AppFragment(R.layout.widget_fatal_crash)

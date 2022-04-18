@@ -38,7 +38,7 @@ class WidgetPostCreate : AppFragment() {
         fun open(context: Context, text: String = "", replyTo: String = "") = Bundle().run {
             putString(EXTRA_MESSAGE, text)
             if(replyTo.isNotEmpty()) putString(REPLY_TO, replyTo)
-            context.openScreen<WidgetPostCreate>(allowBack = true, data = this, animation = ScreenManager.Animations.SCALE_CENTER)
+            context.openScreen<WidgetPostCreate>(data = this)
         }
 
     }

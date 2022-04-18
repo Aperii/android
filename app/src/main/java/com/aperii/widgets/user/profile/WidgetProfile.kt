@@ -32,7 +32,7 @@ class WidgetProfile : TabbedFragment() {
 
         fun open(context: Context, id: String) = Bundle().run {
             putString(EXTRA_USER, id)
-            context.openScreen<WidgetProfile>(allowBack = true, data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
+            context.openScreen<WidgetProfile>(data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
         }
 
     }

@@ -16,7 +16,6 @@ object ScreenManager {
     val logger = Logger("ScreenManager")
 
     val EXTRA_SCREEN by extras()
-    val EXTRA_BACK by extras()
     val EXTRA_ANIM by extras()
     val EXTRA_DATA by extras()
 
@@ -44,9 +43,12 @@ object ScreenManager {
     inline fun <reified T: Fragment> Context.openScreen(allowBack: Boolean = true, animation: List<Int> = Animations.SCALE_CENTER, data: Bundle = Bundle(), screen: T? = null) {
         Intent(Intent.ACTION_VIEW).apply {
             putExtra(EXTRA_SCREEN, if(screen != null) screen::class.java else T::class.java)
-            putExtra(EXTRA_BACK, allowBack)
             putExtra(EXTRA_ANIM, animation.toIntArray())
             putExtra(EXTRA_DATA, data)
+            if(!allowBack) {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
             setClass(this@openScreen, AppActivity::class.java)
             logger.verbose("[${this@openScreen::class.java.simpleName}] > [${T::class.java.simpleName}]")
             this@openScreen.startActivity(this)

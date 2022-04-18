@@ -138,10 +138,7 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
         dropdown.findViewById<View>(R.id.item_debug).apply {
             if (isDeveloper) visibility = View.VISIBLE
             setOnClickListener {
-                context.openScreen<WidgetDebugging>(
-                    allowBack = true,
-                    animation = ScreenManager.Animations.SCALE_CENTER
-                )
+                context.openScreen<WidgetDebugging>()
                 window.dismiss()
             }
         }
@@ -150,8 +147,7 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
             AppActivity.prefs.clear("APR_auth_tok")
             StoreShelves.navigation.navigationTab = NavigationTab.HOME
             context.openScreen<WidgetAuthLanding>(
-                allowBack = false,
-                animation = ScreenManager.Animations.SCALE_CENTER
+                allowBack = false
             )
             window.dismiss()
         }

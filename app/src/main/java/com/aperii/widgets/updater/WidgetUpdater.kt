@@ -24,7 +24,7 @@ class WidgetUpdater: AppFragment() {
 
         fun open(context: Context, release: UpdateUtils.Release?) = with(Bundle()) {
             putSerializable(EXTRA_RELEASE, release)
-            context.openScreen<WidgetUpdater>(true, ScreenManager.Animations.SCALE_CENTER, this)
+            context.openScreen<WidgetUpdater>(data = this)
         }
 
     }

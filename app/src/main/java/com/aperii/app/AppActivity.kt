@@ -31,7 +31,6 @@ import kotlin.concurrent.thread
 
 open class AppActivity : AppCompatActivity() {
     var transition = ScreenManager.Animations.SCALE_CENTER
-    var allowBack = true
     companion object {
         lateinit var prefs: SettingsUtils
     }
@@ -43,16 +42,14 @@ open class AppActivity : AppCompatActivity() {
         navigate(intent)
     }
 
-    override fun onBackPressed() {
-        if(!allowBack) return finishAffinity()
-        super.onBackPressed()
+    override fun finish() {
+        super.finish()
         overridePendingTransition(transition[2], transition[3])
     }
 
     private fun navigate(intent: Intent) {
         (intent.extras?.get(ScreenManager.EXTRA_SCREEN ) as Class<Fragment>?)?.run {
             transition = intent.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: transition
-            allowBack = intent.extras?.getBoolean(ScreenManager.EXTRA_BACK) ?: false
             overridePendingTransition(transition[0], transition[1])
             openScreen(
                 newInstance(),
@@ -64,10 +61,7 @@ open class AppActivity : AppCompatActivity() {
 
     open fun onAction(action: String?, isAuthed: Boolean) {
         when (action) {
-            "com.aperii.intents.actions.DEBUG" -> (this as Context).openScreen<WidgetDebugging>(
-                allowBack = true,
-                animation = ScreenManager.Animations.SCALE_CENTER
-            )
+            "com.aperii.intents.actions.DEBUG" -> (this as Context).openScreen<WidgetDebugging>()
         }
     }
 
