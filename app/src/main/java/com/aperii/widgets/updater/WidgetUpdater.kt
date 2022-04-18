@@ -44,12 +44,10 @@ class WidgetUpdater: AppFragment() {
         binding.toolbar.hideAvatar()
         runInThread {
             if(autoStart) {
-                binding.updateProgress.max = release!!.assets[0].size.toInt()
-                UpdateUtils.downloadUpdate(binding.root.context, release, binding.updateProgress)
+                UpdateUtils.downloadUpdate(binding.root.context, release!!, binding.updateProgress)
             } else {
                 val (hasUpdate, rel) = UpdateUtils.checkUpdate()
                 if (hasUpdate && rel != null) {
-                    binding.updateProgress.max = rel.assets[0].size.toInt()
                     UpdateUtils.downloadUpdate(binding.root.context, rel, binding.updateProgress)
                 }
             }

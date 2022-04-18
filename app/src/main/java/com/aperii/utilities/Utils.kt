@@ -14,6 +14,8 @@ import java.util.concurrent.Executors
 object Utils {
     private val threadPool: ExecutorService = Executors.newCachedThreadPool()
 
+    fun runOnMainThread(block: () -> Unit) = Handler(Looper.getMainLooper()).post(block)
+
     fun runInThread(block: (() -> Unit)) = threadPool.execute(block)
 
     fun Context.setClipboard(content: String) {

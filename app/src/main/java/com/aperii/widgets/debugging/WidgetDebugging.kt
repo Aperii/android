@@ -168,8 +168,7 @@ class WidgetDebugging : AppFragment() {
             "am" -> am(parsedArgs)
             "ai" -> ai()
             "echo" -> send(args.drop(1).joinToString(" "))
-            "dl" -> WidgetUpdater.open(requireContext(), UpdateUtils.Release(1020, "v1.20 - Stable", listOf(
-                UpdateUtils.Asset(9266387L))))
+            "dl" -> dl(parsedArgs)
             "clear" -> {
                 adp.data.clear()
                 adp.notifyDataSetChanged()
@@ -213,7 +212,7 @@ class WidgetDebugging : AppFragment() {
 
     private fun help() = send(
         """
-            ======= Aperii Debug Tool (v1.0.1) =======
+            ======= Aperii Debug Tool (v1.1.0) =======
             
             sm open 
                 [-c/--full-class className] <b/--allow-back> - Open any screen
@@ -229,6 +228,8 @@ class WidgetDebugging : AppFragment() {
             clear - Clear logs
             
             ai - Get app information
+            
+            dl upd [-v versionCode] Download/install a specific version
     """.trimIndent()
     )
 
@@ -306,4 +307,9 @@ class WidgetDebugging : AppFragment() {
         API Version: ${BuildConfig.BASE_URL.split("/")[3]}
     """.trimIndent()
     )
+
+    private fun dl(args: CommandArgs) {
+        val vc = args["v"]
+        if(vc != null) WidgetUpdater.open(requireContext(), UpdateUtils.Release(vc.toInt(), "v1.20 - Stable")) else send("Version is required")
+    }
 }
