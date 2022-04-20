@@ -22,8 +22,8 @@ object ScreenManager {
     object Animations {
         val SLIDE_FROM_RIGHT = listOf(
             R.anim.slide_from_right,
-            R.anim.slide_to_left,
-            R.anim.slide_from_left,
+            R.anim.slide_zoom_out,
+            R.anim.slide_zoom_in,
             R.anim.slide_to_right
         )
         val SCALE_CENTER = listOf(
@@ -31,12 +31,6 @@ object ScreenManager {
             R.anim.fade_open_out,
             R.anim.fade_close_in,
             R.anim.fade_close_out
-        )
-        val TEST = listOf(
-            android.R.anim.slide_out_right,
-            android.R.anim.slide_out_right,
-            android.R.anim.slide_out_right,
-            android.R.anim.slide_out_right
         )
     }
 
