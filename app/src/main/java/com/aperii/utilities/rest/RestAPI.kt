@@ -27,7 +27,7 @@ class RestAPI(private val token: String) {
 
     companion object {
         val USER_AGENT =
-            "Aperii/Mobile-Android (${Build.MODEL}/${Build.DEVICE} SDK${Build.VERSION.SDK_INT})"
+            "Aperii/Mobile-Android@${if(BuildConfig.VERSION_CODE == 1300) BuildConfig.VERSION_NAME.split(" - ")[1] else BuildConfig.VERSION_CODE} (${Build.MODEL}/${Build.DEVICE} SDK${Build.VERSION.SDK_INT})"
         val EMPTY_USER = MeUser(
             "0",
             Date().time,
