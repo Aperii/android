@@ -21,6 +21,7 @@ import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.utilities.screens.extras
 import com.aperii.utilities.text.TextUtils.renderPost
 import com.aperii.widgets.posts.preview.WidgetPostPreview
 
@@ -30,14 +31,14 @@ class WidgetPostCreate : AppFragment() {
     lateinit var binding: WidgetPostCreateBinding
 
     companion object {
-        const val EXTRA_MESSAGE = "com.aperii.intents.extras.MESSAGE"
-        const val EXTRA_CLOSE_ON_EXIT = "com.aperii.intents.extras.CLOSE_ON_EXIT"
-        const val REPLY_TO = "com.aperii.intents.extras.REPLY_TO"
+        val EXTRA_MESSAGE by extras()
+        val EXTRA_CLOSE_ON_EXIT by extras()
+        val REPLY_TO by extras()
 
         fun open(context: Context, text: String = "", replyTo: String = "") = Bundle().run {
             putString(EXTRA_MESSAGE, text)
             if(replyTo.isNotEmpty()) putString(REPLY_TO, replyTo)
-            openScreen<WidgetPostCreate>(context, allowBack = true, data = this, animation = ScreenManager.Animations.SCALE_CENTER)
+            context.openScreen<WidgetPostCreate>(data = this)
         }
 
     }
@@ -75,7 +76,7 @@ class WidgetPostCreate : AppFragment() {
     private fun configurePostButton() = binding.postBtn.setOnClickListener {
         val text = binding.postText.text.toString()
         binding.postBtn.isLoading = true
-        RestAPI.INSTANCE.createPost(RestAPIParams.PostBody(text), arguments?.getString(REPLY_TO) ?: "").observeAndCatch({
+        RestAPI.INSTANCE.createPost(text, arguments?.getString(REPLY_TO) ?: "").observeAndCatch({
             appActivity.onBackPressed()
         }) {
             it.context.showToast("An error occurred while making that post")

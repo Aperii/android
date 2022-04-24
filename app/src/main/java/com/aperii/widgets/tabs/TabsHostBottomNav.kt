@@ -26,17 +26,17 @@ class TabsHostBottomNav(context: Context, attrs: AttributeSet) : LinearLayout(co
 
     init {
         LayoutInflater.from(context).inflate(R.layout.tabs_host_bottom_nav, this, true)
-//        Utils.appActivity.getSharedPreferences("StoreExperiments", Context.MODE_PRIVATE)
-//            .getInt("groups_tab_03_13_22", 0).also {
-//            if (it == 1) {
-//                findViewById<View>(R.id.tabs_host_item_groups).visibility = VISIBLE
-//                findViewById<LinearLayout>(R.id.tabs_host_bottom_nav_container).apply {
-//                    layoutParams = (layoutParams as LayoutParams).apply {
-//                        weightSum = 6.25f
-//                    }
-//                }
-//            }
-//        }
+        context.getSharedPreferences("StoreExperiments", Context.MODE_PRIVATE)
+            .getInt("groups_tab_03_13_22", 0).also {
+            if (it == 1) {
+                findViewById<View>(R.id.tabs_host_item_groups).visibility = VISIBLE
+                findViewById<LinearLayout>(R.id.tabs_host_bottom_nav_container).apply {
+                    layoutParams = (layoutParams as LayoutParams).apply {
+                        weightSum = 6.25f
+                    }
+                }
+            }
+        }
     }
 
 }

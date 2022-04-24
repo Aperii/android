@@ -15,6 +15,7 @@ import com.aperii.stores.StoreShelves
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.utilities.screens.extras
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.posts.list.WidgetPostList
 
@@ -26,11 +27,11 @@ class WidgetPost : AppFragment(R.layout.widget_post) {
     }
 
     companion object {
-        const val EXTRA_POST = "com.aperii.intents.extras.EXTRA_POST"
+        val EXTRA_POST by extras()
 
         fun open(context: Context, id: String) = Bundle().run {
             putString(EXTRA_POST, id)
-            openScreen<WidgetPost>(context, allowBack = true, data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
+            context.openScreen<WidgetPost>(data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
         }
     }
 

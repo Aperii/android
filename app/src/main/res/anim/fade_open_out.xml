@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set xmlns:android="http://schemas.android.com/apk/res/android" android:duration="150" android:interpolator="@android:anim/accelerate_decelerate_interpolator">
-    <scale android:pivotX="50%p" android:pivotY="50%p" android:fromXScale="100%p" android:toXScale="90%p" android:fromYScale="100%p" android:toYScale="90%p" />
+<set xmlns:android="http://schemas.android.com/apk/res/android" android:duration="150" android:interpolator="@android:interpolator/accelerate_decelerate" android:zAdjustment="top">
+    <scale android:pivotX="50%" android:pivotY="50%" android:fromXScale="100%" android:toXScale="90%" android:fromYScale="100%" android:toYScale="90%"/>
+    <alpha android:fromAlpha="1" android:toAlpha="0.25"/>
 </set>

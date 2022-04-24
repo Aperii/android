@@ -12,6 +12,7 @@ import com.aperii.databinding.WidgetPostPreviewBinding
 import com.aperii.stores.StoreShelves
 import com.aperii.utilities.color.ColorUtils.getThemedColor
 import com.aperii.utilities.images.IconUtils.setAvatar
+import com.aperii.utilities.screens.extras
 import com.aperii.utilities.text.TextUtils.renderPost
 import com.aperii.utilities.time.TimeUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -21,7 +22,7 @@ class WidgetPostPreview : BottomSheetDialogFragment() {
     lateinit var binding: WidgetPostPreviewBinding
 
     companion object {
-        const val EXTRA_POST = "com.aperii.intents.extras.EXTRA_POST"
+        val EXTRA_POST by extras()
 
         fun open(fm: FragmentManager, postId: String) = WidgetPostPreview().run {
             arguments = Bundle().apply {

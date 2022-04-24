@@ -8,8 +8,16 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 object Utils {
+    private val threadPool: ExecutorService = Executors.newCachedThreadPool()
+
+    fun runOnMainThread(block: () -> Unit) = Handler(Looper.getMainLooper()).post(block)
+
+    fun runInThread(block: (() -> Unit)) = threadPool.execute(block)
+
     fun Context.setClipboard(content: String) {
         val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboard.setPrimaryClip(ClipData.newPlainText("Aperii", content))
@@ -20,4 +28,5 @@ object Utils {
     }
 
     fun Context.openUrl(url: String) = startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+
 }

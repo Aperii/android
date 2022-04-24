@@ -5,7 +5,6 @@
     <string name="title_discover">Descoperă</string>
     <string name="title_notifications">Notificări</string>
     <string name="title_profile">Profil</string>
-    <string name="title_updater">Updater</string>
     <string name="username">\@%1$s</string>
     <string name="crash_title">A apărut o eroare</string>
     <string name="debug">Debug</string>
@@ -19,8 +18,9 @@
     <string name="filter">Filtru</string>
     <string name="separated">\• %1$s</string>
     <string name="replyTo">Replying to @%1$s</string>
-    <string name="updating">Updating…</string>
+    <string name="updating">Updating...</string>
     <string name="new_update">New update is available!</string>
+    <string name="title_updater">Updater</string>
     <string name="version_change"><![CDATA[%1$s -> %2$s]]></string>
     <string name="update_now">Update Now</string>
     <string name="edit_profile">Edit Profile</string>

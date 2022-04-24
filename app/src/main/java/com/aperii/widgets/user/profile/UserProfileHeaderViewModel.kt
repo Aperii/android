@@ -6,7 +6,7 @@ import com.aperii.models.user.User
 class UserProfileHeaderViewModel : AppViewModel<UserProfileHeaderViewModel.ViewState>() {
 
     open class ViewState {
-        class Loaded(val user: User)
+        class Loaded(val user: User, val edit: Boolean = false)
     }
 
 }

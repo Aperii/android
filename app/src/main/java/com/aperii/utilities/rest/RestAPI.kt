@@ -27,7 +27,11 @@ class RestAPI(private val token: String) {
 
     companion object {
         val USER_AGENT =
-            "Aperii/Mobile-Android (${Build.MODEL}/${Build.DEVICE} SDK${Build.VERSION.SDK_INT})"
+            "Aperii/Mobile-Android@${
+                if (BuildConfig.VERSION_CODE == 1300) BuildConfig.VERSION_NAME.split(
+                    " - "
+                )[1] else BuildConfig.VERSION_CODE
+            } (${Build.MODEL}/${Build.DEVICE} SDK${Build.VERSION.SDK_INT})"
         val EMPTY_USER = MeUser(
             "0",
             Date().time,
@@ -93,6 +97,12 @@ class RestAPI(private val token: String) {
 
     fun getMePosts() = restApi.getMePosts()
 
+    fun editProfile(displayName: String?, bio: String?, pronouns: String?) = restApi.editProfile(
+        RestAPIParams.EditProfileBody(
+            displayName, bio, pronouns
+        )
+    )
+
     fun getUser(userId: String) = restApi.getUser(userId)
 
     fun getUserPosts(userId: String) = restApi.getUserPosts(userId)
@@ -101,7 +111,8 @@ class RestAPI(private val token: String) {
 
     fun getReplies(id: String) = restApi.getReplies(id)
 
-    fun createPost(body: RestAPIParams.PostBody, replyTo: String = "") = restApi.createPost(body, replyTo)
+    fun createPost(body: String, replyTo: String = "") =
+        restApi.createPost(RestAPIParams.PostBody(body), replyTo)
 
     fun getFeed() = restApi.getFeed()
 

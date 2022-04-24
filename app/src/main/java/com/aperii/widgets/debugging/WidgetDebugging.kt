@@ -33,6 +33,8 @@ import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.update.UpdateUtils
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.tabs.WidgetTabsHost
+import com.aperii.widgets.updater.WidgetUpdater
+import com.aperii.widgets.updater.WidgetUpdater.Companion.EXTRA_RELEASE
 import com.google.gson.GsonBuilder
 
 class WidgetDebugging : AppFragment() {
@@ -166,7 +168,7 @@ class WidgetDebugging : AppFragment() {
             "am" -> am(parsedArgs)
             "ai" -> ai()
             "echo" -> send(args.drop(1).joinToString(" "))
-            "dl" -> UpdateUtils.downloadUpdate(requireContext(), UpdateUtils.Release(1015, "v1.15 - Stable"))
+            "dl" -> dl(parsedArgs)
             "clear" -> {
                 adp.data.clear()
                 adp.notifyDataSetChanged()
@@ -210,7 +212,7 @@ class WidgetDebugging : AppFragment() {
 
     private fun help() = send(
         """
-            ======= Aperii Debug Tool (v1.0.1) =======
+            ======= Aperii Debug Tool (v1.1.0) =======
             
             sm open 
                 [-c/--full-class className] <b/--allow-back> - Open any screen
@@ -226,6 +228,8 @@ class WidgetDebugging : AppFragment() {
             clear - Clear logs
             
             ai - Get app information
+            
+            dl upd [-v versionCode] Download/install a specific version
     """.trimIndent()
     )
 
@@ -241,7 +245,7 @@ class WidgetDebugging : AppFragment() {
                 try {
                     val c = Class.forName(className)
                     if (c.newInstance() !is Fragment) return send("Class has to be a fragment")
-                    appActivity.openScreen(c.newInstance() as Fragment, allowBack)
+                    requireContext().openScreen(allowBack, screen = c.newInstance() as Fragment, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
                 } catch (err: ReflectiveOperationException) {
                     return send("Class not found")
                 }
@@ -303,4 +307,9 @@ class WidgetDebugging : AppFragment() {
         API Version: ${BuildConfig.BASE_URL.split("/")[3]}
     """.trimIndent()
     )
+
+    private fun dl(args: CommandArgs) {
+        val vc = args["v"]
+        if(vc != null) WidgetUpdater.open(requireContext(), UpdateUtils.Release(vc.toInt(), "v1.20 - Stable")) else send("Version is required")
+    }
 }

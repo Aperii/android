@@ -15,6 +15,7 @@ import com.aperii.utilities.Logger
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.utilities.screens.extras
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.posts.list.WidgetPostList
 import com.aperii.widgets.tabs.TabbedFragment
@@ -27,11 +28,11 @@ class WidgetProfile : TabbedFragment() {
     private lateinit var binding: WidgetProfileBinding
 
     companion object {
-        const val EXTRA_USER = "com.aperii.intents.extras.USER"
+        val EXTRA_USER by extras()
 
         fun open(context: Context, id: String) = Bundle().run {
             putString(EXTRA_USER, id)
-            openScreen<WidgetProfile>(context, allowBack = true, data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
+            context.openScreen<WidgetProfile>(data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
         }
 
     }
@@ -70,9 +71,11 @@ class WidgetProfile : TabbedFragment() {
 
         if (viewState is WidgetProfileViewModel.ViewState.Loaded) {
             configureToolbar(viewState)
-            (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {
-                setSource(Thread.fromList(viewState.posts), viewState.user)
-            }
+            try {
+                (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {
+                    setSource(Thread.fromList(viewState.posts), viewState.user)
+                }
+            } catch (_: Throwable) {}
         }
     }
 

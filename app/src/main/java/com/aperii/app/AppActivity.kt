@@ -1,9 +1,11 @@
 package com.aperii.app
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import coil.Coil
 import coil.ImageLoader
@@ -29,7 +31,7 @@ import retrofit2.HttpException
 import kotlin.concurrent.thread
 
 open class AppActivity : AppCompatActivity() {
-
+    var transition = ScreenManager.Animations.SCALE_CENTER
     companion object {
         lateinit var prefs: SettingsUtils
     }
@@ -38,21 +40,29 @@ open class AppActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         prefs = SettingsUtils(getSharedPreferences("PREFS", MODE_PRIVATE))
+        navigate(intent)
     }
 
-    open fun onAction(action: String?, isAuthed: Boolean) {
-        when (action) {
-            "com.aperii.intents.actions.DEBUG" -> openScreen<WidgetDebugging>(
-                allowBack = true,
-                animation = ScreenManager.Animations.SCALE_CENTER
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(transition[2], transition[3])
+    }
+
+    private fun navigate(intent: Intent) {
+        (intent.extras?.get(ScreenManager.EXTRA_SCREEN ) as Class<Fragment>?)?.run {
+            transition = intent.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: transition
+            overridePendingTransition(transition[0], transition[1])
+            openScreen(
+                newInstance(),
+                animation = listOf(0,0,0,0),
+                data = intent.extras?.getBundle(ScreenManager.EXTRA_DATA) ?: Bundle()
             )
         }
     }
 
-    fun checkForUpdate() {
-        thread {
-            val (hasUpdate, release) = UpdateUtils.checkUpdate()
-            if(hasUpdate) UpdateUtils.downloadUpdate(this, release!!) else configureAuth()
+    open fun onAction(action: String?, isAuthed: Boolean) {
+        when (action) {
+            "com.aperii.intents.actions.DEBUG" -> (this as Context).openScreen<WidgetDebugging>()
         }
     }
 
@@ -95,7 +105,7 @@ open class AppActivity : AppCompatActivity() {
                         }
                     }.crossfade(true).build()
                 )
-                checkForUpdate()
+                configureAuth()
                 Logger.log("Application activity initialized")
             } catch (error: Throwable) {
                 Logger.default.error("Error initializing activity", error)
@@ -103,18 +113,20 @@ open class AppActivity : AppCompatActivity() {
             }
         }
 
-        override fun onNewIntent(intent: Intent?) {
-            super.onNewIntent(intent)
-            val screen = intent?.extras?.get(ScreenManager.EXTRA_SCREEN ) as Class<Fragment>?
-            if (screen != null) {
-                openScreen(
-                    screen.newInstance(),
-                    intent?.extras?.getBoolean(ScreenManager.EXTRA_BACK) ?: false,
-                    intent?.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: listOf(0,0,0,0),
-                    intent?.extras?.getBundle(ScreenManager.EXTRA_DATA) ?: Bundle()
-                )
-            }
-        }
+//        override fun onNewIntent(intent: Intent?) {
+//            super.onNewIntent(intent)
+//            val screen = intent?.extras?.get(ScreenManager.EXTRA_SCREEN ) as Class<Fragment>?
+//            if (screen != null) {
+//                val anim = intent?.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: listOf(0,0,0,0)
+//                overridePendingTransition(anim[0], anim[2])
+//                openScreen(
+//                    screen.newInstance(),
+//                    intent?.extras?.getBoolean(ScreenManager.EXTRA_BACK) ?: false,
+//                    intent?.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: listOf(0,0,0,0),
+//                    intent?.extras?.getBundle(ScreenManager.EXTRA_DATA) ?: Bundle()
+//                )
+//            }
+//        }
 
     }
 
