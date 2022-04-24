@@ -18,4 +18,14 @@
     <string name="filter">छाँटियें</string>
     <string name="separated">\• %1$s</string>
     <string name="replyTo">Replying to @%1$s</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="display_name">Display Name</string>
+    <string name="bio">Bio</string>
+    <string name="updating">Updating...</string>
+    <string name="new_update">New update is available!</string>
+    <string name="title_updater">Updater</string>
+    <string name="version_change"><![CDATA[%1$s -> %2$s]]></string>
+    <string name="update_now">Update Now</string>
+    <string name="pronouns">Pronouns</string>
+    <string name="save">Save</string>
 </resources>

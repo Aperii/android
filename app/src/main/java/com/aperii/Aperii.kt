@@ -1,6 +1,7 @@
 package com.aperii
 
 import android.app.Application
+import androidx.core.view.WindowCompat
 import com.aperii.utilities.DimenUtils
 import com.aperii.utilities.Logger
 import org.koin.android.ext.koin.androidContext

@@ -3,6 +3,7 @@ package com.aperii.rest
 import com.aperii.api.post.Post
 import com.aperii.api.post.PostPartial
 import com.aperii.api.user.User
+import com.aperii.api.user.user.EditedProfile
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -13,6 +14,9 @@ interface RestAPI {
 
     @GET("users/@me/posts")
     fun getMePosts(): Observable<List<Post>>
+
+    @PATCH("users/@me")
+    fun editProfile(@Body body: RestAPIParams.EditProfileBody): Observable<EditedProfile>
 
     @GET("users/{userId}")
     fun getUser(@Path("userId") userId: String): Observable<User>

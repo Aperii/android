@@ -76,7 +76,7 @@ class WidgetPostCreate : AppFragment() {
     private fun configurePostButton() = binding.postBtn.setOnClickListener {
         val text = binding.postText.text.toString()
         binding.postBtn.isLoading = true
-        RestAPI.INSTANCE.createPost(RestAPIParams.PostBody(text), arguments?.getString(REPLY_TO) ?: "").observeAndCatch({
+        RestAPI.INSTANCE.createPost(text, arguments?.getString(REPLY_TO) ?: "").observeAndCatch({
             appActivity.onBackPressed()
         }) {
             it.context.showToast("An error occurred while making that post")

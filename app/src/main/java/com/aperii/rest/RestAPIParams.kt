@@ -11,4 +11,10 @@ class RestAPIParams {
         val body: String
     )
 
+    data class EditProfileBody(
+        val displayName: String?,
+        val bio: String?,
+        val pronouns: String?
+    )
+
 }

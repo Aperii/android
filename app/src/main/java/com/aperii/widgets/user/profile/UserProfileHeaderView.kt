@@ -11,20 +11,28 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import com.aperii.R
 import com.aperii.databinding.UserProfileHeaderViewBinding
+import com.aperii.stores.StoreShelves
 import com.aperii.utilities.text.Renderer
 import com.aperii.utilities.text.nodes.BioRenderContext
+import com.aperii.widgets.user.profile.settings.WidgetUserProfileSettings
 
 class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
     ConstraintLayout(context, attributeSet) {
     val binding = UserProfileHeaderViewBinding.bind(LayoutInflater.from(context).inflate(R.layout.user_profile_header_view, this, true))
-    init {
-
-    }
 
     private fun configureBanner(loaded: UserProfileHeaderViewModel.ViewState.Loaded) {
         val banner = findViewById<ImageView>(R.id.banner)
         loaded.user.banner.run {
             if (isNotEmpty()) banner.load(this)
+        }
+    }
+
+    private fun configureActionButtons(loaded: UserProfileHeaderViewModel.ViewState.Loaded) {
+        binding.btnEditProfile.run {
+            visibility = if(loaded.user.id == StoreShelves.users.me?.id && !loaded.edit) VISIBLE else GONE
+            setOnClickListener {
+                WidgetUserProfileSettings.open(it.context)
+            }
         }
     }
 
@@ -39,8 +47,7 @@ class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
     }
 
     private fun configureDisplayName(loaded: UserProfileHeaderViewModel.ViewState.Loaded) {
-        val displayName = findViewById<TextView>(R.id.display_name)
-        displayName.apply {
+        binding.displayName.apply {
             text = loaded.user.displayName
             if (loaded.user.flags.verified) setCompoundDrawablesWithIntrinsicBounds(
                 0,
@@ -52,22 +59,26 @@ class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
     }
 
     private fun configureUsername(loaded: UserProfileHeaderViewModel.ViewState.Loaded) {
-        val username = findViewById<TextView>(R.id.username)
-        username.text = context.getString(R.string.username, loaded.user.username)
+        binding.username.text = context.getString(R.string.username, loaded.user.username)
     }
 
     private fun configureBio(loaded: UserProfileHeaderViewModel.ViewState.Loaded) = binding.bio.apply {
         visibility = if(loaded.user.bio.isNotEmpty()) VISIBLE else GONE
         text = Renderer.render(loaded.user.bio, BioRenderContext(context))
-        movementMethod = LinkMovementMethod()
+        if(!loaded.edit) movementMethod = LinkMovementMethod()
     }
 
     fun updateViewState(viewState: UserProfileHeaderViewModel.ViewState.Loaded) {
-        configureBanner(viewState)
+        configureActionButtons(viewState)
         configureAvatar(viewState)
+        configureBanner(viewState)
+        configureBio(viewState)
         configureDisplayName(viewState)
         configureUsername(viewState)
-        configureBio(viewState)
+        if(viewState.edit) with(binding) {
+            info.visibility = GONE
+            border.visibility = GONE
+        }
     }
 
 }
