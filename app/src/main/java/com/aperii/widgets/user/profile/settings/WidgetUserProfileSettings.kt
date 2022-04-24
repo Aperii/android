@@ -99,7 +99,7 @@ class WidgetUserProfileSettings: AppFragment(R.layout.widget_user_profile_settin
             is WidgetUserProfileSettingsViewModel.ViewState.Uninitialized -> {
                 editText?.setText(viewModel.me?.pronouns)
                 editText?.addTextChangedListener {
-                    viewModel.changedBio = if(it?.toString() ?: "" == viewModel.me?.bio) null else it?.toString() ?: ""
+                    viewModel.changedPronouns = if(it?.toString() ?: "" == viewModel.me?.pronouns) null else it?.toString() ?: ""
                     isErrorEnabled = false
                 }
             }
