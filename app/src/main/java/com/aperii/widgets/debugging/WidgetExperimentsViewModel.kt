@@ -2,16 +2,16 @@ package com.aperii.widgets.debugging
 
 import androidx.lifecycle.SavedStateHandle
 import com.aperii.app.AppViewModel
-import com.aperii.utilities.SettingsUtils
+import com.aperii.utilities.settings.settings
 
-class WidgetExperimentsViewModel(state: SavedStateHandle) : AppViewModel<WidgetExperimentsViewModel.ViewState>() {
-    val prefs = state.get<SettingsUtils>("prefs")!!
+class WidgetExperimentsViewModel : AppViewModel<WidgetExperimentsViewModel.ViewState>() {
+    val prefs by settings("StoreExperiments")
 
-    val experiments = listOf(
+    private val experiments = listOf(
         Experiment(
-            "Show Groups Tab",
-            "groups_tab_03_13_22",
-            listOf("Bucket 0: No changes", "Bucket 1: Show 'Groups' tab"),
+            "Show Admin Tab",
+            "admin_tab_03_13_22",
+            listOf("Bucket 0: No changes", "Bucket 1: Show 'Admin' tab"),
             0
         )
     )

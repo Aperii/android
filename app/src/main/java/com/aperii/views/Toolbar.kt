@@ -19,12 +19,16 @@ import com.aperii.stores.StoreShelves
 import com.aperii.utilities.DimenUtils.dp
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.utilities.settings.settings
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.debugging.WidgetDebugging
+import com.aperii.widgets.debugging.WidgetExperiments
 import com.aperii.widgets.tabs.NavigationTab
 
 class Toolbar(context: Context, private val attrs: AttributeSet) :
     ConstraintLayout(context, attrs) {
+
+    private val prefs by settings()
 
     var title: CharSequence
         get() = findViewById<TextView>(R.id.toolbar_title).text
@@ -133,20 +137,23 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
 
         dropdown.findViewById<View>(R.id.item_experiments).apply {
             if (isDeveloper) visibility = View.VISIBLE
+            setOnClickListener {
+                it.context.openScreen<WidgetExperiments>()
+            }
         }
 
         dropdown.findViewById<View>(R.id.item_debug).apply {
             if (isDeveloper) visibility = View.VISIBLE
             setOnClickListener {
-                context.openScreen<WidgetDebugging>()
+                it.context.openScreen<WidgetDebugging>()
                 window.dismiss()
             }
         }
 
         dropdown.findViewById<View>(R.id.item_logout).setOnClickListener {
-            AppActivity.prefs.clear("APR_auth_tok")
+            prefs.clear("APR_auth_tok")
             StoreShelves.navigation.navigationTab = NavigationTab.HOME
-            context.openScreen<WidgetAuthLanding>(
+            it.context.openScreen<WidgetAuthLanding>(
                 allowBack = false
             )
             window.dismiss()

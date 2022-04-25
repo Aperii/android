@@ -33,11 +33,11 @@
                 style="@style/TabsBottomNavIcon" />
         </FrameLayout>
         <FrameLayout
-            android:id="@+id/tabs_host_item_groups"
+            android:id="@+id/tabs_host_item_admin"
             style="@style/TabsBottomNavItem"
             android:visibility="gone">
             <ImageView
-                android:id="@+id/tabs_host_item_groups_icon"
+                android:id="@+id/tabs_host_item_admin_icon"
                 android:src="@drawable/ic_logo_24dp"
                 style="@style/TabsBottomNavIcon" />
         </FrameLayout>

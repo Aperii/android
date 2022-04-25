@@ -11,19 +11,20 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.SavedStateViewModelFactory
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetExperimentsBinding
-import com.aperii.utilities.SettingsUtils
+import com.aperii.utilities.Settings
 import com.aperii.utilities.rx.RxUtils.observe
 
 class WidgetExperiments : AppFragment() {
 
     private lateinit var binding: WidgetExperimentsBinding
-    private val viewModel by viewModels<WidgetExperimentsViewModel> {
-        SavedStateViewModelFactory(null, this, Bundle().apply { putSerializable("prefs", SettingsUtils(appActivity.getSharedPreferences("StoreExperiments", Context.MODE_PRIVATE))) })
+    private val viewModel: WidgetExperimentsViewModel by viewModels {
+        ViewModelProvider.NewInstanceFactory()
     }
 
     inner class ExpAdapter(private val mData: List<WidgetExperimentsViewModel.Experiment>) :

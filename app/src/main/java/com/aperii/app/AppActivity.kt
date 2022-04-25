@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import coil.Coil
 import coil.ImageLoader
@@ -15,12 +14,12 @@ import com.aperii.R
 import com.aperii.models.user.MeUser
 import com.aperii.stores.StoreShelves
 import com.aperii.utilities.Logger
-import com.aperii.utilities.SettingsUtils
+import com.aperii.utilities.Settings
 import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
-import com.aperii.utilities.update.UpdateUtils
+import com.aperii.utilities.settings.settings
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.auth.WidgetSplash
 import com.aperii.widgets.debugging.WidgetDebugging
@@ -28,18 +27,14 @@ import com.aperii.widgets.debugging.WidgetFatalCrash
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.tabs.WidgetTabsHost
 import retrofit2.HttpException
-import kotlin.concurrent.thread
 
 open class AppActivity : AppCompatActivity() {
     var transition = ScreenManager.Animations.SCALE_CENTER
-    companion object {
-        lateinit var prefs: SettingsUtils
-    }
+    private val prefs by settings()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        prefs = SettingsUtils(getSharedPreferences("PREFS", MODE_PRIVATE))
         navigate(intent)
     }
 

@@ -19,10 +19,12 @@ import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.utilities.settings.settings
 import com.aperii.widgets.tabs.WidgetTabsHost
 
 class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login) {
 
+    val prefs by settings()
     lateinit var root: View
 
     override fun onCreateView(
@@ -58,7 +60,7 @@ class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login) {
 
             AuthAPI.getInstance().login(RestAPIParams.LoginBody(username, password))
                 .observeAndCatch({
-                    AppActivity.prefs["APR_auth_tok"] = token
+                    prefs["APR_auth_tok"] = token
                     error.visibility = View.GONE
                     RestAPI.getInstance(token).getMe().observe {
                         StoreShelves.users.me = MeUser.fromApi(this)

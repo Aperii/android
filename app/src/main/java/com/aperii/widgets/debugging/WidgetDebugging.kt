@@ -30,6 +30,7 @@ import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
+import com.aperii.utilities.settings.settings
 import com.aperii.utilities.update.UpdateUtils
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.tabs.WidgetTabsHost
@@ -41,6 +42,7 @@ class WidgetDebugging : AppFragment() {
 
     lateinit var binding: WidgetDebuggingBinding
     lateinit var adp: Adapter
+    val prefs by settings()
 
     inner class Adapter(var data: MutableList<Logger.LoggedItem>) :
         RecyclerView.Adapter<Adapter.ViewHolder>() {
@@ -260,10 +262,10 @@ class WidgetDebugging : AppFragment() {
         val password = args["p"] ?: args["-pass"] ?: args["-password"]
         val token = args["t"] ?: args["-token"]
         when (args.subcommand.lowercase()) {
-            "token" -> send(AppActivity.prefs["APR_auth_tok", ""])
+            "token" -> send(prefs["APR_auth_tok", ""])
             "me" -> send(GsonBuilder().setPrettyPrinting().create().toJson(StoreShelves.users.me))
             "logout" -> {
-                AppActivity.prefs.clear("APR_auth_tok")
+                prefs.clear("APR_auth_tok")
                 appActivity.openScreen<WidgetAuthLanding>(
                     allowBack = false,
                     animation = ScreenManager.Animations.SCALE_CENTER
@@ -273,7 +275,7 @@ class WidgetDebugging : AppFragment() {
                 if (!(username.isNullOrBlank() || password.isNullOrBlank())) AuthAPI.getInstance()
                     .login(RestAPIParams.LoginBody(username, password))
                     .observeAndCatch({
-                        AppActivity.prefs["APR_auth_tok"] = token
+                        prefs["APR_auth_tok"] = token
                         RestAPI.getInstance(this.token).getMe().observe {
                             StoreShelves.users.me = MeUser.fromApi(this)
                             appActivity.openScreen<WidgetTabsHost>(
@@ -287,7 +289,7 @@ class WidgetDebugging : AppFragment() {
                     if (token.isNullOrBlank()) return send("No login information provided")
                     RestAPI.getInstance(token).getMe().observeAndCatch({
                         StoreShelves.users.me = MeUser.fromApi(this)
-                        AppActivity.prefs["APR_auth_tok"] = token
+                        prefs["APR_auth_tok"] = token
                         appActivity.openScreen<WidgetTabsHost>(
                             allowBack = false,
                             animation = ScreenManager.Animations.SCALE_CENTER

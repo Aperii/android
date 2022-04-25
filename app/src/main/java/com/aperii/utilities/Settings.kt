@@ -1,9 +1,10 @@
 package com.aperii.utilities
 
 import android.content.SharedPreferences
+import org.koin.dsl.koinApplication
 import java.io.Serializable
 
-class SettingsUtils(val prefs: SharedPreferences) : Serializable {
+class Settings(val prefs: SharedPreferences) : Serializable {
 
     inline operator fun <reified T> get(key: String, defaultValue: T) =
         prefs.all[key] as T? ?: defaultValue
