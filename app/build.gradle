@@ -11,8 +11,8 @@ android {
         applicationId "com.aperii"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1240
-        versionName "1.40 - Alpha"
+        versionCode 1232
+        versionName "1.32 - Alpha"
 
         buildConfigField "String", "BASE_URL", '"https://api.aperii.com/v2/"'
 

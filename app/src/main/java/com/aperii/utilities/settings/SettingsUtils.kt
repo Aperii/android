@@ -1,8 +1,6 @@
 package com.aperii.utilities.settings
 
 import android.content.Context
-import android.content.SharedPreferences
-import com.aperii.BuildConfig
 import com.aperii.utilities.Settings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -18,4 +16,3 @@ object SettingsUtils : KoinComponent {
 }
 
 fun settings(name: String = "PREFS") = SettingsUtils.Sets(name)
-
