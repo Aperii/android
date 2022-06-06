@@ -6,19 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.aperii.R
-import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetHomeBinding
 import com.aperii.models.threads.Thread
-import com.aperii.utilities.Logger
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.posts.list.WidgetPostList
 import com.aperii.widgets.tabs.TabbedFragment
 import com.aperii.widgets.updater.WidgetUpdateDialog
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WidgetHome : TabbedFragment() {
 
-    private lateinit var homeViewModel: WidgetHomeViewModel
+    private val homeViewModel: WidgetHomeViewModel by viewModel()
     private lateinit var root: View
     lateinit var binding: WidgetHomeBinding
 
@@ -28,8 +27,6 @@ class WidgetHome : TabbedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeViewModel =
-            ViewModelProvider(this).get(WidgetHomeViewModel::class.java)
         root = inflater.inflate(R.layout.widget_home, container, false)
         homeViewModel.observeViewState().observe {
             configureUI(this)

@@ -5,13 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.SavedStateViewModelFactory
 import com.aperii.R
-import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetProfileBinding
 import com.aperii.models.threads.Thread
-import com.aperii.utilities.Logger
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
@@ -19,12 +15,11 @@ import com.aperii.utilities.screens.extras
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.posts.list.WidgetPostList
 import com.aperii.widgets.tabs.TabbedFragment
+import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
 class WidgetProfile : TabbedFragment() {
 
-    private val profileViewModel by viewModels<WidgetProfileViewModel> {
-        SavedStateViewModelFactory(null, this, arguments)
-    }
+    private val profileViewModel: WidgetProfileViewModel by sharedStateViewModel(state = { arguments ?: Bundle() })
     private lateinit var binding: WidgetProfileBinding
 
     companion object {
@@ -61,7 +56,7 @@ class WidgetProfile : TabbedFragment() {
                 WidgetPostCreate.open(context)
             }
             is WidgetProfileViewModel.ViewState.Loaded -> setOnClickListener {
-                WidgetPostCreate.open(context, if(viewState.user.id != profileViewModel.me.id) "@${viewState.user.username} " else "")
+                WidgetPostCreate.open(context, if(viewState.user.id != profileViewModel.me?.id) "@${viewState.user.username} " else "")
             }
         }
     }

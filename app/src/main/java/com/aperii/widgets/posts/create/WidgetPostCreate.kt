@@ -6,28 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.aperii.R
+import com.aperii.api.post.Post
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetPostCreateBinding
-import com.aperii.rest.RestAPIParams
-import com.aperii.stores.StoreShelves
 import com.aperii.utilities.Logger
-import com.aperii.utilities.Utils.showToast
-import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observe
-import com.aperii.utilities.rx.RxUtils.observeAndCatch
-import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.screens.extras
 import com.aperii.utilities.text.TextUtils.renderPost
 import com.aperii.widgets.posts.preview.WidgetPostPreview
+import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
 class WidgetPostCreate : AppFragment() {
 
-    lateinit var viewModel: WidgetPostCreateViewModel
+    val viewModel: WidgetPostCreateViewModel by sharedStateViewModel(state = { arguments ?: Bundle() })
     lateinit var binding: WidgetPostCreateBinding
 
     companion object {
@@ -49,7 +44,6 @@ class WidgetPostCreate : AppFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.widget_post_create, container, false)
-        viewModel = ViewModelProvider(this)[WidgetPostCreateViewModel::class.java]
         binding = WidgetPostCreateBinding.bind(view)
         viewModel.observeViewState().observe(this::configureUI)
         return view
@@ -60,7 +54,8 @@ class WidgetPostCreate : AppFragment() {
         configureToolbar()
         configureAvatar()
         configurePostButton()
-        configureReplyTo()
+        if(viewState is WidgetPostCreateViewModel.ViewState.ReplyLoaded)
+            configureReplyTo(viewState.replyTo)
     }
 
     private fun configureToolbar() = binding.toolbar.apply {
@@ -76,13 +71,9 @@ class WidgetPostCreate : AppFragment() {
     private fun configurePostButton() = binding.postBtn.setOnClickListener {
         val text = binding.postText.text.toString()
         binding.postBtn.isLoading = true
-        RestAPI.INSTANCE.createPost(text, arguments?.getString(REPLY_TO) ?: "").observeAndCatch({
-            appActivity.onBackPressed()
-        }) {
-            it.context.showToast("An error occurred while making that post")
-            binding.postBtn.isLoading = false
-            Logger("Error").error("An error has occurred", this)
-        }
+        viewModel.post(text, arguments?.getString(REPLY_TO) ?: "")
+        binding.postBtn.isLoading = false
+        appActivity.onBackPressed()
     }
 
     private fun configureAvatar() = viewModel.me.run {
@@ -92,16 +83,13 @@ class WidgetPostCreate : AppFragment() {
         }
     }
 
-    private fun configureReplyTo() {
-        arguments?.getString(REPLY_TO)?.run {
-            binding.replyHeader.visibility = if(this.isNotEmpty()) View.VISIBLE else View.GONE
-            binding.replyHeader.setOnClickListener {
-                WidgetPostPreview.open(parentFragmentManager, this)
-            }
-            val post = StoreShelves.posts.fetchPost(this)
-            binding.replyToText.run {
-                renderPost(context.getString(R.string.replyTo, post?.author?.username))
-            }
+    private fun configureReplyTo(replyTo: Post) {
+        binding.replyHeader.visibility = View.VISIBLE
+        binding.replyHeader.setOnClickListener {
+            WidgetPostPreview.open(parentFragmentManager, replyTo.id)
+        }
+        binding.replyToText.run {
+            renderPost(context.getString(R.string.replyTo, replyTo.author.username))
         }
     }
 }

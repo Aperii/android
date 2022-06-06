@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.findFragment
 import com.aperii.R
 import com.aperii.app.AppFragment
-import com.aperii.stores.StoreShelves
+import com.aperii.stores.StoreNavigation
 import com.aperii.utilities.Logger
 import com.aperii.utilities.color.ColorUtils.getThemedColor
-import kotlin.collections.set
+import org.koin.android.ext.android.inject
 
 class WidgetTabsHost : AppFragment() {
     private var navTabToFragment = HashMap<NavigationTab, FragmentContainerView>()
@@ -21,6 +20,8 @@ class WidgetTabsHost : AppFragment() {
 
     private lateinit var root: View
     private lateinit var tabs: TabsHostBottomNav
+
+    val navStore: StoreNavigation by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +56,7 @@ class WidgetTabsHost : AppFragment() {
         )
 
         updateNavIcons()
-        navigateToTab(StoreShelves.navigation.navigationTab)
+        navigateToTab(navStore.navigationTab)
     }
 
     private fun configureTabListeners() = tabs.apply {
@@ -84,17 +85,17 @@ class WidgetTabsHost : AppFragment() {
         for (navTab in navTabToFragment) {
             navTab.value.visibility = if (navTab.key == tab) View.VISIBLE else View.GONE
             if(navTab.key == tab) {
-                (childFragmentManager.findFragmentById(navTab.value.id) as TabbedFragment).onTabSelected(StoreShelves.navigation.navigationTab == tab)
+                (childFragmentManager.findFragmentById(navTab.value.id) as TabbedFragment).onTabSelected(navStore.navigationTab == tab)
             }
         }
-        if(StoreShelves.navigation.navigationTab != tab) Logger("WidgetTabHost").verbose("Switched to tab ${tab.javaClass.simpleName}.${tab.name}")
-        StoreShelves.navigation.navigationTab = tab
+        if(navStore.navigationTab != tab) Logger("WidgetTabHost").verbose("Switched to tab ${tab.javaClass.simpleName}.${tab.name}")
+        navStore.navigationTab = tab
     }
 
     private fun updateNavIcons() {
         for (navItem in navTabToIcon)
             navItem.value.drawable.setTint(
-                if (navItem.key == StoreShelves.navigation.navigationTab)
+                if (navItem.key == navStore.navigationTab)
                     requireContext().getThemedColor(R.attr.colorPrimary)
                 else
                     requireContext().getThemedColor(R.attr.iconOnBackground)

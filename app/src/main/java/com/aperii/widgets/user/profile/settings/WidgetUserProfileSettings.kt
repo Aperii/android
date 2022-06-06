@@ -9,13 +9,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetUserProfileSettingsBinding
-import com.aperii.utilities.Logger
-import com.aperii.utilities.Utils.showToast
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager.Animations.SLIDE_FROM_RIGHT
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.widgets.user.profile.UserProfileHeaderViewModel
-import org.koin.androidx.viewmodel.factory.DefaultViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WidgetUserProfileSettings: AppFragment(R.layout.widget_user_profile_settings) {
 
@@ -24,9 +22,7 @@ class WidgetUserProfileSettings: AppFragment(R.layout.widget_user_profile_settin
     }
 
     lateinit var binding: WidgetUserProfileSettingsBinding
-    private val viewModel: WidgetUserProfileSettingsViewModel by viewModels {
-        ViewModelProvider.NewInstanceFactory()
-    }
+    private val viewModel: WidgetUserProfileSettingsViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = WidgetUserProfileSettingsBinding.bind(view)

@@ -1,26 +1,30 @@
 package com.aperii.widgets.user.profile
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.aperii.api.post.Post
 import com.aperii.app.AppViewModel
-import com.aperii.models.user.CoreUser
 import com.aperii.models.user.User
-import com.aperii.stores.StoreShelves
+import com.aperii.stores.StoreUsers
 import com.aperii.utilities.rest.RestAPI
-import com.aperii.utilities.rx.RxUtils.observe
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class WidgetProfileViewModel(state: SavedStateHandle) :
+class WidgetProfileViewModel(state: SavedStateHandle, private val users: StoreUsers, private val api: RestAPI) :
     AppViewModel<WidgetProfileViewModel.ViewState>(ViewState.Loading()) {
-    val me = StoreShelves.users.me!!
+    val me = users.me
     private var source = ""
         set(value) = ViewState.Loaded().run {
-            RestAPI.INSTANCE.getUserPosts(value).observe {
-                this@run.posts = this
-                updateViewState(this@run)
-            }
-            RestAPI.INSTANCE.getUser(value).observe {
-                this@run.user = CoreUser.fromApi(this)
-                updateViewState(this@run)
+            viewModelScope.launch(Dispatchers.IO) {
+                api.getUserPosts(value).body()?.let {
+                    this@run.posts = it
+                    updateViewState(this@run)
+                }
+
+                users.fetchUser(value)?.let {
+                    this@run.user = it
+                    updateViewState(this@run)
+                }
             }
         }
 

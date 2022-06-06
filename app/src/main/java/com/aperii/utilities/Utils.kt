@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import com.aperii.utilities.rest.PingEvent
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -28,5 +29,7 @@ object Utils {
     }
 
     fun Context.openUrl(url: String) = startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+
+    fun Iterable<PingEvent>.average() = sumOf { it.duration } / count()
 
 }

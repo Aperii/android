@@ -19,7 +19,6 @@ import coil.transform.CircleCropTransformation
 import com.aperii.R
 import com.aperii.api.post.Post
 import com.aperii.api.user.User
-import com.aperii.stores.StoreShelves
 import com.aperii.utilities.DimenUtils.getResizedDrawable
 import com.aperii.utilities.color.ColorUtils.getThemedColor
 import com.aperii.utilities.text.TextUtils.renderPost
@@ -47,7 +46,6 @@ class PostListEntryText(root: ViewGroup, private val shouldJumbo: Boolean) : Pos
 
     override fun bind(item: PostListItem) {
         val post = (item as PostListItemPost).post
-        StoreShelves.posts.updatePost(post)
 
         configureSpine(item.spineType)
         configureText(post)

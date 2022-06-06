@@ -6,17 +6,21 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
 import coil.Coil
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import com.aperii.R
+import com.aperii.api.error.ErrorResponse
+import com.aperii.api.user.User
 import com.aperii.models.user.MeUser
-import com.aperii.stores.StoreShelves
+import com.aperii.stores.StoreAuth
+import com.aperii.stores.StoreUsers
 import com.aperii.utilities.Logger
-import com.aperii.utilities.Settings
+import com.aperii.utilities.rest.HttpUtils.fold
 import com.aperii.utilities.rest.RestAPI
-import com.aperii.utilities.rx.RxUtils.observeAndCatch
+import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.settings.settings
@@ -26,16 +30,31 @@ import com.aperii.widgets.debugging.WidgetDebugging
 import com.aperii.widgets.debugging.WidgetFatalCrash
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.tabs.WidgetTabsHost
-import retrofit2.HttpException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class AppActivity : AppCompatActivity() {
     var transition = ScreenManager.Animations.SCALE_CENTER
     private val prefs by settings()
+    private val auth: StoreAuth by inject()
+    private val users: StoreUsers by inject()
+
+    val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel.observeViewState().observe(this::configureUI)
         navigate(intent)
+    }
+
+    open fun configureUI(state: MainViewModel.MainState) {
+        when(state) {
+            is MainViewModel.MainState.LoggedOut -> openScreen<WidgetAuthLanding>()
+            is MainViewModel.MainState.LoggedIn -> openScreen<WidgetTabsHost>()
+        }
     }
 
     override fun finish() {
@@ -61,31 +80,6 @@ open class AppActivity : AppCompatActivity() {
         }
     }
 
-    open fun configureAuth() {
-        prefs["APR_auth_tok", ""].run {
-            if (isBlank())
-                openScreen<WidgetAuthLanding>()
-            else {
-                RestAPI.getInstance(this).getMe().observeAndCatch({
-                    StoreShelves.users.me = MeUser.fromApi(this)
-                    openScreen<WidgetTabsHost>(animation = ScreenManager.Animations.SCALE_CENTER)
-                    onAction(intent.action, true)
-                }, {
-                    if (this is HttpException && code() == 403) {
-                        prefs.clear("APR_auth_tok")
-                        openScreen<WidgetAuthLanding>()
-                    } else {
-                        supportFragmentManager.findFragmentById(R.id.widget_host_fragment)?.run {
-                            onSaveInstanceState(Bundle().apply {
-                                putBoolean("canRefresh", true)
-                            })
-                        }
-                    }
-                })
-            }
-        }
-    }
-
     class Main : AppActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -100,36 +94,20 @@ open class AppActivity : AppCompatActivity() {
                         }
                     }.crossfade(true).build()
                 )
-                configureAuth()
+                viewModel.checkAuth()
                 Logger.log("Application activity initialized")
             } catch (error: Throwable) {
                 Logger.default.error("Error initializing activity", error)
                 openScreen<WidgetFatalCrash>()
             }
         }
-
-//        override fun onNewIntent(intent: Intent?) {
-//            super.onNewIntent(intent)
-//            val screen = intent?.extras?.get(ScreenManager.EXTRA_SCREEN ) as Class<Fragment>?
-//            if (screen != null) {
-//                val anim = intent?.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: listOf(0,0,0,0)
-//                overridePendingTransition(anim[0], anim[2])
-//                openScreen(
-//                    screen.newInstance(),
-//                    intent?.extras?.getBoolean(ScreenManager.EXTRA_BACK) ?: false,
-//                    intent?.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: listOf(0,0,0,0),
-//                    intent?.extras?.getBundle(ScreenManager.EXTRA_DATA) ?: Bundle()
-//                )
-//            }
-//        }
-
     }
 
     class Action : AppActivity() {
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            configureAuth()
+            viewModel.checkAuth()
         }
 
         override fun onNewIntent(intent: Intent?) {
@@ -163,4 +141,35 @@ open class AppActivity : AppCompatActivity() {
     }
 
 
+}
+
+class MainViewModel(private val api: RestAPI, private val users: StoreUsers): AppViewModel<MainViewModel.MainState>() {
+
+    open class MainState {
+        class Uninitialized : MainState()
+        class LoggedOut: MainState()
+        class LoggedIn: MainState()
+    }
+
+    init {
+        updateViewState(MainState.Uninitialized())
+    }
+
+    fun checkAuth() {
+        if(api.currentToken.isBlank()) return updateViewState(MainState.LoggedOut())
+        viewModelScope.launch(Dispatchers.IO) {
+            api.getMe().fold<User, ErrorResponse>(
+                onError = {
+                    if(it.code == 403) {
+                        api.currentToken = ""
+                    }
+                    updateViewState(MainState.LoggedOut())
+                },
+                onSuccess = {
+                    users.me = MeUser.fromApi(it)
+                    updateViewState(MainState.LoggedIn())
+                }
+            )
+        }
+    }
 }

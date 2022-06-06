@@ -1,5 +1,6 @@
 package com.aperii.utilities.rx
 
+import android.os.Looper
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.plugins.RxAndroidPlugins
@@ -13,7 +14,7 @@ object RxUtils {
 
     @Throws(IllegalStateException::class)
     fun <T> Observable<T>.await(): Pair<T?, Throwable?> {
-
+        if(Looper.getMainLooper() == Looper.myLooper()) throw IllegalStateException("await() cannot be called in the main thread.")
         val latch = CountDownLatch(1)
         val resRef = AtomicReference<T?>()
         val throwableRef = AtomicReference<Throwable?>()

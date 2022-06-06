@@ -26,7 +26,7 @@ class WidgetSplash : AppFragment(R.layout.widget_splash) {
     private fun configureUI() {
         binding.materialButton.setOnClickListener {
             it.isEnabled = false
-            appActivity.configureAuth()
+            appActivity.viewModel.checkAuth()
         }
     }
 

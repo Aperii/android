@@ -5,23 +5,44 @@ import com.aperii.BuildConfig
 import com.aperii.api.user.UserFlags
 import com.aperii.models.user.MeUser
 import com.aperii.rest.RestAPIParams
+import com.aperii.stores.StoreAuth
 import com.aperii.utilities.Logger
+import com.aperii.utilities.Utils.average
+import com.aperii.utilities.settings.settings
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
+import java.io.*
+import java.net.*
+import java.time.Duration
 import java.util.*
+import java.util.concurrent.TimeUnit
 
-class RestAPI(private val token: String) {
+class RestAPI {
+    private val store by settings()
+    val logger = Logger("HTTP")
+
+    var currentToken: String
+        get() = store["APR_auth_tok", ""]
+        set(value) = store.set("APR_auth_tok", value)
+
+    val pings by lazy { mutableListOf<PingEvent>() }
+    val ping get() = pings.average()
+
+    init {
+        Timer().scheduleAtFixedRate(object: TimerTask() {
+            override fun run() {
+                pings.add(ping())
+            }
+        },0, 10000)
+    }
 
     private val restApi = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .client(provideOkHttp())
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
         .create(com.aperii.rest.RestAPI::class.java)
 
@@ -51,18 +72,11 @@ class RestAPI(private val token: String) {
             "",
             ""
         )
-
-        lateinit var INSTANCE: RestAPI
-        fun getInstance(token: String): RestAPI {
-            INSTANCE = RestAPI(token)
-            Logger("HTTP").debug(USER_AGENT)
-            return INSTANCE
-        }
     }
 
-    private class HttpLogger : HttpLoggingInterceptor.Logger {
+    private class HttpLogger(val logger: Logger) : HttpLoggingInterceptor.Logger {
         override fun log(message: String) {
-            Logger("HTTP").verbose(message)
+            logger.verbose(message)
         }
     }
 
@@ -74,7 +88,7 @@ class RestAPI(private val token: String) {
                 .addHeader("Content-Type", "application/json")
                 .addHeader(
                     "Authorization",
-                    token
+                    currentToken
                 )
                 .build()
 
@@ -87,33 +101,47 @@ class RestAPI(private val token: String) {
             )
         )
         .retryOnConnectionFailure(true)
-        .addInterceptor(HttpLoggingInterceptor(HttpLogger()).apply {
+        .addInterceptor(HttpLoggingInterceptor(HttpLogger(logger)).apply {
             level = HttpLoggingInterceptor.Level.BASIC
             redactHeader("authorization")
         })
+        .pingInterval(10, TimeUnit.SECONDS)
         .build()
 
-    fun getMe() = restApi.getMe()
+    fun ping(): PingEvent {
+        val start = System.currentTimeMillis()
+        return try {
+            Socket(InetAddress.getByName(URL(BuildConfig.BASE_URL + "hello").host).hostAddress, 443).close()
+            PingEvent(true, System.currentTimeMillis() - start)
+        } catch (e: Throwable) {
+            logger.error("Error pinging api.aperii.com", e)
+            PingEvent(false, System.currentTimeMillis() - start)
+        }
+    }
 
-    fun getMePosts() = restApi.getMePosts()
+    suspend fun getMe() = restApi.getMe()
 
-    fun editProfile(displayName: String?, bio: String?, pronouns: String?) = restApi.editProfile(
+    suspend fun getMePosts() = restApi.getMePosts()
+
+    suspend fun editProfile(displayName: String?, bio: String?, pronouns: String?) = restApi.editProfile(
         RestAPIParams.EditProfileBody(
             displayName, bio, pronouns
         )
     )
 
-    fun getUser(userId: String) = restApi.getUser(userId)
+    suspend fun getUser(userId: String) = restApi.getUser(userId)
 
-    fun getUserPosts(userId: String) = restApi.getUserPosts(userId)
+    suspend fun getUserPosts(userId: String) = restApi.getUserPosts(userId)
 
-    fun getPost(id: String) = restApi.getPost(id)
+    suspend fun getPost(id: String) = restApi.getPost(id)
 
-    fun getReplies(id: String) = restApi.getReplies(id)
+    suspend fun getReplies(id: String) = restApi.getReplies(id)
 
-    fun createPost(body: String, replyTo: String = "") =
+    suspend fun createPost(body: String, replyTo: String = "") =
         restApi.createPost(RestAPIParams.PostBody(body), replyTo)
 
-    fun getFeed() = restApi.getFeed()
+    suspend fun getFeed() = restApi.getFeed()
 
 }
+
+data class PingEvent(val successful: Boolean, val duration: Long, val time: Date = Date())

@@ -1,13 +1,16 @@
 package com.aperii.widgets.home
 
+import androidx.lifecycle.viewModelScope
 import com.aperii.api.post.Post
 import com.aperii.app.AppViewModel
 import com.aperii.utilities.Utils.runInThread
 import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.update.UpdateUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class WidgetHomeViewModel : AppViewModel<WidgetHomeViewModel.ViewState>() {
+class WidgetHomeViewModel(private val api: RestAPI) : AppViewModel<WidgetHomeViewModel.ViewState>() {
     var update: UpdateUtils.Release? = null
     open class ViewState {
         class Loading : ViewState()
@@ -17,8 +20,10 @@ class WidgetHomeViewModel : AppViewModel<WidgetHomeViewModel.ViewState>() {
 
     init {
         updateViewState(ViewState.Loading())
-        RestAPI.INSTANCE.getFeed().observe {
-            updateViewState(ViewState.Loaded(this))
+        viewModelScope.launch(Dispatchers.IO) {
+            api.getFeed().body()?.let {
+                updateViewState(ViewState.Loaded(it))
+            }
         }
         runInThread {
             val (hasUpdate, release) = UpdateUtils.checkUpdate()

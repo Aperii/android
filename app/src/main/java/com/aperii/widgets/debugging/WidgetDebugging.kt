@@ -14,35 +14,37 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aperii.BuildConfig
 import com.aperii.R
-import com.aperii.app.AppActivity
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetDebuggingBinding
-import com.aperii.models.user.MeUser
-import com.aperii.rest.RestAPIParams
-import com.aperii.stores.StoreShelves
+import com.aperii.stores.StoreAuth
+import com.aperii.stores.StoreUsers
 import com.aperii.utilities.Logger
+import com.aperii.utilities.Utils.average
 import com.aperii.utilities.Utils.setClipboard
 import com.aperii.utilities.Utils.showToast
 import com.aperii.utilities.color.ColorUtils.getThemedColor
-import com.aperii.utilities.rest.AuthAPI
 import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observe
-import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.settings.settings
 import com.aperii.utilities.update.UpdateUtils
 import com.aperii.widgets.auth.WidgetAuthLanding
-import com.aperii.widgets.tabs.WidgetTabsHost
 import com.aperii.widgets.updater.WidgetUpdater
-import com.aperii.widgets.updater.WidgetUpdater.Companion.EXTRA_RELEASE
 import com.google.gson.GsonBuilder
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import java.util.*
+import kotlin.collections.HashMap
 
-class WidgetDebugging : AppFragment() {
+class WidgetDebugging : AppFragment(), KoinComponent {
 
     lateinit var binding: WidgetDebuggingBinding
     lateinit var adp: Adapter
     val prefs by settings()
+    private val users: StoreUsers by inject()
+    private val api: RestAPI by inject()
+    private val auth: StoreAuth by inject()
 
     inner class Adapter(var data: MutableList<Logger.LoggedItem>) :
         RecyclerView.Adapter<Adapter.ViewHolder>() {
@@ -176,6 +178,7 @@ class WidgetDebugging : AppFragment() {
                 adp.notifyDataSetChanged()
                 Logger.logs.clear()
             }
+            "ping" -> ping()
             else -> help()
         }
     }
@@ -235,6 +238,34 @@ class WidgetDebugging : AppFragment() {
     """.trimIndent()
     )
 
+    private fun ping() = StringBuilder().apply {
+        val totalPings = api.pings.size
+        val failedPings = api.pings.filter { !it.successful }.size
+        val successfulPings = totalPings - failedPings
+        val lastPing = api.pings.last().duration
+
+        val oneMinPings = api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (60 * 1000))) }
+        val oneMinAvg = oneMinPings.average()
+
+        val fiveMinPings = api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (5 * 60 * 1000))) }
+        val fiveMinAvg = fiveMinPings.average()
+
+        val tenMinPings = api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (10 * 60 * 1000))) }
+        val tenMinAvg = tenMinPings.average()
+
+        append("""
+            Average in last:
+            10s: ${lastPing}ms
+            1m: ${oneMinAvg}ms
+            5m: ${fiveMinAvg}ms
+            10m: ${tenMinAvg}ms
+            All time: ${api.ping}ms
+            
+            Pings: $totalPings ($failedPings failed - ${(successfulPings.toFloat() / totalPings.toFloat()) * 100f}% successful)
+        """.trimIndent())
+        send(this.toString())
+    }
+
     private fun sm(args: CommandArgs) {
         val allowBack = args.has("b") || args.has("-allow-back")
         val className = if (args["c"].isNullOrBlank()) args["-full-class"] else args["c"]
@@ -262,8 +293,8 @@ class WidgetDebugging : AppFragment() {
         val password = args["p"] ?: args["-pass"] ?: args["-password"]
         val token = args["t"] ?: args["-token"]
         when (args.subcommand.lowercase()) {
-            "token" -> send(prefs["APR_auth_tok", ""])
-            "me" -> send(GsonBuilder().setPrettyPrinting().create().toJson(StoreShelves.users.me))
+            "token" -> send(api.currentToken)
+            "me" -> send(GsonBuilder().setPrettyPrinting().create().toJson(users.me))
             "logout" -> {
                 prefs.clear("APR_auth_tok")
                 appActivity.openScreen<WidgetAuthLanding>(
@@ -272,30 +303,19 @@ class WidgetDebugging : AppFragment() {
                 )
             }
             "login" -> {
-                if (!(username.isNullOrBlank() || password.isNullOrBlank())) AuthAPI.getInstance()
-                    .login(RestAPIParams.LoginBody(username, password))
-                    .observeAndCatch({
-                        prefs["APR_auth_tok"] = token
-                        RestAPI.getInstance(this.token).getMe().observe {
-                            StoreShelves.users.me = MeUser.fromApi(this)
-                            appActivity.openScreen<WidgetTabsHost>(
-                                allowBack = false,
-                                animation = ScreenManager.Animations.SCALE_CENTER
-                            )
-                        }
-                    }, {
-                        send("Error logging in")
-                    }) else {
-                    if (token.isNullOrBlank()) return send("No login information provided")
-                    RestAPI.getInstance(token).getMe().observeAndCatch({
-                        StoreShelves.users.me = MeUser.fromApi(this)
-                        prefs["APR_auth_tok"] = token
-                        appActivity.openScreen<WidgetTabsHost>(
-                            allowBack = false,
-                            animation = ScreenManager.Animations.SCALE_CENTER
-                        )
-                    }) { send("Invalid token") }
-                }
+//                if (!(username.isNullOrBlank() || password.isNullOrBlank())) auth
+//                    .login(username, password)
+//                    . else {
+//                    if (token.isNullOrBlank()) return send("No login information provided")
+//                    RestAPI.getInstance(token).getMe().observeAndCatch({
+//                        StoreShelves.users.me = MeUser.fromApi(this)
+//                        prefs["APR_auth_tok"] = token
+//                        appActivity.openScreen<WidgetTabsHost>(
+//                            allowBack = false,
+//                            animation = ScreenManager.Animations.SCALE_CENTER
+//                        )
+//                    }) { send("Invalid token") }
+//                }
             }
             else -> return send("Subcommand not found")
         }

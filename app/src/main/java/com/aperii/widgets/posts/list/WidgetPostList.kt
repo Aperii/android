@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aperii.R
 import com.aperii.api.post.Post
@@ -14,13 +13,16 @@ import com.aperii.models.threads.Thread
 import com.aperii.models.user.User
 import com.aperii.widgets.posts.list.adapter.WidgetPostListAdapter
 import com.aperii.widgets.posts.list.adapter.items.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WidgetPostList : AppFragment() {
+
     var adapter: WidgetPostListAdapter? = null
     private var mThread: Thread? = null
     private var mShowSpine = false
     lateinit var binding: WidgetPostListBinding
-    private lateinit var viewModel: WidgetPostListViewModel
+
+    private val viewModel: WidgetPostListViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +32,6 @@ class WidgetPostList : AppFragment() {
         val root = inflater.inflate(R.layout.widget_post_list, container, false)
         binding = WidgetPostListBinding.bind(root)
         if (adapter == null) createAdapter() else configureExistingAdapter()
-        viewModel = ViewModelProvider(this)[WidgetPostListViewModel::class.java]
         return root
     }
 

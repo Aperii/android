@@ -8,24 +8,26 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.viewModelScope
 import com.aperii.R
-import com.aperii.app.AppActivity
 import com.aperii.app.AppFragment
-import com.aperii.models.user.MeUser
+import com.aperii.app.AppViewModel
 import com.aperii.rest.RestAPIParams
-import com.aperii.stores.StoreShelves
+import com.aperii.stores.StoreAuth
 import com.aperii.utilities.rest.AuthAPI
-import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager.openScreen
-import com.aperii.utilities.settings.settings
 import com.aperii.widgets.tabs.WidgetTabsHost
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
 
-class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login) {
-
-    val prefs by settings()
+class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login), KoinComponent {
     lateinit var root: View
+
+    val viewModel: WidgetAuthLoginViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,13 +35,14 @@ class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login) {
         savedInstanceState: Bundle?
     ): View {
         root = super.onCreateView(inflater, container, savedInstanceState)!!
-        configureUI()
+        viewModel.observeViewState().observe(this::configureUI)
         return root
     }
 
-    private fun configureUI() {
+    private fun configureUI(state: WidgetAuthLoginViewModel.ViewState) {
         configureBackButton()
         configureLoginButton()
+        onLoginResult(state)
     }
 
     private fun configureBackButton() {
@@ -58,19 +61,43 @@ class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login) {
                 return@setOnClickListener
             }
 
-            AuthAPI.getInstance().login(RestAPIParams.LoginBody(username, password))
-                .observeAndCatch({
-                    prefs["APR_auth_tok"] = token
-                    error.visibility = View.GONE
-                    RestAPI.getInstance(token).getMe().observe {
-                        StoreShelves.users.me = MeUser.fromApi(this)
-                        appActivity.openScreen<WidgetTabsHost>(allowBack = false)
-                    }
-                }, {
-                    error.visibility = View.VISIBLE
-                    Log.e("Aperii", "Error logging in", this)
-                })
+            viewModel.login(username, password)
         }
-
     }
+
+    private fun onLoginResult(state: WidgetAuthLoginViewModel.ViewState) {
+        val error = root.findViewById<View>(R.id.error_container)
+        when(state) {
+            is WidgetAuthLoginViewModel.ViewState.Successful -> {
+                requireContext().openScreen<WidgetTabsHost>(false)
+            }
+            is WidgetAuthLoginViewModel.ViewState.Unsuccessful -> {
+                error.visibility = View.VISIBLE
+            }
+        }
+    }
+
+}
+
+class WidgetAuthLoginViewModel(private val auth: StoreAuth): AppViewModel<WidgetAuthLoginViewModel.ViewState>(ViewState.Uninitialized()) {
+
+    open class ViewState {
+        class Uninitialized : ViewState()
+        class Successful: ViewState()
+        class Unsuccessful: ViewState()
+    }
+
+    fun login(username: String, password: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            auth.login(username, password).let {
+                updateViewState(
+                    if(it != null)
+                        ViewState.Successful()
+                    else
+                        ViewState.Unsuccessful()
+                )
+            }
+        }
+    }
+
 }

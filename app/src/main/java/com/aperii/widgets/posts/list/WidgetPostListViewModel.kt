@@ -3,12 +3,12 @@ package com.aperii.widgets.posts.list
 import com.aperii.api.post.Post
 import com.aperii.app.AppViewModel
 import com.aperii.models.user.User
-import com.aperii.stores.StoreShelves
+import com.aperii.stores.StorePosts
+import com.aperii.stores.StoreUsers
 import com.aperii.utilities.rest.RestAPI
-import com.aperii.utilities.rx.RxUtils.observe
 
-class WidgetPostListViewModel : AppViewModel<WidgetPostListViewModel.ViewState>() {
-    val me = StoreShelves.users.me!!
+class WidgetPostListViewModel(private val users: StoreUsers, private val api: RestAPI, private val posts: StorePosts) : AppViewModel<WidgetPostListViewModel.ViewState>() {
+    val me = users.me!!
     var isProfile = false
 
     open class ViewState {
@@ -19,30 +19,27 @@ class WidgetPostListViewModel : AppViewModel<WidgetPostListViewModel.ViewState>(
         }
     }
 
-    fun fetchMePosts() {
-        RestAPI.INSTANCE.getMePosts().observe {
+    suspend fun fetchMePosts() {
+        api.getMePosts().body()?.let {
             ViewState.Loaded().apply {
-                posts = this@observe
+                posts = it
                 user = me
-                posts?.forEach {
-                    StoreShelves.posts.updatePost(it)
-                }
                 updateViewState(this)
             }
         }
     }
 
-    fun fetchFeed() {
-        RestAPI.INSTANCE.getFeed().observe {
+    suspend fun fetchFeed() {
+        api.getFeed().body()?.let {
             ViewState.Loaded().apply {
-                posts = this@observe
+                posts = it
                 updateViewState(this)
             }
         }
     }
 
-    fun fetchPost(id: String) {
-        StoreShelves.posts.fetchPost(id)?.run {
+    suspend fun fetchPost(id: String) {
+        posts.fetchPost(id)?.run {
             ViewState.Loaded().apply {
                 posts = listOf(this@run)
                 updateViewState(this)

@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetUpdaterBinding
-import com.aperii.utilities.Logger
 import com.aperii.utilities.Utils.runInThread
-import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.screens.extras
 import com.aperii.utilities.update.UpdateUtils

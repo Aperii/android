@@ -5,20 +5,23 @@ import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.aperii.R
 import com.aperii.databinding.UserProfileHeaderViewBinding
-import com.aperii.stores.StoreShelves
+import com.aperii.stores.StoreUsers
 import com.aperii.utilities.text.Renderer
 import com.aperii.utilities.text.nodes.BioRenderContext
 import com.aperii.widgets.user.profile.settings.WidgetUserProfileSettings
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
-    ConstraintLayout(context, attributeSet) {
+    ConstraintLayout(context, attributeSet), KoinComponent {
     val binding = UserProfileHeaderViewBinding.bind(LayoutInflater.from(context).inflate(R.layout.user_profile_header_view, this, true))
+
+    val users: StoreUsers by inject()
 
     private fun configureBanner(loaded: UserProfileHeaderViewModel.ViewState.Loaded) {
         val banner = findViewById<ImageView>(R.id.banner)
@@ -29,7 +32,7 @@ class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
 
     private fun configureActionButtons(loaded: UserProfileHeaderViewModel.ViewState.Loaded) {
         binding.btnEditProfile.run {
-            visibility = if(loaded.user.id == StoreShelves.users.me?.id && !loaded.edit) VISIBLE else GONE
+            visibility = if(loaded.user.id == users.me?.id && !loaded.edit) VISIBLE else GONE
             setOnClickListener {
                 WidgetUserProfileSettings.open(it.context)
             }

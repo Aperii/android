@@ -3,11 +3,9 @@ package com.aperii.utilities.screens
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.fragment.app.*
 import com.aperii.R
 import com.aperii.app.AppActivity
-import com.aperii.app.AppComponent
 import com.aperii.utilities.Logger
 
 

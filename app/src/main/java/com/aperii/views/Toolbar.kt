@@ -14,21 +14,24 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.aperii.R
-import com.aperii.app.AppActivity
-import com.aperii.stores.StoreShelves
+import com.aperii.stores.StoreNavigation
+import com.aperii.stores.StoreUsers
 import com.aperii.utilities.DimenUtils.dp
-import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.settings.settings
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.debugging.WidgetDebugging
 import com.aperii.widgets.debugging.WidgetExperiments
 import com.aperii.widgets.tabs.NavigationTab
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class Toolbar(context: Context, private val attrs: AttributeSet) :
-    ConstraintLayout(context, attrs) {
+    ConstraintLayout(context, attrs), KoinComponent {
 
     private val prefs by settings()
+    private val users: StoreUsers by inject()
+    private val nav: StoreNavigation by inject()
 
     var title: CharSequence
         get() = findViewById<TextView>(R.id.toolbar_title).text
@@ -94,7 +97,7 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
             showPopup()
         }
 
-        StoreShelves.users.me?.run {
+        users.me?.run {
             this@Toolbar.avatar =
                 if (avatar.isNotEmpty()) "https://api.aperii.com/cdn/avatars/${avatar}" else "https://aperii.com/av.png"
             isDeveloper = flags.staff
@@ -152,7 +155,7 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
 
         dropdown.findViewById<View>(R.id.item_logout).setOnClickListener {
             prefs.clear("APR_auth_tok")
-            StoreShelves.navigation.navigationTab = NavigationTab.HOME
+            nav.navigationTab = NavigationTab.HOME
             it.context.openScreen<WidgetAuthLanding>(
                 allowBack = false
             )

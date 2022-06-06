@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.aperii.R
-import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetDiscoverBinding
-import com.aperii.utilities.Logger
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.tabs.TabbedFragment

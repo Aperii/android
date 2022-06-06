@@ -2,18 +2,20 @@ package com.aperii.stores
 
 import com.aperii.api.post.Post
 import com.aperii.utilities.rest.RestAPI
-import com.aperii.utilities.rx.RxUtils.await
+import com.aperii.utilities.settings.settings
 
-class StorePosts {
-    private val snapshot = HashMap<String, Post>()
+class StorePosts(private val api: RestAPI) {
+    private val store by settings("StorePosts")
 
-    fun getPost(id: String) = snapshot[id]
-    fun updatePost(post: Post) {
-        snapshot[post.id] = post
-    }
+    operator fun get(id: String): Post? = store.getObject(id)
+    operator fun set(id: String, post: Post) = store.set(id, post)
 
-    fun fetchPost(id: String): Post? {
-        if (snapshot.containsKey(id)) return getPost(id)
-        return RestAPI.INSTANCE.getPost(id).await().first
+    suspend fun create(text: String, replyTo: String = "") = api.createPost(text, replyTo)
+
+    suspend fun fetchPost(id: String): Post? = this[id] ?: api.getPost(id).body()?.also { this[it.id] = it }
+
+    suspend fun fetchPostReplies(id: String): List<Post> = (api.getReplies(id).body() ?: emptyList()).also {
+        for(post in it)
+            this[post.id] = post
     }
 }

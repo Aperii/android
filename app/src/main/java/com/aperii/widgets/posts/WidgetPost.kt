@@ -5,26 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.SavedStateViewModelFactory
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetPostBinding
 import com.aperii.models.threads.Thread.Companion.toThread
-import com.aperii.stores.StoreShelves
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.screens.extras
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.posts.list.WidgetPostList
+import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
 class WidgetPost : AppFragment(R.layout.widget_post) {
 
     lateinit var binding: WidgetPostBinding
-    val viewModel: WidgetPostViewModel by viewModels {
-        SavedStateViewModelFactory(null, this, arguments)
-    }
+    val viewModel: WidgetPostViewModel by sharedStateViewModel(state = { arguments ?: Bundle() })
 
     companion object {
         val EXTRA_POST by extras()
@@ -47,15 +43,23 @@ class WidgetPost : AppFragment(R.layout.widget_post) {
     private fun configureUI(viewState: WidgetPostViewModel.ViewState) {
         configureToolbar()
         configureReplyFab()
-        arguments?.getString(EXTRA_POST)?.run {
-            (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {
-                StoreShelves.posts.fetchPost(this@run)?.run {
-                    setSource(toThread(), null, true)
-                }
-                if(viewState is WidgetPostViewModel.ViewState.Loaded) {
-                    addPosts(viewState.replies)
-                }
+        if(viewState is WidgetPostViewModel.ViewState.Loaded) {
+            configureMainPost()
+            configureReplies()
+        }
+    }
+
+    private fun configureMainPost() {
+        (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {
+            viewModel.post?.let {
+                setSource(it.toThread(), null, true)
             }
+        }
+    }
+
+    private fun configureReplies() {
+        (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {
+            addPosts(viewModel.replies)
         }
     }
 

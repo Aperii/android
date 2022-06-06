@@ -4,36 +4,36 @@ import com.aperii.api.post.Post
 import com.aperii.api.post.PostPartial
 import com.aperii.api.user.User
 import com.aperii.api.user.user.EditedProfile
-import io.reactivex.Observable
+import retrofit2.Response
 import retrofit2.http.*
 
 interface RestAPI {
 
     @GET("users/@me")
-    fun getMe(): Observable<User>
+    suspend fun getMe(): Response<User>
 
     @GET("users/@me/posts")
-    fun getMePosts(): Observable<List<Post>>
+    suspend fun getMePosts(): Response<List<Post>>
 
     @PATCH("users/@me")
-    fun editProfile(@Body body: RestAPIParams.EditProfileBody): Observable<EditedProfile>
+    suspend fun editProfile(@Body body: RestAPIParams.EditProfileBody): Response<EditedProfile>
 
     @GET("users/{userId}")
-    fun getUser(@Path("userId") userId: String): Observable<User>
+    suspend fun getUser(@Path("userId") userId: String): Response<User>
 
     @GET("users/{userId}/posts")
-    fun getUserPosts(@Path("userId") userId: String): Observable<List<Post>>
+    suspend fun getUserPosts(@Path("userId") userId: String): Response<List<Post>>
 
     @GET("posts/{id}")
-    fun getPost(@Path("id") id: String): Observable<Post>
+    suspend fun getPost(@Path("id") id: String): Response<Post>
 
     @GET("posts/{id}/replies")
-    fun getReplies(@Path("id") id: String): Observable<List<Post>>
+    suspend fun getReplies(@Path("id") id: String): Response<List<Post>>
 
     @POST("users/@me/posts")
-    fun createPost(@Body body: RestAPIParams.PostBody, @Query("replyto") replyTo: String = ""): Observable<PostPartial>
+    suspend fun createPost(@Body body: RestAPIParams.PostBody, @Query("replyto") replyTo: String = ""): Response<PostPartial>
 
     @GET("posts/all")
-    fun getFeed(): Observable<List<Post>>
+    suspend fun getFeed(): Response<List<Post>>
 
 }

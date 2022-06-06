@@ -1,7 +1,6 @@
 package com.aperii.widgets.posts.preview
 
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,17 +8,20 @@ import androidx.fragment.app.FragmentManager
 import com.aperii.R
 import com.aperii.api.user.User
 import com.aperii.databinding.WidgetPostPreviewBinding
-import com.aperii.stores.StoreShelves
+import com.aperii.stores.StorePosts
 import com.aperii.utilities.color.ColorUtils.getThemedColor
 import com.aperii.utilities.images.IconUtils.setAvatar
 import com.aperii.utilities.screens.extras
 import com.aperii.utilities.text.TextUtils.renderPost
 import com.aperii.utilities.time.TimeUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.koin.android.ext.android.inject
 
 class WidgetPostPreview : BottomSheetDialogFragment() {
 
     lateinit var binding: WidgetPostPreviewBinding
+
+    val posts: StorePosts by inject()
 
     companion object {
         val EXTRA_POST by extras()
@@ -49,7 +51,7 @@ class WidgetPostPreview : BottomSheetDialogFragment() {
 
     private fun configureUI() {
         if(arguments == null || arguments?.getString(EXTRA_POST) == null) dismiss()
-        val post = StoreShelves.posts.getPost(arguments?.getString(EXTRA_POST)!!)!!
+        val post = posts[arguments?.getString(EXTRA_POST)!!]!!
         binding.post.border.visibility = View.GONE
         configureAvatar(post.author)
         configureBody(post.body)
