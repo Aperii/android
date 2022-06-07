@@ -16,6 +16,7 @@ import com.aperii.api.error.ErrorResponse
 import com.aperii.api.user.User
 import com.aperii.models.user.MeUser
 import com.aperii.stores.StoreAuth
+import com.aperii.stores.StoreNavigation
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.Logger
 import com.aperii.utilities.rest.HttpUtils.fold
@@ -29,6 +30,7 @@ import com.aperii.widgets.auth.WidgetSplash
 import com.aperii.widgets.debugging.WidgetDebugging
 import com.aperii.widgets.debugging.WidgetFatalCrash
 import com.aperii.widgets.posts.create.WidgetPostCreate
+import com.aperii.widgets.tabs.NavigationTab
 import com.aperii.widgets.tabs.WidgetTabsHost
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,9 +39,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class AppActivity : AppCompatActivity() {
     var transition = ScreenManager.Animations.SCALE_CENTER
-    private val prefs by settings()
-    private val auth: StoreAuth by inject()
-    private val users: StoreUsers by inject()
+    private val nav: StoreNavigation by inject()
 
     val viewModel: MainViewModel by viewModel()
 
@@ -53,7 +53,7 @@ open class AppActivity : AppCompatActivity() {
     open fun configureUI(state: MainViewModel.MainState) {
         when(state) {
             is MainViewModel.MainState.LoggedOut -> openScreen<WidgetAuthLanding>()
-            is MainViewModel.MainState.LoggedIn -> openScreen<WidgetTabsHost>()
+            is MainViewModel.MainState.LoggedIn -> onAction(intent.action, true)
         }
     }
 
@@ -75,8 +75,12 @@ open class AppActivity : AppCompatActivity() {
     }
 
     open fun onAction(action: String?, isAuthed: Boolean) {
-        when (action) {
-            "com.aperii.intents.actions.DEBUG" -> (this as Context).openScreen<WidgetDebugging>()
+        if(isAuthed) {
+            when (action) {
+                "com.aperii.intents.actions.DEBUG" -> (this as Context).openScreen<WidgetDebugging>()
+                "com.aperii.intents.actions.PROFILE" -> nav.navigationTab = NavigationTab.PROFILE
+            }
+            openScreen<WidgetTabsHost>()
         }
     }
 
@@ -131,6 +135,13 @@ open class AppActivity : AppCompatActivity() {
                         animation = ScreenManager.Animations.SCALE_CENTER
                     )
                 }
+            }
+        }
+
+        override fun configureUI(state: MainViewModel.MainState) {
+            when(state) {
+                is MainViewModel.MainState.LoggedOut -> openScreen<WidgetAuthLanding>()
+                is MainViewModel.MainState.LoggedIn -> onAction(intent.action, true)
             }
         }
 

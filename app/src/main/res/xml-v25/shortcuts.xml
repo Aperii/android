@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="post"
+        android:enabled="true"
+        android:icon="@drawable/ic_add_24dp"
+        android:shortcutShortLabel="@string/post"
+        android:shortcutLongLabel="@string/post"
+        android:shortcutDisabledMessage="@string/app_name" >
+        <intent
+            android:action="android.intent.action.SEND"
+            android:targetPackage="com.aperii"
+            android:targetClass="com.aperii.app.AppActivity$Action" />
+        <categories android:name="android.shortcut.conversation" />
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_user_24dp"
+        android:shortcutShortLabel="@string/title_profile"
+        android:shortcutLongLabel="@string/title_profile"
+        android:shortcutDisabledMessage="@string/app_name" >
+        <intent
+            android:action="com.aperii.intents.actions.PROFILE"
+            android:targetPackage="com.aperii"
+            android:targetClass="com.aperii.app.AppActivity$Main" />
+        <categories android:name="android.shortcut.conversation" />
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE" />
+    </shortcut>
+</shortcuts>
