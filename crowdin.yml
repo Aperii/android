@@ -5,6 +5,6 @@ commit_message: 'chore(l10n): Sync translations'
 
 files:
   - source: app/src/main/res/values/strings.xml
-    translation: /app/src/main/res/values-%android_code%/strings.xml
+    translation: /app/src/main/res/values-%two_letters_code%/strings.xml
     translate_attributes: 0
     content_segmentation: 0
