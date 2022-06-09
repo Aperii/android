@@ -13,6 +13,8 @@ import com.aperii.databinding.UserProfileHeaderViewBinding
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.text.Renderer
 import com.aperii.utilities.text.nodes.BioRenderContext
+import com.aperii.utilities.time.TimeUtils
+import com.aperii.views.UserInfoChip
 import com.aperii.widgets.user.profile.settings.WidgetUserProfileSettings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -71,6 +73,22 @@ class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
         if(!loaded.edit) movementMethod = LinkMovementMethod()
     }
 
+    private fun configureUserDetails(loaded: UserProfileHeaderViewModel.ViewState.Loaded) {
+        val user = loaded.user
+        with(binding.userInfo) {
+            removeAllViews()
+            if(user.flags.staff || user.flags.admin) addView(UserInfoChip(context).apply { setIcon(R.drawable.ic_logo_24dp) })
+            if(user.flags.earlySupporter) addView(UserInfoChip(context).apply {
+                setIcon(R.drawable.ic_star_24dp)
+                tint = 0xFFE2EC56.toInt()
+            })
+            addView(UserInfoChip(context).apply {
+                label = "Joined ${TimeUtils.getShortDateString(user.joinedTimestamp)}"
+                setIcon(R.drawable.ic_calender_24dp)
+            })
+        }
+    }
+
     fun updateViewState(viewState: UserProfileHeaderViewModel.ViewState.Loaded) {
         configureActionButtons(viewState)
         configureAvatar(viewState)
@@ -78,9 +96,11 @@ class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
         configureBio(viewState)
         configureDisplayName(viewState)
         configureUsername(viewState)
+        configureUserDetails(viewState)
         if(viewState.edit) with(binding) {
-            info.visibility = GONE
+            details.visibility = GONE
             border.visibility = GONE
+            userInfo.visibility = GONE
         }
     }
 

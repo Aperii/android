@@ -7,6 +7,8 @@ import java.util.*
 object TimeUtils {
     private val prettyTime = PrettyTime()
 
+    fun getShortDateString(dateTimeSeconds: Long): String = SimpleDateFormat("MMMM yyyy", Locale.US).format(Date(dateTimeSeconds))
+
     fun getShortTimeString(dateTimeSeconds: Long): String {
         if(Calendar.getInstance().timeInMillis - dateTimeSeconds > 1000 * 60 * 60 * 24 * 2) {
             return SimpleDateFormat("MMM dd", Locale.US).format(Date(dateTimeSeconds))
