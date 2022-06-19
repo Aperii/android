@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.databinding.WidgetProfileBinding
 import com.aperii.models.threads.Thread
@@ -20,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 class WidgetProfile : TabbedFragment() {
 
     private val profileViewModel: WidgetProfileViewModel by sharedStateViewModel(state = { arguments ?: Bundle() })
-    private lateinit var binding: WidgetProfileBinding
+    private val binding: WidgetProfileBinding by viewBinding(CreateMethod.INFLATE)
 
     companion object {
         val EXTRA_USER by extras()
@@ -38,7 +40,6 @@ class WidgetProfile : TabbedFragment() {
         savedInstanceState: Bundle?
     ): View {
         profileViewModel.observeViewState().observe(this::configureUI)
-        binding = WidgetProfileBinding.bind(inflater.inflate(R.layout.widget_profile, container, false))
         return binding.root
     }
 

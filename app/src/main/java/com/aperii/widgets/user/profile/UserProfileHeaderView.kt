@@ -6,6 +6,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.aperii.R
@@ -21,7 +23,7 @@ import org.koin.core.component.inject
 
 class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
     ConstraintLayout(context, attributeSet), KoinComponent {
-    val binding = UserProfileHeaderViewBinding.bind(LayoutInflater.from(context).inflate(R.layout.user_profile_header_view, this, true))
+    val binding: UserProfileHeaderViewBinding by viewBinding(CreateMethod.INFLATE)
 
     val users: StoreUsers by inject()
 

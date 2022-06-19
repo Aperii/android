@@ -7,14 +7,14 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.databinding.UserInfoChipBinding
 
 class UserInfoChip(context: Context): ConstraintLayout(context) {
-    val binding: UserInfoChipBinding =
-        UserInfoChipBinding.bind(
-            LayoutInflater.from(context).inflate(R.layout.user_info_chip, this)
-        )
+
+    val binding: UserInfoChipBinding by viewBinding(CreateMethod.INFLATE)
 
     var label: String
         get() = binding.chipText.text.toString()

@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.BuildConfig
 import com.aperii.R
 import com.aperii.app.AppFragment
@@ -39,7 +41,7 @@ import kotlin.collections.HashMap
 
 class WidgetDebugging : AppFragment(), KoinComponent {
 
-    lateinit var binding: WidgetDebuggingBinding
+    val binding: WidgetDebuggingBinding by viewBinding(CreateMethod.INFLATE)
     lateinit var adp: Adapter
     val prefs by settings()
     private val users: StoreUsers by inject()
@@ -96,11 +98,9 @@ class WidgetDebugging : AppFragment(), KoinComponent {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.widget_debugging, container, false)
-        binding = WidgetDebuggingBinding.bind(view)
         ViewModelProvider(this)[WidgetDebuggingViewModel::class.java].observeViewState()
             .observe(this::configureUI)
-        return view
+        return binding.root
     }
 
     private fun configureUI(viewState: WidgetDebuggingViewModel.ViewState) {

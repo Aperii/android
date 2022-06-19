@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.api.user.User
 import com.aperii.databinding.WidgetPostPreviewBinding
@@ -19,7 +21,7 @@ import org.koin.android.ext.android.inject
 
 class WidgetPostPreview : BottomSheetDialogFragment() {
 
-    lateinit var binding: WidgetPostPreviewBinding
+    val binding: WidgetPostPreviewBinding by viewBinding(CreateMethod.INFLATE)
 
     val posts: StorePosts by inject()
 
@@ -39,7 +41,6 @@ class WidgetPostPreview : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = WidgetPostPreviewBinding.bind(inflater.inflate(R.layout.widget_post_preview, container, false))
         configureUI()
         dialog?.apply {
             setOnShowListener {

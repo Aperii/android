@@ -5,24 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.app.AppFragment
+import com.aperii.databinding.WidgetAuthLandingBinding
 import com.aperii.utilities.Utils.showToast
 import com.aperii.utilities.screens.ScreenManager.openScreen
 
-class WidgetAuthLanding : AppFragment(R.layout.widget_auth_landing) {
+class WidgetAuthLanding : AppFragment() {
 
-    lateinit var root: View
+    val binding: WidgetAuthLandingBinding by viewBinding(CreateMethod.INFLATE)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        root = super.onCreateView(inflater, container, savedInstanceState)!!
         configureUI()
-
-        return root
+        return binding.root
     }
 
     private fun configureUI() {
@@ -31,13 +32,13 @@ class WidgetAuthLanding : AppFragment(R.layout.widget_auth_landing) {
     }
 
     private fun configureSignupButton() {
-        root.findViewById<Button>(R.id.auth_button_signup).setOnClickListener {
+        binding.authButtonSignup.setOnClickListener {
             it.context.showToast("Currently Unavailable")
         }
     }
 
     private fun configureLoginButton() {
-        root.findViewById<Button>(R.id.auth_button_login).setOnClickListener {
+        binding.authButtonLogin.setOnClickListener {
             appActivity.openScreen<WidgetAuthLogin>(allowBack = true)
         }
     }

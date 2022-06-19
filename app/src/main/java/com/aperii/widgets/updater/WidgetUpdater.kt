@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetUpdaterBinding
@@ -15,7 +17,7 @@ import com.aperii.utilities.update.UpdateUtils
 
 class WidgetUpdater: AppFragment() {
 
-    lateinit var binding: WidgetUpdaterBinding
+    val binding: WidgetUpdaterBinding by viewBinding(CreateMethod.INFLATE)
 
     companion object {
         val EXTRA_RELEASE by extras()
@@ -32,7 +34,6 @@ class WidgetUpdater: AppFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = WidgetUpdaterBinding.bind(layoutInflater.inflate(R.layout.widget_updater, container, false))
         val release = arguments?.getSerializable(EXTRA_RELEASE) as UpdateUtils.Release?
         configureUI(release != null, release)
         return binding.root

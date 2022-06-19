@@ -11,9 +11,12 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.constraintlayout.widget.ConstraintLayout
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.aperii.R
+import com.aperii.databinding.ToolbarBinding
 import com.aperii.stores.StoreNavigation
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.DimenUtils.dp
@@ -29,32 +32,34 @@ import org.koin.core.component.inject
 class Toolbar(context: Context, private val attrs: AttributeSet) :
     ConstraintLayout(context, attrs), KoinComponent {
 
+    private val binding: ToolbarBinding by viewBinding(CreateMethod.INFLATE)
+
     private val prefs by settings()
     private val users: StoreUsers by inject()
     private val nav: StoreNavigation by inject()
 
     var title: CharSequence
-        get() = findViewById<TextView>(R.id.toolbar_title).text
-        set(value) = findViewById<TextView>(R.id.toolbar_title).run {
+        get() = binding.toolbarTitle.text
+        set(value) = binding.toolbarTitle.run {
             text = value
         }
 
     var subtitle: CharSequence
-        get() = findViewById<TextView>(R.id.toolbar_subtitle).text
-        set(value) = findViewById<TextView>(R.id.toolbar_subtitle).run {
+        get() = binding.toolbarSubtitle.text
+        set(value) = binding.toolbarSubtitle.run {
             visibility = View.VISIBLE
             text = value
         }
 
     var navigationIcon: Drawable
-        get() = findViewById<ImageButton>(R.id.nav_button).drawable
-        set(value) = findViewById<ImageButton>(R.id.nav_button).run {
+        get() = binding.navButton.drawable
+        set(value) = binding.navButton.run {
             visibility = VISIBLE
             setImageDrawable(value)
         }
 
     var avatar: String = ""
-        set(value) = findViewById<ImageView>(R.id.toolbar_avatar).run {
+        set(value) = binding.toolbarAvatar.run {
             load(value) {
                 transformations(CircleCropTransformation())
                 placeholder(R.drawable.img_default_avatar)
@@ -64,15 +69,14 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
     var isDeveloper: Boolean = false
 
     fun setHomeAsUpAction(onClick: OnClickListener) =
-        findViewById<ImageButton>(R.id.nav_button).setOnClickListener(onClick)
+        binding.navButton.setOnClickListener(onClick)
 
     fun setOnMenuItemPicked(onItemSelected: ActionMenuView.OnMenuItemClickListener) =
-        findViewById<ActionMenuView>(R.id.more_options_menu).setOnMenuItemClickListener(
+        binding.moreOptionsMenu.setOnMenuItemClickListener(
             onItemSelected
         )
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.toolbar, this)
         val args: TypedArray = context.obtainStyledAttributes(attrs, R.styleable.Toolbar)
 
         args.getText(R.styleable.Toolbar_title)?.run {

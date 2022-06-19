@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.databinding.WidgetDiscoverBinding
 import com.aperii.utilities.rx.RxUtils.observe
@@ -14,21 +16,19 @@ import com.aperii.widgets.tabs.TabbedFragment
 class WidgetDiscover : TabbedFragment() {
 
     private lateinit var viewModel: WidgetDiscoverViewModel
-    private lateinit var binding: WidgetDiscoverBinding
+    private val binding: WidgetDiscoverBinding by viewBinding(CreateMethod.INFLATE)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.widget_discover, container, false)
-        binding = WidgetDiscoverBinding.bind(root)
+    ): View {
         viewModel =
             ViewModelProvider(this).get(WidgetDiscoverViewModel::class.java)
         viewModel.observeViewState().observe {
             configureUI(this)
         }
-        return root
+        return binding.root
     }
 
     private fun configureUI(state: WidgetDiscoverViewModel.ViewState) {

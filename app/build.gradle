@@ -11,8 +11,8 @@ android {
         applicationId "com.aperii"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 1232
-        versionName "1.32 - Alpha"
+        versionCode 1241
+        versionName "1.41 - Alpha"
 
         buildConfigField "String", "BASE_URL", '"https://api.aperii.com/v2/"'
 
@@ -74,6 +74,8 @@ dependencies {
 
     implementation 'com.github.discord:SimpleAST:2.7.0'
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
+
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.6'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

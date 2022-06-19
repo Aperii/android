@@ -9,9 +9,12 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.viewModelScope
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.app.AppViewModel
+import com.aperii.databinding.WidgetAuthLoginBinding
 import com.aperii.rest.RestAPIParams
 import com.aperii.stores.StoreAuth
 import com.aperii.utilities.rest.AuthAPI
@@ -24,9 +27,9 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 
-class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login), KoinComponent {
-    lateinit var root: View
+class WidgetAuthLogin : AppFragment(), KoinComponent {
 
+    val binding: WidgetAuthLoginBinding by viewBinding(CreateMethod.INFLATE)
     val viewModel: WidgetAuthLoginViewModel by viewModel()
 
     override fun onCreateView(
@@ -34,9 +37,8 @@ class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login), KoinComponent {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        root = super.onCreateView(inflater, container, savedInstanceState)!!
         viewModel.observeViewState().observe(this::configureUI)
-        return root
+        return binding.root
     }
 
     private fun configureUI(state: WidgetAuthLoginViewModel.ViewState) {
@@ -46,16 +48,16 @@ class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login), KoinComponent {
     }
 
     private fun configureBackButton() {
-        root.findViewById<Toolbar>(R.id.toolbar).setNavigationOnClickListener {
+        binding.toolbar.setNavigationOnClickListener {
             appActivity.onBackPressed()
         }
     }
 
     private fun configureLoginButton() {
-        val error = root.findViewById<View>(R.id.error_container)
-        root.findViewById<Button>(R.id.auth_button_login).setOnClickListener {
-            val username = root.findViewById<EditText>(R.id.username_et).text.toString()
-            val password = root.findViewById<EditText>(R.id.password_et).text.toString()
+        val error = binding.errorContainer
+        binding.authButtonLogin.setOnClickListener {
+            val username = binding.usernameEt.text.toString()
+            val password = binding.passwordEt.text.toString()
             if (username.isBlank() || password.isBlank()) {
                 error.visibility = View.VISIBLE
                 return@setOnClickListener
@@ -66,7 +68,7 @@ class WidgetAuthLogin : AppFragment(R.layout.widget_auth_login), KoinComponent {
     }
 
     private fun onLoginResult(state: WidgetAuthLoginViewModel.ViewState) {
-        val error = root.findViewById<View>(R.id.error_container)
+        val error = binding.errorContainer
         when(state) {
             is WidgetAuthLoginViewModel.ViewState.Successful -> {
                 requireContext().openScreen<WidgetTabsHost>(false)

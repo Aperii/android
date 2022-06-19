@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.databinding.WidgetHomeBinding
 import com.aperii.models.threads.Thread
@@ -18,8 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class WidgetHome : TabbedFragment() {
 
     private val homeViewModel: WidgetHomeViewModel by viewModel()
-    private lateinit var root: View
-    lateinit var binding: WidgetHomeBinding
+    val binding: WidgetHomeBinding by viewBinding(CreateMethod.INFLATE)
 
 
     override fun onCreateView(
@@ -27,12 +28,10 @@ class WidgetHome : TabbedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        root = inflater.inflate(R.layout.widget_home, container, false)
         homeViewModel.observeViewState().observe {
             configureUI(this)
         }
-        binding = WidgetHomeBinding.bind(root)
-        return root
+        return binding.root
     }
 
     private fun configureUI(viewState: WidgetHomeViewModel.ViewState) {

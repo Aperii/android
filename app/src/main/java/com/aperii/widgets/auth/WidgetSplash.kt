@@ -4,23 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetSplashBinding
 
 class WidgetSplash : AppFragment(R.layout.widget_splash) {
 
-    lateinit var binding: WidgetSplashBinding
+    val binding: WidgetSplashBinding by viewBinding(CreateMethod.INFLATE)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        binding = WidgetSplashBinding.bind(view!!)
         configureUI()
-        return view
+        return binding.root
     }
 
     private fun configureUI() {

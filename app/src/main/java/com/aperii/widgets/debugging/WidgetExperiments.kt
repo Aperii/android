@@ -12,6 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetExperimentsBinding
@@ -19,7 +21,7 @@ import com.aperii.utilities.rx.RxUtils.observe
 
 class WidgetExperiments : AppFragment() {
 
-    private lateinit var binding: WidgetExperimentsBinding
+    private val binding: WidgetExperimentsBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel: WidgetExperimentsViewModel by viewModels {
         ViewModelProvider.NewInstanceFactory()
     }
@@ -77,10 +79,8 @@ class WidgetExperiments : AppFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.widget_experiments, container, false)
-        binding = WidgetExperimentsBinding.bind(root)
         viewModel.observeViewState().observe(this::configureUI)
-        return root
+        return binding.root
     }
 
     private fun configureUI(viewState: WidgetExperimentsViewModel.ViewState) {

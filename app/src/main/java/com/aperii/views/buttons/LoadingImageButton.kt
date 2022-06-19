@@ -7,15 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.StyleRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.databinding.LoadingImageButtonBinding
 
 class LoadingImageButton : ConstraintLayout {
 
-    var binding: LoadingImageButtonBinding =
-        LoadingImageButtonBinding.bind(
-            LayoutInflater.from(context).inflate(R.layout.loading_image_button, this)
-        )
+    val binding: LoadingImageButtonBinding by viewBinding(CreateMethod.INFLATE)
 
     var icon: Drawable = binding.button.drawable
         set(value) = binding.button.run { setImageDrawable(value) }

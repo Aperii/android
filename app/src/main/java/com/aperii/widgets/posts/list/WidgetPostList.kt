@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.api.post.Post
 import com.aperii.app.AppFragment
@@ -20,7 +22,7 @@ class WidgetPostList : AppFragment() {
     var adapter: WidgetPostListAdapter? = null
     private var mThread: Thread? = null
     private var mShowSpine = false
-    lateinit var binding: WidgetPostListBinding
+    val binding: WidgetPostListBinding by viewBinding(CreateMethod.INFLATE)
 
     private val viewModel: WidgetPostListViewModel by viewModel()
 
@@ -29,10 +31,8 @@ class WidgetPostList : AppFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.widget_post_list, container, false)
-        binding = WidgetPostListBinding.bind(root)
         if (adapter == null) createAdapter() else configureExistingAdapter()
-        return root
+        return binding.root
     }
 
     private fun getPostItems(thread: Thread, user: User?): List<PostListItem> {

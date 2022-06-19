@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetPostBinding
@@ -19,7 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
 class WidgetPost : AppFragment(R.layout.widget_post) {
 
-    lateinit var binding: WidgetPostBinding
+    val binding: WidgetPostBinding by viewBinding(CreateMethod.INFLATE)
     val viewModel: WidgetPostViewModel by sharedStateViewModel(state = { arguments ?: Bundle() })
 
     companion object {
@@ -35,9 +37,9 @@ class WidgetPost : AppFragment(R.layout.widget_post) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = super.onCreateView(inflater, container, savedInstanceState)?.also {
-        binding = WidgetPostBinding.bind(it)
+    ): View {
         viewModel.observeViewState().observe(this::configureUI)
+        return binding.root
     }
 
     private fun configureUI(viewState: WidgetPostViewModel.ViewState) {

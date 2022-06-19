@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.aperii.R
@@ -23,7 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 class WidgetPostCreate : AppFragment() {
 
     val viewModel: WidgetPostCreateViewModel by sharedStateViewModel(state = { arguments ?: Bundle() })
-    lateinit var binding: WidgetPostCreateBinding
+    val binding: WidgetPostCreateBinding by viewBinding(CreateMethod.INFLATE)
 
     companion object {
         val EXTRA_MESSAGE by extras()
@@ -42,11 +44,9 @@ class WidgetPostCreate : AppFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.widget_post_create, container, false)
-        binding = WidgetPostCreateBinding.bind(view)
+    ): View {
         viewModel.observeViewState().observe(this::configureUI)
-        return view
+        return binding.root
     }
 
     private fun configureUI(viewState: WidgetPostCreateViewModel.ViewState) {

@@ -2,10 +2,14 @@ package com.aperii.widgets.user.profile.settings
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import by.kirich1409.viewbindingdelegate.CreateMethod
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetUserProfileSettingsBinding
@@ -15,18 +19,22 @@ import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.widgets.user.profile.UserProfileHeaderViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class WidgetUserProfileSettings: AppFragment(R.layout.widget_user_profile_settings) {
+class WidgetUserProfileSettings: AppFragment() {
 
     companion object {
         fun open(context: Context) = context.openScreen<WidgetUserProfileSettings>(animation = SLIDE_FROM_RIGHT)
     }
 
-    lateinit var binding: WidgetUserProfileSettingsBinding
+    private val binding: WidgetUserProfileSettingsBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel: WidgetUserProfileSettingsViewModel by viewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = WidgetUserProfileSettingsBinding.bind(view)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         viewModel.observeViewState().observe(this::configureUI)
+        return binding.root
     }
 
     fun configureUI(state: WidgetUserProfileSettingsViewModel.ViewState) {
