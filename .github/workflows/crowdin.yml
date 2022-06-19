@@ -20,13 +20,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Guh Gaming
-        run: |
-          sudo chmod -R ugo+rwX .
-          git config --global --add safe.directory /github/workspace
-
       - name: Crowdin Action
-        uses: crowdin/github-action@1.4.7
+        uses: crowdin/github-action@1.0.4
         with:
           config: crowdin.yml
           upload_translations: true
@@ -38,6 +33,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: 507180
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
+      - name: Guh Gaming
+        run: |
+          sudo chmod -R ugo+rwX .
 
       - name: Merge
         run: |
