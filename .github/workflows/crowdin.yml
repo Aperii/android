@@ -20,6 +20,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Guh Gaming
+        run: sudo chmod -R ugo+rwX .
+
       - name: Crowdin Action
         uses: crowdin/github-action@1.4.7
         with:
@@ -36,7 +39,6 @@ jobs:
 
       - name: Merge
         run: |
-          sudo chmod -R ugo+rwX .
           git checkout main
           git add *
           git merge l10n
