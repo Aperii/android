@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
@@ -42,10 +41,14 @@ class WidgetHome : TabbedFragment() {
             is WidgetHomeViewModel.ViewState.Loaded -> {
                 try {
                     (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList?)?.apply {
-                        if(viewState.posts.isNotEmpty()) setSource(Thread.fromList(viewState.posts), null)
+                        if (viewState.posts.isNotEmpty()) setSource(
+                            Thread.fromList(viewState.posts),
+                            null
+                        )
                     }
-                } catch (_: Throwable) {}
-                if(viewState.showUpdateDialog) {
+                } catch (_: Throwable) {
+                }
+                if (viewState.showUpdateDialog) {
                     WidgetUpdateDialog(requireContext(), homeViewModel.update!!).show()
                 }
             }

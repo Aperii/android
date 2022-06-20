@@ -14,7 +14,7 @@ object RxUtils {
 
     @Throws(IllegalStateException::class)
     fun <T> Observable<T>.await(): Pair<T?, Throwable?> {
-        if(Looper.getMainLooper() == Looper.myLooper()) throw IllegalStateException("await() cannot be called in the main thread.")
+        if (Looper.getMainLooper() == Looper.myLooper()) throw IllegalStateException("await() cannot be called in the main thread.")
         val latch = CountDownLatch(1)
         val resRef = AtomicReference<T?>()
         val throwableRef = AtomicReference<Throwable?>()

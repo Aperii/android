@@ -7,7 +7,11 @@ import com.aperii.stores.StorePosts
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.rest.RestAPI
 
-class WidgetPostListViewModel(private val users: StoreUsers, private val api: RestAPI, private val posts: StorePosts) : AppViewModel<WidgetPostListViewModel.ViewState>() {
+class WidgetPostListViewModel(
+    private val users: StoreUsers,
+    private val api: RestAPI,
+    private val posts: StorePosts
+) : AppViewModel<WidgetPostListViewModel.ViewState>() {
     val me = users.me!!
     var isProfile = false
 

@@ -4,18 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.aperii.R
 import com.aperii.databinding.WidgetDiscoverBinding
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.tabs.TabbedFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WidgetDiscover : TabbedFragment() {
 
-    private lateinit var viewModel: WidgetDiscoverViewModel
+    private val viewModel: WidgetDiscoverViewModel by viewModel()
     private val binding: WidgetDiscoverBinding by viewBinding(CreateMethod.INFLATE)
 
     override fun onCreateView(
@@ -23,8 +22,6 @@ class WidgetDiscover : TabbedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel =
-            ViewModelProvider(this).get(WidgetDiscoverViewModel::class.java)
         viewModel.observeViewState().observe {
             configureUI(this)
         }

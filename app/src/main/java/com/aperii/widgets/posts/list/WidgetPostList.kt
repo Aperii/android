@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.aperii.R
 import com.aperii.api.post.Post
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetPostListBinding
@@ -39,15 +38,23 @@ class WidgetPostList : AppFragment() {
         val items = mutableListOf<PostListItem>()
         if (user != null) items.add(PostListItemHeader(user))
         for (post in thread.posts)
-            if (post.id == thread.focusedId) items.add(PostListItemJumbo(post, getSpineType(thread, post))) else items.add(PostListItemPost(post, getSpineType(thread, post)))
+            if (post.id == thread.focusedId) items.add(
+                PostListItemJumbo(
+                    post,
+                    getSpineType(thread, post)
+                )
+            ) else items.add(PostListItemPost(post, getSpineType(thread, post)))
         return items
     }
 
-    private fun getSpineType(thread: Thread, post: Post) = if(!mShowSpine) PostListItemPost.SpineType.NONE else if (thread.posts.size > 1) when(thread.posts.indexOf(post)){
-        0 -> PostListItemPost.SpineType.TOP_ONLY
-        thread.posts.lastIndex -> PostListItemPost.SpineType.BOTTOM_ONLY
-        else -> PostListItemPost.SpineType.BOTH
-    } else PostListItemPost.SpineType.NONE
+    private fun getSpineType(thread: Thread, post: Post) =
+        if (!mShowSpine) PostListItemPost.SpineType.NONE else if (thread.posts.size > 1) when (thread.posts.indexOf(
+            post
+        )) {
+            0 -> PostListItemPost.SpineType.TOP_ONLY
+            thread.posts.lastIndex -> PostListItemPost.SpineType.BOTTOM_ONLY
+            else -> PostListItemPost.SpineType.BOTH
+        } else PostListItemPost.SpineType.NONE
 
     fun setSource(thread: Thread, user: User?, showSpines: Boolean = false) {
         mThread = thread

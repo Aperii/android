@@ -5,7 +5,6 @@ import com.aperii.BuildConfig
 import com.aperii.api.user.UserFlags
 import com.aperii.models.user.MeUser
 import com.aperii.rest.RestAPIParams
-import com.aperii.stores.StoreAuth
 import com.aperii.utilities.Logger
 import com.aperii.utilities.Utils.average
 import com.aperii.utilities.settings.settings
@@ -14,9 +13,10 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.*
-import java.net.*
-import java.time.Duration
+import java.io.File
+import java.net.InetAddress
+import java.net.Socket
+import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -32,11 +32,11 @@ class RestAPI {
     val ping get() = pings.average()
 
     init {
-        Timer().scheduleAtFixedRate(object: TimerTask() {
+        Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 pings.add(ping())
             }
-        },0, 10000)
+        }, 0, 10000)
     }
 
     private val restApi = Retrofit.Builder()
@@ -111,7 +111,10 @@ class RestAPI {
     fun ping(): PingEvent {
         val start = System.currentTimeMillis()
         return try {
-            Socket(InetAddress.getByName(URL(BuildConfig.BASE_URL + "hello").host).hostAddress, 443).close()
+            Socket(
+                InetAddress.getByName(URL(BuildConfig.BASE_URL + "hello").host).hostAddress,
+                443
+            ).close()
             PingEvent(true, System.currentTimeMillis() - start)
         } catch (e: Throwable) {
             logger.error("Error pinging api.aperii.com", e)
@@ -123,11 +126,12 @@ class RestAPI {
 
     suspend fun getMePosts() = restApi.getMePosts()
 
-    suspend fun editProfile(displayName: String?, bio: String?, pronouns: String?) = restApi.editProfile(
-        RestAPIParams.EditProfileBody(
-            displayName, bio, pronouns
+    suspend fun editProfile(displayName: String?, bio: String?, pronouns: String?) =
+        restApi.editProfile(
+            RestAPIParams.EditProfileBody(
+                displayName, bio, pronouns
+            )
         )
-    )
 
     suspend fun getUser(userId: String) = restApi.getUser(userId)
 

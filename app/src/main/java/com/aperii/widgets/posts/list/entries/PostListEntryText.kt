@@ -59,7 +59,10 @@ class PostListEntryText(root: ViewGroup, private val shouldJumbo: Boolean) : Pos
     }
 
     private fun configureTimestamp(createdAt: Long) = timestamp?.run {
-        text = if(shouldJumbo) TimeUtils.getLongTimeString(createdAt) else context.getString(R.string.separated, TimeUtils.getShortTimeString(createdAt))
+        text = if (shouldJumbo) TimeUtils.getLongTimeString(createdAt) else context.getString(
+            R.string.separated,
+            TimeUtils.getShortTimeString(createdAt)
+        )
     }
 
     private fun configureAuthor(user: User) = user.run {
@@ -71,7 +74,7 @@ class PostListEntryText(root: ViewGroup, private val shouldJumbo: Boolean) : Pos
 
     private fun configurePronouns(pronouns: String) = this@PostListEntryText.pronouns?.apply {
         text = context.getString(R.string.separated, pronouns)
-        visibility = if(pronouns.isEmpty()) View.GONE else View.VISIBLE
+        visibility = if (pronouns.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun configureAvatar(user: User) = avatar.apply {
@@ -85,29 +88,55 @@ class PostListEntryText(root: ViewGroup, private val shouldJumbo: Boolean) : Pos
     }
 
     private fun configureDisplayName(user: User) = author.run {
-        if(shouldJumbo) text = user.displayName else {
+        if (shouldJumbo) text = user.displayName else {
             val builder = SpannableStringBuilder()
             builder.append(user.displayName)
-            builder.setSpan(ForegroundColorSpan(context.getThemedColor(R.attr.textOnBackground)), 0, builder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            builder.setSpan(StyleSpan(Typeface.BOLD), 0, builder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            val align = if(Build.VERSION.SDK_INT >= 29) 2 else DynamicDrawableSpan.ALIGN_BASELINE
+            builder.setSpan(
+                ForegroundColorSpan(context.getThemedColor(R.attr.textOnBackground)),
+                0,
+                builder.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            builder.setSpan(
+                StyleSpan(Typeface.BOLD),
+                0,
+                builder.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            val align = if (Build.VERSION.SDK_INT >= 29) 2 else DynamicDrawableSpan.ALIGN_BASELINE
             val badge = context.getResizedDrawable(R.drawable.ic_badge_20dp, 14)!!
-            if(user.flags.verified) {
+            if (user.flags.verified) {
                 val len = builder.length
                 builder.append(" ✔")
-                builder.setSpan(ImageSpan(badge, align), len + 1, builder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(
+                    ImageSpan(badge, align),
+                    len + 1,
+                    builder.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
             }
             builder.append(" ${context.getString(R.string.username, user.username)}")
             text = builder
-            addOnLayoutChangeListener {_,_,_,_,_,_,_,_,_ ->
-                text = TextUtils.ellipsize(builder, paint, width.toFloat(), TextUtils.TruncateAt.END, true) { start, _ ->
-                    setCompoundDrawablesRelative(null, null, if(start <= user.displayName.length && start != 0 && user.flags.verified) badge else null, null)
+            addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+                text = TextUtils.ellipsize(
+                    builder,
+                    paint,
+                    width.toFloat(),
+                    TextUtils.TruncateAt.END,
+                    true
+                ) { start, _ ->
+                    setCompoundDrawablesRelative(
+                        null,
+                        null,
+                        if (start <= user.displayName.length && start != 0 && user.flags.verified) badge else null,
+                        null
+                    )
                 }
             }
         }
     }
 
-    private fun configureUsername(username: String) = this@PostListEntryText.username?.run{
+    private fun configureUsername(username: String) = this@PostListEntryText.username?.run {
         text = context.getString(R.string.username, username)
     }
 
@@ -117,7 +146,7 @@ class PostListEntryText(root: ViewGroup, private val shouldJumbo: Boolean) : Pos
     }
 
     private fun configureSpine(spineType: PostListItemPost.SpineType) {
-        when(spineType) {
+        when (spineType) {
             PostListItemPost.SpineType.TOP_ONLY -> {
                 spineTop?.visibility = View.VISIBLE
                 spineBottom.visibility = View.GONE

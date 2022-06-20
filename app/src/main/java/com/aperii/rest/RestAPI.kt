@@ -31,7 +31,10 @@ interface RestAPI {
     suspend fun getReplies(@Path("id") id: String): Response<List<Post>>
 
     @POST("users/@me/posts")
-    suspend fun createPost(@Body body: RestAPIParams.PostBody, @Query("replyto") replyTo: String = ""): Response<PostPartial>
+    suspend fun createPost(
+        @Body body: RestAPIParams.PostBody,
+        @Query("replyto") replyTo: String = ""
+    ): Response<PostPartial>
 
     @GET("posts/all")
     suspend fun getFeed(): Response<List<Post>>

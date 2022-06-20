@@ -8,7 +8,8 @@ import retrofit2.Response
 object HttpUtils {
     val gson = Gson()
 
-    inline fun <reified T> HttpException.body(): T? = gson.fromJson(response()?.errorBody()?.string() ?: "{}", T::class.java)
+    inline fun <reified T> HttpException.body(): T? =
+        gson.fromJson(response()?.errorBody()?.string() ?: "{}", T::class.java)
 
     fun <T> Response<T>.ifSuccessful(block: (T) -> Unit) = fold<T, ErrorResponse>({}, block)
 
@@ -17,10 +18,11 @@ object HttpUtils {
         onSuccess: (T) -> Unit
     ) {
         try {
-            if(isSuccessful)
+            if (isSuccessful)
                 body()?.let(onSuccess)
             else
                 onError(gson.fromJson(errorBody()?.string() ?: "{}", E::class.java))
-        } catch (e: Throwable) {}
+        } catch (e: Throwable) {
+        }
     }
 }

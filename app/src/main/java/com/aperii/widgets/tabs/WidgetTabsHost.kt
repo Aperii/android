@@ -84,11 +84,13 @@ class WidgetTabsHost : AppFragment() {
     private fun navigateToTab(tab: NavigationTab) {
         for (navTab in navTabToFragment) {
             navTab.value.visibility = if (navTab.key == tab) View.VISIBLE else View.GONE
-            if(navTab.key == tab) {
-                (childFragmentManager.findFragmentById(navTab.value.id) as TabbedFragment).onTabSelected(navStore.navigationTab == tab)
+            if (navTab.key == tab) {
+                (childFragmentManager.findFragmentById(navTab.value.id) as TabbedFragment).onTabSelected(
+                    navStore.navigationTab == tab
+                )
             }
         }
-        if(navStore.navigationTab != tab) Logger("WidgetTabHost").verbose("Switched to tab ${tab.javaClass.simpleName}.${tab.name}")
+        if (navStore.navigationTab != tab) Logger("WidgetTabHost").verbose("Switched to tab ${tab.javaClass.simpleName}.${tab.name}")
         navStore.navigationTab = tab
     }
 

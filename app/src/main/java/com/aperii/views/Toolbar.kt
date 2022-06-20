@@ -5,10 +5,8 @@ import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.*
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupWindow
-import android.widget.TextView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.constraintlayout.widget.ConstraintLayout
 import by.kirich1409.viewbindingdelegate.CreateMethod

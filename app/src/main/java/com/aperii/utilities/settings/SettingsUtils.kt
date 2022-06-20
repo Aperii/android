@@ -11,7 +11,8 @@ object SettingsUtils : KoinComponent {
     val context: Context by inject()
 
     class Sets(val name: String) : ReadOnlyProperty<Any, Settings> {
-        override fun getValue(thisRef: Any, property: KProperty<*>) = Settings(context.getSharedPreferences(name, Context.MODE_PRIVATE))
+        override fun getValue(thisRef: Any, property: KProperty<*>) =
+            Settings(context.getSharedPreferences(name, Context.MODE_PRIVATE))
     }
 }
 

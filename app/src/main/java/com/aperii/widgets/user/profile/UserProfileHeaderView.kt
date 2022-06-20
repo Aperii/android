@@ -3,7 +3,6 @@ package com.aperii.widgets.user.profile
 import android.content.Context
 import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import by.kirich1409.viewbindingdelegate.CreateMethod
@@ -23,8 +22,8 @@ import org.koin.core.component.inject
 
 class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
     ConstraintLayout(context, attributeSet), KoinComponent {
-    val binding: UserProfileHeaderViewBinding by viewBinding(CreateMethod.INFLATE)
 
+    val binding: UserProfileHeaderViewBinding by viewBinding(CreateMethod.INFLATE)
     val users: StoreUsers by inject()
 
     private fun configureBanner(loaded: UserProfileHeaderViewModel.ViewState.Loaded) {
@@ -36,7 +35,7 @@ class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
 
     private fun configureActionButtons(loaded: UserProfileHeaderViewModel.ViewState.Loaded) {
         binding.btnEditProfile.run {
-            visibility = if(loaded.user.id == users.me?.id && !loaded.edit) VISIBLE else GONE
+            visibility = if (loaded.user.id == users.me?.id && !loaded.edit) VISIBLE else GONE
             setOnClickListener {
                 WidgetUserProfileSettings.open(it.context)
             }
@@ -69,18 +68,23 @@ class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
         binding.username.text = context.getString(R.string.username, loaded.user.username)
     }
 
-    private fun configureBio(loaded: UserProfileHeaderViewModel.ViewState.Loaded) = binding.bio.apply {
-        visibility = if(loaded.user.bio.isNotEmpty()) VISIBLE else GONE
-        text = Renderer.render(loaded.user.bio, BioRenderContext(context))
-        if(!loaded.edit) movementMethod = LinkMovementMethod()
-    }
+    private fun configureBio(loaded: UserProfileHeaderViewModel.ViewState.Loaded) =
+        binding.bio.apply {
+            visibility = if (loaded.user.bio.isNotEmpty()) VISIBLE else GONE
+            text = Renderer.render(loaded.user.bio, BioRenderContext(context))
+            if (!loaded.edit) movementMethod = LinkMovementMethod()
+        }
 
     private fun configureUserDetails(loaded: UserProfileHeaderViewModel.ViewState.Loaded) {
         val user = loaded.user
         with(binding.userInfo) {
             removeAllViews()
-            if(user.flags.staff || user.flags.admin) addView(UserInfoChip(context).apply { setIcon(R.drawable.ic_logo_24dp) })
-            if(user.flags.earlySupporter) addView(UserInfoChip(context).apply {
+            if (user.flags.staff || user.flags.admin) addView(UserInfoChip(context).apply {
+                setIcon(
+                    R.drawable.ic_logo_24dp
+                )
+            })
+            if (user.flags.earlySupporter) addView(UserInfoChip(context).apply {
                 setIcon(R.drawable.ic_star_24dp)
                 tint = 0xFFE2EC56.toInt()
             })
@@ -99,7 +103,7 @@ class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
         configureDisplayName(viewState)
         configureUsername(viewState)
         configureUserDetails(viewState)
-        if(viewState.edit) with(binding) {
+        if (viewState.edit) with(binding) {
             details.visibility = GONE
             border.visibility = GONE
             userInfo.visibility = GONE

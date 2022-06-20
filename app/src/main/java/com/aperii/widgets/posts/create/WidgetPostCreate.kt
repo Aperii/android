@@ -14,7 +14,6 @@ import com.aperii.R
 import com.aperii.api.post.Post
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetPostCreateBinding
-import com.aperii.utilities.Logger
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.screens.extras
@@ -24,7 +23,9 @@ import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
 class WidgetPostCreate : AppFragment() {
 
-    val viewModel: WidgetPostCreateViewModel by sharedStateViewModel(state = { arguments ?: Bundle() })
+    val viewModel: WidgetPostCreateViewModel by sharedStateViewModel(state = {
+        arguments ?: Bundle()
+    })
     val binding: WidgetPostCreateBinding by viewBinding(CreateMethod.INFLATE)
 
     companion object {
@@ -34,7 +35,7 @@ class WidgetPostCreate : AppFragment() {
 
         fun open(context: Context, text: String = "", replyTo: String = "") = Bundle().run {
             putString(EXTRA_MESSAGE, text)
-            if(replyTo.isNotEmpty()) putString(REPLY_TO, replyTo)
+            if (replyTo.isNotEmpty()) putString(REPLY_TO, replyTo)
             context.openScreen<WidgetPostCreate>(data = this)
         }
 
@@ -54,7 +55,7 @@ class WidgetPostCreate : AppFragment() {
         configureToolbar()
         configureAvatar()
         configurePostButton()
-        if(viewState is WidgetPostCreateViewModel.ViewState.ReplyLoaded)
+        if (viewState is WidgetPostCreateViewModel.ViewState.ReplyLoaded)
             configureReplyTo(viewState.replyTo)
     }
 

@@ -75,20 +75,20 @@ object UpdateUtils {
     }
 
     fun downloadUpdate(context: Context, release: Release, progressBar: ProgressBar? = null) {
-        val apk = File(context.filesDir,"update.apk")
+        val apk = File(context.filesDir, "update.apk")
         val uri =
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
                 FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", apk)
             else
                 Uri.fromFile(apk)
-        if(apk.exists()) apk.delete()
+        if (apk.exists()) apk.delete()
         runInThread {
             val update = Request.Builder()
                 .url("https://github.com/Aperii/android/releases/download/${release.versionCode}/app-release.apk")
                 .build()
             try {
                 val res = provideOkHttp().newCall(update).execute()
-                if(res.isSuccessful) {
+                if (res.isSuccessful) {
                     logger.info("Done!")
                     progressBar?.max = res.headers["content-length"]?.toInt() ?: 0
                     res.body?.byteStream()?.let { s ->
@@ -96,9 +96,9 @@ object UpdateUtils {
                             progressBar?.progress = it.toInt()
                         }
                         FileOutputStream(apk).run {
-                           write(stream.readBytes())
-                           close()
-                           stream.close()
+                            write(stream.readBytes())
+                            close()
+                            stream.close()
                         }
                     }
 
@@ -108,7 +108,9 @@ object UpdateUtils {
                         setDataAndType(uri, "application/vnd.android.package-archive")
                         context.startActivity(this)
                     }
-                } else { logger.warn("Couldn't download version ${release.versionCode}, likely an invalid version") }
+                } else {
+                    logger.warn("Couldn't download version ${release.versionCode}, likely an invalid version")
+                }
             } catch (e: Throwable) {
                 runOnMainThread {
                     context.showToast("Failed to update.")

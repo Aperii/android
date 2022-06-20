@@ -32,12 +32,17 @@ object ScreenManager {
         )
     }
 
-    inline fun <reified T: Fragment> Context.openScreen(allowBack: Boolean = true, animation: List<Int> = Animations.SCALE_CENTER, data: Bundle = Bundle(), screen: T? = null) {
+    inline fun <reified T : Fragment> Context.openScreen(
+        allowBack: Boolean = true,
+        animation: List<Int> = Animations.SCALE_CENTER,
+        data: Bundle = Bundle(),
+        screen: T? = null
+    ) {
         Intent(Intent.ACTION_VIEW).apply {
-            putExtra(EXTRA_SCREEN, if(screen != null) screen::class.java else T::class.java)
+            putExtra(EXTRA_SCREEN, if (screen != null) screen::class.java else T::class.java)
             putExtra(EXTRA_ANIM, animation.toIntArray())
             putExtra(EXTRA_DATA, data)
-            if(!allowBack) {
+            if (!allowBack) {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }

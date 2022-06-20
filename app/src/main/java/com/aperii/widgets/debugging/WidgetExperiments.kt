@@ -8,8 +8,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.CreateMethod
@@ -18,13 +16,12 @@ import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetExperimentsBinding
 import com.aperii.utilities.rx.RxUtils.observe
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WidgetExperiments : AppFragment() {
 
     private val binding: WidgetExperimentsBinding by viewBinding(CreateMethod.INFLATE)
-    private val viewModel: WidgetExperimentsViewModel by viewModels {
-        ViewModelProvider.NewInstanceFactory()
-    }
+    private val viewModel: WidgetExperimentsViewModel by viewModel()
 
     inner class ExpAdapter(private val mData: List<WidgetExperimentsViewModel.Experiment>) :
         RecyclerView.Adapter<ExpAdapter.ViewHolder>() {

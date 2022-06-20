@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.CreateMethod
@@ -34,10 +33,10 @@ import com.aperii.utilities.update.UpdateUtils
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.updater.WidgetUpdater
 import com.google.gson.GsonBuilder
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*
-import kotlin.collections.HashMap
 
 class WidgetDebugging : AppFragment(), KoinComponent {
 
@@ -47,6 +46,7 @@ class WidgetDebugging : AppFragment(), KoinComponent {
     private val users: StoreUsers by inject()
     private val api: RestAPI by inject()
     private val auth: StoreAuth by inject()
+    private val viewModel: WidgetDebuggingViewModel by viewModel()
 
     inner class Adapter(var data: MutableList<Logger.LoggedItem>) :
         RecyclerView.Adapter<Adapter.ViewHolder>() {
@@ -98,8 +98,7 @@ class WidgetDebugging : AppFragment(), KoinComponent {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        ViewModelProvider(this)[WidgetDebuggingViewModel::class.java].observeViewState()
-            .observe(this::configureUI)
+        viewModel.observeViewState().observe(::configureUI)
         return binding.root
     }
 
@@ -244,16 +243,20 @@ class WidgetDebugging : AppFragment(), KoinComponent {
         val successfulPings = totalPings - failedPings
         val lastPing = api.pings.last().duration
 
-        val oneMinPings = api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (60 * 1000))) }
+        val oneMinPings =
+            api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (60 * 1000))) }
         val oneMinAvg = oneMinPings.average()
 
-        val fiveMinPings = api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (5 * 60 * 1000))) }
+        val fiveMinPings =
+            api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (5 * 60 * 1000))) }
         val fiveMinAvg = fiveMinPings.average()
 
-        val tenMinPings = api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (10 * 60 * 1000))) }
+        val tenMinPings =
+            api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (10 * 60 * 1000))) }
         val tenMinAvg = tenMinPings.average()
 
-        append("""
+        append(
+            """
             Average in last:
             10s: ${lastPing}ms
             1m: ${oneMinAvg}ms
@@ -262,7 +265,8 @@ class WidgetDebugging : AppFragment(), KoinComponent {
             All time: ${api.ping}ms
             
             Pings: $totalPings ($failedPings failed - ${(successfulPings.toFloat() / totalPings.toFloat()) * 100f}% successful)
-        """.trimIndent())
+        """.trimIndent()
+        )
         send(this.toString())
     }
 
@@ -278,7 +282,11 @@ class WidgetDebugging : AppFragment(), KoinComponent {
                 try {
                     val c = Class.forName(className)
                     if (c.newInstance() !is Fragment) return send("Class has to be a fragment")
-                    requireContext().openScreen(allowBack, screen = c.newInstance() as Fragment, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
+                    requireContext().openScreen(
+                        allowBack,
+                        screen = c.newInstance() as Fragment,
+                        animation = ScreenManager.Animations.SLIDE_FROM_RIGHT
+                    )
                 } catch (err: ReflectiveOperationException) {
                     return send("Class not found")
                 }
@@ -332,6 +340,9 @@ class WidgetDebugging : AppFragment(), KoinComponent {
 
     private fun dl(args: CommandArgs) {
         val vc = args["v"]
-        if(vc != null) WidgetUpdater.open(requireContext(), UpdateUtils.Release(vc.toInt(), "v1.20 - Stable")) else send("Version is required")
+        if (vc != null) WidgetUpdater.open(
+            requireContext(),
+            UpdateUtils.Release(vc.toInt(), "v1.20 - Stable")
+        ) else send("Version is required")
     }
 }

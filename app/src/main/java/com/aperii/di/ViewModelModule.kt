@@ -2,7 +2,11 @@ package com.aperii.di
 
 import com.aperii.app.MainViewModel
 import com.aperii.widgets.auth.WidgetAuthLoginViewModel
+import com.aperii.widgets.debugging.WidgetDebuggingViewModel
+import com.aperii.widgets.debugging.WidgetExperimentsViewModel
+import com.aperii.widgets.discover.WidgetDiscoverViewModel
 import com.aperii.widgets.home.WidgetHomeViewModel
+import com.aperii.widgets.inbox.WidgetInboxViewModel
 import com.aperii.widgets.posts.WidgetPostViewModel
 import com.aperii.widgets.posts.create.WidgetPostCreateViewModel
 import com.aperii.widgets.posts.list.WidgetPostListViewModel
@@ -18,6 +22,8 @@ fun viewModelModule() = module {
     viewModelOf(::WidgetAuthLoginViewModel)
 
     viewModelOf(::WidgetHomeViewModel)
+    viewModelOf(::WidgetDiscoverViewModel)
+    viewModelOf(::WidgetInboxViewModel)
 
     viewModelOf(::WidgetPostViewModel)
     viewModelOf(::WidgetPostCreateViewModel)
@@ -25,5 +31,8 @@ fun viewModelModule() = module {
 
     viewModelOf(::WidgetProfileViewModel)
     viewModelOf(::WidgetUserProfileSettingsViewModel)
+
+    viewModelOf(::WidgetDebuggingViewModel)
+    viewModelOf(::WidgetExperimentsViewModel)
 
 }

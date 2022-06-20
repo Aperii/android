@@ -9,11 +9,12 @@ import com.discord.simpleast.core.simple.SimpleMarkdownRules
 object Renderer {
     private val mParser = createParser()
 
-    private fun createParser() = Parser<BaseRenderContext, Node<BaseRenderContext>, Any?>(false).apply {
-        addRule(Rules.createUrlRule())
-        addRule(Rules.createMentionRule())
-        addRule(SimpleMarkdownRules.createTextRule())
-    }
+    private fun createParser() =
+        Parser<BaseRenderContext, Node<BaseRenderContext>, Any?>(false).apply {
+            addRule(Rules.createUrlRule())
+            addRule(Rules.createMentionRule())
+            addRule(SimpleMarkdownRules.createTextRule())
+        }
 
     fun render(text: String, renderContext: BaseRenderContext) = SpannableStringBuilder().apply {
         for (node in mParser.parse(text, ""))

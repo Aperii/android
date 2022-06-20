@@ -1,25 +1,17 @@
 package com.aperii.widgets.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.viewModelScope
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.app.AppViewModel
 import com.aperii.databinding.WidgetAuthLoginBinding
-import com.aperii.rest.RestAPIParams
 import com.aperii.stores.StoreAuth
-import com.aperii.utilities.rest.AuthAPI
 import com.aperii.utilities.rx.RxUtils.observe
-import com.aperii.utilities.rx.RxUtils.observeAndCatch
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.widgets.tabs.WidgetTabsHost
 import kotlinx.coroutines.Dispatchers
@@ -69,7 +61,7 @@ class WidgetAuthLogin : AppFragment(), KoinComponent {
 
     private fun onLoginResult(state: WidgetAuthLoginViewModel.ViewState) {
         val error = binding.errorContainer
-        when(state) {
+        when (state) {
             is WidgetAuthLoginViewModel.ViewState.Successful -> {
                 requireContext().openScreen<WidgetTabsHost>(false)
             }
@@ -81,19 +73,20 @@ class WidgetAuthLogin : AppFragment(), KoinComponent {
 
 }
 
-class WidgetAuthLoginViewModel(private val auth: StoreAuth): AppViewModel<WidgetAuthLoginViewModel.ViewState>(ViewState.Uninitialized()) {
+class WidgetAuthLoginViewModel(private val auth: StoreAuth) :
+    AppViewModel<WidgetAuthLoginViewModel.ViewState>(ViewState.Uninitialized()) {
 
     open class ViewState {
         class Uninitialized : ViewState()
-        class Successful: ViewState()
-        class Unsuccessful: ViewState()
+        class Successful : ViewState()
+        class Unsuccessful : ViewState()
     }
 
     fun login(username: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             auth.login(username, password).let {
                 updateViewState(
-                    if(it != null)
+                    if (it != null)
                         ViewState.Successful()
                     else
                         ViewState.Unsuccessful()

@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetAuthLandingBinding
 import com.aperii.utilities.Utils.showToast

@@ -3,8 +3,10 @@ package com.aperii.utilities.update
 import java.io.IOException
 import java.io.InputStream
 
-class ObservableInputStream(private val wrapped: InputStream,
-                            private val onBytesRead: (Long) -> Unit): InputStream() {
+class ObservableInputStream(
+    private val wrapped: InputStream,
+    private val onBytesRead: (Long) -> Unit
+) : InputStream() {
     private var bytesRead: Long = 0
 
     @Throws(IOException::class)

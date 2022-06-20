@@ -5,18 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.aperii.R
 import com.aperii.databinding.WidgetInboxBinding
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.widgets.posts.create.WidgetPostCreate
 import com.aperii.widgets.tabs.TabbedFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WidgetInbox : TabbedFragment() {
 
-    private lateinit var viewModel: WidgetInboxViewModel
+    private val viewModel: WidgetInboxViewModel by viewModel()
     private val binding: WidgetInboxBinding by viewBinding(CreateMethod.INFLATE)
 
     @SuppressLint("SetTextI18n")
@@ -25,7 +24,6 @@ class WidgetInbox : TabbedFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[WidgetInboxViewModel::class.java]
         viewModel.observeViewState().observe {
             configureUI(this)
         }

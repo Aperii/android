@@ -10,7 +10,11 @@ import com.aperii.utilities.rest.RestAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WidgetProfileViewModel(state: SavedStateHandle, private val users: StoreUsers, private val api: RestAPI) :
+class WidgetProfileViewModel(
+    state: SavedStateHandle,
+    private val users: StoreUsers,
+    private val api: RestAPI
+) :
     AppViewModel<WidgetProfileViewModel.ViewState>(ViewState.Loading()) {
     val me = users.me
     private var source = ""

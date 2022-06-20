@@ -31,7 +31,7 @@ class TabsHostBottomNav(context: Context, attrs: AttributeSet) : LinearLayout(co
     init {
         LayoutInflater.from(context).inflate(R.layout.tabs_host_bottom_nav, this, true)
         with(experiments["admin_tab_03_13_22", 0]) {
-            if(this == 1) {
+            if (this == 1) {
                 findViewById<View>(R.id.tabs_host_item_admin).visibility = VISIBLE
                 findViewById<LinearLayout>(R.id.tabs_host_bottom_nav_container).apply {
                     layoutParams = (layoutParams as LayoutParams).apply {

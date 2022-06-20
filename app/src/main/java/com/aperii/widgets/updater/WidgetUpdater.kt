@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetUpdaterBinding
 import com.aperii.utilities.Utils.runInThread
@@ -15,7 +14,7 @@ import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.screens.extras
 import com.aperii.utilities.update.UpdateUtils
 
-class WidgetUpdater: AppFragment() {
+class WidgetUpdater : AppFragment() {
 
     val binding: WidgetUpdaterBinding by viewBinding(CreateMethod.INFLATE)
 
@@ -42,7 +41,7 @@ class WidgetUpdater: AppFragment() {
     private fun configureUI(autoStart: Boolean, release: UpdateUtils.Release? = null) {
         binding.toolbar.hideAvatar()
         runInThread {
-            if(autoStart) {
+            if (autoStart) {
                 UpdateUtils.downloadUpdate(binding.root.context, release!!, binding.updateProgress)
             } else {
                 val (hasUpdate, rel) = UpdateUtils.checkUpdate()

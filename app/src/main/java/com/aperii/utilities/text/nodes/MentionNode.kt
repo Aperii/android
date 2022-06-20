@@ -8,12 +8,13 @@ import com.aperii.utilities.text.spans.ClickableSpan
 import com.aperii.widgets.user.profile.WidgetProfile
 import com.discord.simpleast.core.node.Node
 
-class MentionNode<RC: BaseRenderContext>(private val username: String): Node<RC>() {
+class MentionNode<RC : BaseRenderContext>(private val username: String) : Node<RC>() {
 
     override fun render(builder: SpannableStringBuilder, renderContext: RC) {
-        val span = ClickableSpan(renderContext.context.getThemedColor(R.attr.mentionAndLink), false, {
-            WidgetProfile.open(renderContext.context, "@${username}")
-        }, null)
+        val span =
+            ClickableSpan(renderContext.context.getThemedColor(R.attr.mentionAndLink), false, {
+                WidgetProfile.open(renderContext.context, "@${username}")
+            }, null)
         val i = builder.length
         builder.append("@$username")
         builder.setSpan(span, i, builder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

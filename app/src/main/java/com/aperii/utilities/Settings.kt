@@ -7,10 +7,10 @@ import java.io.Serializable
 
 class Settings(val prefs: SharedPreferences) : Serializable {
     val gson: Gson = GsonBuilder()
-                        .enableComplexMapKeySerialization()
-                        .serializeNulls()
-                        .setLenient()
-                        .create()
+        .enableComplexMapKeySerialization()
+        .serializeNulls()
+        .setLenient()
+        .create()
 
     inline operator fun <reified T> get(key: String, defaultValue: T) =
         prefs.all[key] as T? ?: defaultValue

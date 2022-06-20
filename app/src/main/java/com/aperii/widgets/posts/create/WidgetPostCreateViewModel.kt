@@ -9,7 +9,11 @@ import com.aperii.stores.StoreUsers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WidgetPostCreateViewModel(state: SavedStateHandle, private val users: StoreUsers, private val posts: StorePosts) : AppViewModel<WidgetPostCreateViewModel.ViewState>(ViewState()) {
+class WidgetPostCreateViewModel(
+    state: SavedStateHandle,
+    private val users: StoreUsers,
+    private val posts: StorePosts
+) : AppViewModel<WidgetPostCreateViewModel.ViewState>(ViewState()) {
     val me = users.me!!
 
     open class ViewState {

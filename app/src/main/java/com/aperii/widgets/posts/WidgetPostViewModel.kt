@@ -8,7 +8,8 @@ import com.aperii.stores.StorePosts
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WidgetPostViewModel(state: SavedStateHandle, private val posts: StorePosts): AppViewModel<WidgetPostViewModel.ViewState>(ViewState.Loading()) {
+class WidgetPostViewModel(state: SavedStateHandle, private val posts: StorePosts) :
+    AppViewModel<WidgetPostViewModel.ViewState>(ViewState.Loading()) {
     var post: Post? = null
     var replies = emptyList<Post>()
 

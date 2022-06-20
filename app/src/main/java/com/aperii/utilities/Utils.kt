@@ -28,7 +28,8 @@ object Utils {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
-    fun Context.openUrl(url: String) = startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
+    fun Context.openUrl(url: String) =
+        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
 
     fun Iterable<PingEvent>.average() = sumOf { it.duration } / count()
 

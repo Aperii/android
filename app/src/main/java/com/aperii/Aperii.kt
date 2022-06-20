@@ -29,8 +29,8 @@ class Aperii : Application() {
 
     init {
         Thread.setDefaultUncaughtExceptionHandler { thread, err ->
-            if(thread == Looper.getMainLooper().thread) exitProcess(1)
-            if(err is UnknownHostException) return@setDefaultUncaughtExceptionHandler
+            if (thread == Looper.getMainLooper().thread) exitProcess(1)
+            if (err is UnknownHostException) return@setDefaultUncaughtExceptionHandler
             Logger.default.error("Uncaught exception on thread ${thread.name}", err)
         }
     }

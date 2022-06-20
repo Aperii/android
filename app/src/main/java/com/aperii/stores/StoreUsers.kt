@@ -28,10 +28,14 @@ class StoreUsers(private val api: RestAPI) {
 
     suspend fun fetchUser(id: String): User? = getUser(id) ?: try {
         CoreUser.fromApi(api.getUser(id).body()!!).also { updateUser(it) }
-    } catch (e: Throwable) { null }
+    } catch (e: Throwable) {
+        null
+    }
 
     suspend fun fetchCurrentUser(): MeUser? = try {
         MeUser.fromApi(api.getMe().body()!!).also { me = it }
-    } catch (e: Throwable) { null }
+    } catch (e: Throwable) {
+        null
+    }
 
 }

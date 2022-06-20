@@ -4,4 +4,4 @@ import android.content.Context
 
 data class PostRenderContext(
     override val context: Context
-    ) : BaseRenderContext
+) : BaseRenderContext

@@ -29,7 +29,10 @@ class WidgetPost : AppFragment(R.layout.widget_post) {
 
         fun open(context: Context, id: String) = Bundle().run {
             putString(EXTRA_POST, id)
-            context.openScreen<WidgetPost>(data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
+            context.openScreen<WidgetPost>(
+                data = this,
+                animation = ScreenManager.Animations.SLIDE_FROM_RIGHT
+            )
         }
     }
 
@@ -45,7 +48,7 @@ class WidgetPost : AppFragment(R.layout.widget_post) {
     private fun configureUI(viewState: WidgetPostViewModel.ViewState) {
         configureToolbar()
         configureReplyFab()
-        if(viewState is WidgetPostViewModel.ViewState.Loaded) {
+        if (viewState is WidgetPostViewModel.ViewState.Loaded) {
             configureMainPost()
             configureReplies()
         }

@@ -9,10 +9,11 @@ import com.aperii.models.user.User
 
 object IconUtils {
 
-    fun User.setAvatar(iv: ImageView) = iv.load(if (avatar.isNotEmpty()) "https://api.aperii.com/cdn/avatars/${avatar}" else "https://aperii.com/av.png") {
-        transformations(CircleCropTransformation())
-        placeholder(R.drawable.img_default_avatar)
-    }
+    fun User.setAvatar(iv: ImageView) =
+        iv.load(if (avatar.isNotEmpty()) "https://api.aperii.com/cdn/avatars/${avatar}" else "https://aperii.com/av.png") {
+            transformations(CircleCropTransformation())
+            placeholder(R.drawable.img_default_avatar)
+        }
 
     fun com.aperii.api.user.User.setAvatar(iv: ImageView) = CoreUser.fromApi(this).setAvatar(iv)
 

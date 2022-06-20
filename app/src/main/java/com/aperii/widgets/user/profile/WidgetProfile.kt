@@ -21,7 +21,9 @@ import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
 class WidgetProfile : TabbedFragment() {
 
-    private val profileViewModel: WidgetProfileViewModel by sharedStateViewModel(state = { arguments ?: Bundle() })
+    private val profileViewModel: WidgetProfileViewModel by sharedStateViewModel(state = {
+        arguments ?: Bundle()
+    })
     private val binding: WidgetProfileBinding by viewBinding(CreateMethod.INFLATE)
 
     companion object {
@@ -29,7 +31,10 @@ class WidgetProfile : TabbedFragment() {
 
         fun open(context: Context, id: String) = Bundle().run {
             putString(EXTRA_USER, id)
-            context.openScreen<WidgetProfile>(data = this, animation = ScreenManager.Animations.SLIDE_FROM_RIGHT)
+            context.openScreen<WidgetProfile>(
+                data = this,
+                animation = ScreenManager.Animations.SLIDE_FROM_RIGHT
+            )
         }
 
     }
@@ -51,16 +56,20 @@ class WidgetProfile : TabbedFragment() {
         }
     }
 
-    private fun configurePostFab(viewState: WidgetProfileViewModel.ViewState) = binding.createPostFab.run {
-        when(viewState) {
-            is WidgetProfileViewModel.ViewState.Loading -> setOnClickListener {
-                WidgetPostCreate.open(context)
-            }
-            is WidgetProfileViewModel.ViewState.Loaded -> setOnClickListener {
-                WidgetPostCreate.open(context, if(viewState.user.id != profileViewModel.me?.id) "@${viewState.user.username} " else "")
+    private fun configurePostFab(viewState: WidgetProfileViewModel.ViewState) =
+        binding.createPostFab.run {
+            when (viewState) {
+                is WidgetProfileViewModel.ViewState.Loading -> setOnClickListener {
+                    WidgetPostCreate.open(context)
+                }
+                is WidgetProfileViewModel.ViewState.Loaded -> setOnClickListener {
+                    WidgetPostCreate.open(
+                        context,
+                        if (viewState.user.id != profileViewModel.me?.id) "@${viewState.user.username} " else ""
+                    )
+                }
             }
         }
-    }
 
     private fun configureUI(viewState: WidgetProfileViewModel.ViewState) {
         configurePostFab(viewState)
@@ -71,7 +80,8 @@ class WidgetProfile : TabbedFragment() {
                 (childFragmentManager.findFragmentById(R.id.post_list_fragment) as WidgetPostList).apply {
                     setSource(Thread.fromList(viewState.posts), viewState.user)
                 }
-            } catch (_: Throwable) {}
+            } catch (_: Throwable) {
+            }
         }
     }
 

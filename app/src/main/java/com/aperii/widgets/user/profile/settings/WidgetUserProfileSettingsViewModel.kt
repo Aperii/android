@@ -7,12 +7,12 @@ import com.aperii.app.AppViewModel
 import com.aperii.models.user.MeUser
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.rest.HttpUtils.fold
-import com.aperii.utilities.rest.HttpUtils.gson
 import com.aperii.utilities.rest.RestAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class WidgetUserProfileSettingsViewModel(private val users: StoreUsers, private val api: RestAPI): AppViewModel<WidgetUserProfileSettingsViewModel.ViewState>(ViewState.Uninitialized()) {
+class WidgetUserProfileSettingsViewModel(private val users: StoreUsers, private val api: RestAPI) :
+    AppViewModel<WidgetUserProfileSettingsViewModel.ViewState>(ViewState.Uninitialized()) {
     val me: MeUser?
         get() = users.me
     var changedDisplayName = null as String?
@@ -26,16 +26,17 @@ class WidgetUserProfileSettingsViewModel(private val users: StoreUsers, private 
 
     fun save() {
         viewModelScope.launch(Dispatchers.IO) {
-            api.editProfile(changedDisplayName, changedBio, changedPronouns).fold<EditedProfile, EditedProfile>(
-                onSuccess = {
-                    users.me = MeUser.fromApi(it.profile)
-                    updateViewState(ViewState.Saved(MeUser.fromApi(it.profile), null))
-                },
-                onError = {
-                    users.me = MeUser.fromApi(it.profile)
-                    updateViewState(ViewState.Saved(MeUser.fromApi(it.profile), it.errors))
-                }
-            )
+            api.editProfile(changedDisplayName, changedBio, changedPronouns)
+                .fold<EditedProfile, EditedProfile>(
+                    onSuccess = {
+                        users.me = MeUser.fromApi(it.profile)
+                        updateViewState(ViewState.Saved(MeUser.fromApi(it.profile), null))
+                    },
+                    onError = {
+                        users.me = MeUser.fromApi(it.profile)
+                        updateViewState(ViewState.Saved(MeUser.fromApi(it.profile), it.errors))
+                    }
+                )
         }
     }
 

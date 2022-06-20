@@ -15,7 +15,6 @@ import com.aperii.R
 import com.aperii.api.error.ErrorResponse
 import com.aperii.api.user.User
 import com.aperii.models.user.MeUser
-import com.aperii.stores.StoreAuth
 import com.aperii.stores.StoreNavigation
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.Logger
@@ -24,7 +23,6 @@ import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
-import com.aperii.utilities.settings.settings
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.auth.WidgetSplash
 import com.aperii.widgets.debugging.WidgetDebugging
@@ -51,7 +49,7 @@ open class AppActivity : AppCompatActivity() {
     }
 
     open fun configureUI(state: MainViewModel.MainState) {
-        when(state) {
+        when (state) {
             is MainViewModel.MainState.LoggedOut -> openScreen<WidgetAuthLanding>()
             is MainViewModel.MainState.LoggedIn -> onAction(intent.action, true)
         }
@@ -63,19 +61,20 @@ open class AppActivity : AppCompatActivity() {
     }
 
     private fun navigate(intent: Intent) {
-        (intent.extras?.get(ScreenManager.EXTRA_SCREEN ) as Class<Fragment>?)?.run {
-            transition = intent.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: transition
+        (intent.extras?.get(ScreenManager.EXTRA_SCREEN) as Class<Fragment>?)?.run {
+            transition =
+                intent.extras?.getIntArray(ScreenManager.EXTRA_ANIM)?.toList() ?: transition
             overridePendingTransition(transition[0], transition[1])
             openScreen(
                 newInstance(),
-                animation = listOf(0,0,0,0),
+                animation = listOf(0, 0, 0, 0),
                 data = intent.extras?.getBundle(ScreenManager.EXTRA_DATA) ?: Bundle()
             )
         }
     }
 
     open fun onAction(action: String?, isAuthed: Boolean) {
-        if(isAuthed) {
+        if (isAuthed) {
             when (action) {
                 "com.aperii.intents.actions.DEBUG" -> (this as Context).openScreen<WidgetDebugging>()
                 "com.aperii.intents.actions.PROFILE" -> nav.navigationTab = NavigationTab.PROFILE
@@ -139,7 +138,7 @@ open class AppActivity : AppCompatActivity() {
         }
 
         override fun configureUI(state: MainViewModel.MainState) {
-            when(state) {
+            when (state) {
                 is MainViewModel.MainState.LoggedOut -> openScreen<WidgetAuthLanding>()
                 is MainViewModel.MainState.LoggedIn -> onAction(intent.action, true)
             }
@@ -154,12 +153,13 @@ open class AppActivity : AppCompatActivity() {
 
 }
 
-class MainViewModel(private val api: RestAPI, private val users: StoreUsers): AppViewModel<MainViewModel.MainState>() {
+class MainViewModel(private val api: RestAPI, private val users: StoreUsers) :
+    AppViewModel<MainViewModel.MainState>() {
 
     open class MainState {
         class Uninitialized : MainState()
-        class LoggedOut: MainState()
-        class LoggedIn: MainState()
+        class LoggedOut : MainState()
+        class LoggedIn : MainState()
     }
 
     init {
@@ -167,11 +167,11 @@ class MainViewModel(private val api: RestAPI, private val users: StoreUsers): Ap
     }
 
     fun checkAuth() {
-        if(api.currentToken.isBlank()) return updateViewState(MainState.LoggedOut())
+        if (api.currentToken.isBlank()) return updateViewState(MainState.LoggedOut())
         viewModelScope.launch(Dispatchers.IO) {
             api.getMe().fold<User, ErrorResponse>(
                 onError = {
-                    if(it.code == 403) {
+                    if (it.code == 403) {
                         api.currentToken = ""
                     }
                     updateViewState(MainState.LoggedOut())

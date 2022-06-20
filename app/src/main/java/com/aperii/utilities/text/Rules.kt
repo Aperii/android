@@ -12,10 +12,10 @@ import java.util.regex.Pattern
 
 object Rules {
     val PATTERN_MENTIONS: Pattern = Pattern.compile("^@([a-zA-Z_0-9]{1,32})")
-    val PATTERN_URL: Pattern = Pattern.compile("^(https?://[^\\s<]+[^<.,:;\"')\\]\\s])");
+    val PATTERN_URL: Pattern = Pattern.compile("^(https?://[^\\s<]+[^<.,:;\"')\\]\\s])")
 
     fun <S> createMentionRule(): Rule<BaseRenderContext, Node<BaseRenderContext>, S> {
-        return object: Rule<BaseRenderContext, Node<BaseRenderContext>, S>(PATTERN_MENTIONS) {
+        return object : Rule<BaseRenderContext, Node<BaseRenderContext>, S>(PATTERN_MENTIONS) {
             override fun parse(
                 matcher: Matcher,
                 parser: Parser<BaseRenderContext, in Node<BaseRenderContext>, S>,
@@ -27,7 +27,7 @@ object Rules {
     }
 
     fun <S> createUrlRule(): Rule<BaseRenderContext, Node<BaseRenderContext>, S> {
-        return object: Rule<BaseRenderContext, Node<BaseRenderContext>, S>(PATTERN_URL) {
+        return object : Rule<BaseRenderContext, Node<BaseRenderContext>, S>(PATTERN_URL) {
             override fun parse(
                 matcher: Matcher,
                 parser: Parser<BaseRenderContext, in Node<BaseRenderContext>, S>,

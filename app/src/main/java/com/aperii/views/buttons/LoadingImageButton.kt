@@ -3,13 +3,11 @@ package com.aperii.views.buttons
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.StyleRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.aperii.R
 import com.aperii.databinding.LoadingImageButtonBinding
 
 class LoadingImageButton : ConstraintLayout {

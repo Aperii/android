@@ -44,14 +44,18 @@ class WidgetPostPreview : BottomSheetDialogFragment() {
         configureUI()
         dialog?.apply {
             setOnShowListener {
-                findViewById<View?>(R.id.design_bottom_sheet)?.setBackgroundColor(context.getThemedColor(R.attr.bottomSheetBackground))
+                findViewById<View?>(R.id.design_bottom_sheet)?.setBackgroundColor(
+                    context.getThemedColor(
+                        R.attr.bottomSheetBackground
+                    )
+                )
             }
         }
         return binding.root
     }
 
     private fun configureUI() {
-        if(arguments == null || arguments?.getString(EXTRA_POST) == null) dismiss()
+        if (arguments == null || arguments?.getString(EXTRA_POST) == null) dismiss()
         val post = posts[arguments?.getString(EXTRA_POST)!!]!!
         binding.post.border.visibility = View.GONE
         configureAvatar(post.author)
@@ -65,7 +69,7 @@ class WidgetPostPreview : BottomSheetDialogFragment() {
 
     private fun configurePronouns(author: User) = binding.post.pronouns.apply {
         text = context.getString(R.string.separated, author.pronouns)
-        visibility = if(author.pronouns.isEmpty()) View.GONE else View.VISIBLE
+        visibility = if (author.pronouns.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun configureTimeStamp(timestamp: Long) = binding.post.timestamp.run {
@@ -78,8 +82,9 @@ class WidgetPostPreview : BottomSheetDialogFragment() {
 
     private fun configureUserAndDisplayName(author: User) = author.run {
         binding.post.displayName.text = displayName
-        binding.post.username.text = binding.post.username.context.getString(R.string.username, username)
-        binding.post.badge.visibility = if(flags.verified) View.VISIBLE else View.GONE
+        binding.post.username.text =
+            binding.post.username.context.getString(R.string.username, username)
+        binding.post.badge.visibility = if (flags.verified) View.VISIBLE else View.GONE
     }
 
 }
