@@ -36,7 +36,7 @@ class Logger(private val tag: String) {
 
     companion object {
         const val APP_NAME = "Aperii"
-        val logs: MutableList<LoggedItem> = mutableListOf()
+        val logs: MutableList<LoggedItem> by lazy { mutableListOf() }
         val default = Logger(APP_NAME)
         fun log(message: String) = default.info(message)
     }
