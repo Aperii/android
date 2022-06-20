@@ -72,11 +72,11 @@
             android:textColor="?attr/textOnBackground"
             android:textSize="13sp"
             android:gravity="center_vertical"
-            android:drawableEnd="@drawable/ic_chevron_up_12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:drawableEndCompat="@drawable/ic_chevron_up_12dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

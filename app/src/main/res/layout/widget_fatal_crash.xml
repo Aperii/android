@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Restart"
+            android:text="@string/restart"
             style="@style/Aperii_Button_Primary"/>
 
         <com.google.android.material.button.MaterialButton
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Send Report"
+            android:text="@string/send_report"
             style="@style/Aperii_Button_Primary"/>
 
     </LinearLayout>

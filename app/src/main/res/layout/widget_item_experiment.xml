@@ -15,7 +15,6 @@
             android:id="@+id/exp_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Experiment"
             android:fontFamily="@font/arial_bold"
             android:textColor="?attr/textOnBackground"
             app:layout_constraintEnd_toStartOf="@+id/exp_bucket"
@@ -26,7 +25,6 @@
             android:id="@+id/exp_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="experiment_03_13_22"
             android:textColor="@color/midgrey"
             app:layout_constraintEnd_toStartOf="@+id/exp_bucket"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +45,6 @@
             android:textColor="?attr/textOnBackground"
             app:layout_constraintTop_toBottomOf="@+id/exp_id"
             tools:layout_editor_absoluteX="10dp"
-            android:text="This is a description"
             android:layout_marginTop="10dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
