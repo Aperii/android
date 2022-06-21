@@ -21,7 +21,7 @@
 Installation
 ---
  1. Download either the [latest release](https://github.com/Aperii/android/releases/latest) or the [latest actions build](https://github.com/Aperii/android/actions), if on PC then transfer the file over to your phone
- 2. If you downloaded from Github Actions then unzip 'app.zip'
+ 2. If you downloaded from Github Actions then unzip `app-debug.zip`
  3. Make sure to allow install unknown apps
  4. Install the apk
 
