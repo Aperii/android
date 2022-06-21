@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import com.aperii.R
+import com.aperii.stores.StoreExperiments
 import com.aperii.utilities.settings.settings
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class TabsHostBottomNav(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
+class TabsHostBottomNav(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs), KoinComponent {
 
-    private val experiments by settings("StoreExperiments")
+    private val experiments: StoreExperiments by inject()
 
     fun setOnHomeTabClicked(onClick: OnClickListener) {
         findViewById<View>(R.id.tabs_host_item_home).setOnClickListener(onClick)
@@ -30,7 +33,7 @@ class TabsHostBottomNav(context: Context, attrs: AttributeSet) : LinearLayout(co
 
     init {
         LayoutInflater.from(context).inflate(R.layout.tabs_host_bottom_nav, this, true)
-        with(experiments["admin_tab_03_13_22", 0]) {
+        with(experiments["admin_tab_03_13_22"].bucket) {
             if (this == 1) {
                 findViewById<View>(R.id.tabs_host_item_admin).visibility = VISIBLE
                 findViewById<LinearLayout>(R.id.tabs_host_bottom_nav_container).apply {

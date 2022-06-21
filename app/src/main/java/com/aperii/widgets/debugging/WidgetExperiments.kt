@@ -15,6 +15,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetExperimentsBinding
+import com.aperii.stores.Experiment
 import com.aperii.utilities.rx.RxUtils.observe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,10 +24,10 @@ class WidgetExperiments : AppFragment() {
     private val binding: WidgetExperimentsBinding by viewBinding(CreateMethod.INFLATE)
     private val viewModel: WidgetExperimentsViewModel by viewModel()
 
-    inner class ExpAdapter(private val mData: List<WidgetExperimentsViewModel.Experiment>) :
+    inner class ExpAdapter(private val mData: List<Experiment>) :
         RecyclerView.Adapter<ExpAdapter.ViewHolder>() {
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(data: WidgetExperimentsViewModel.Experiment) {
+            fun bind(data: Experiment) {
                 itemView.findViewById<TextView>(R.id.exp_name).text = data.name
                 itemView.findViewById<TextView>(R.id.exp_id).text = data.id
                 val bucketLabels = mutableListOf<String>()
@@ -41,7 +42,7 @@ class WidgetExperiments : AppFragment() {
                         android.R.layout.simple_spinner_dropdown_item,
                         bucketLabels
                     )
-                    setSelection(viewModel.prefs[data.id, 0])
+                    setSelection(data.bucket)
                     onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
                             parent: AdapterView<*>?,
@@ -49,7 +50,7 @@ class WidgetExperiments : AppFragment() {
                             position: Int,
                             id: Long
                         ) {
-                            viewModel.prefs[data.id] = position
+                            data.bucket = position
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>?) {}

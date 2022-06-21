@@ -17,15 +17,18 @@ import com.aperii.BuildConfig
 import com.aperii.R
 import com.aperii.databinding.DropdownBinding
 import com.aperii.databinding.ToolbarBinding
+import com.aperii.stores.StoreExperiments
 import com.aperii.stores.StoreNavigation
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.DimenUtils.dp
 import com.aperii.utilities.Utils.openUrl
+import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.settings.settings
 import com.aperii.widgets.auth.WidgetAuthLanding
 import com.aperii.widgets.debugging.WidgetDebugging
 import com.aperii.widgets.debugging.WidgetExperiments
+import com.aperii.widgets.settings.WidgetSettings
 import com.aperii.widgets.tabs.NavigationTab
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -38,6 +41,7 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
     private val prefs by settings()
     private val users: StoreUsers by inject()
     private val nav: StoreNavigation by inject()
+    private val experiments: StoreExperiments by inject()
 
     var title: CharSequence
         get() = binding.toolbarTitle.text
@@ -151,11 +155,13 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
             it.context.openUrl("https://discord.gg/Mryxr7zVtc")
         }
 
-        //TODO: Will re-enable once settings are complete
-//        dropdown.itemSettings.setOnClickListener {
-//            it.context.openScreen<WidgetSettings>()
-//            window.dismiss()
-//        }
+        dropdown.itemSettings.apply {
+            visibility = if(experiments["settings_page_06_21_22"].bucket == 1) View.VISIBLE else View.GONE
+            setOnClickListener {
+                it.context.openScreen<WidgetSettings>()
+                window.dismiss()
+            }
+        }
 
         dropdown.itemExperiments.apply {
             if (BuildConfig.DEBUG || isDeveloper) visibility = View.VISIBLE
