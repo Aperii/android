@@ -13,11 +13,15 @@ import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.aperii.BuildConfig
 import com.aperii.R
+import com.aperii.databinding.DropdownBinding
 import com.aperii.databinding.ToolbarBinding
 import com.aperii.stores.StoreNavigation
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.DimenUtils.dp
+import com.aperii.utilities.Utils
+import com.aperii.utilities.Utils.openUrl
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.settings.settings
 import com.aperii.widgets.auth.WidgetAuthLanding
@@ -138,24 +142,32 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
     }
 
     private fun configureDropdownItems(window: PopupWindow) {
-        val dropdown = window.contentView
+        val dropdown = DropdownBinding.bind(window.contentView)
 
-        dropdown.findViewById<View>(R.id.item_experiments).apply {
-            if (isDeveloper) visibility = View.VISIBLE
+        dropdown.itemBugReport.setOnClickListener {
+            it.context.openUrl("https://github.com/Aperii/android/issues/new")
+        }
+
+        dropdown.itemDiscord.setOnClickListener {
+            it.context.openUrl("https://discord.gg/Mryxr7zVtc")
+        }
+
+        dropdown.itemExperiments.apply {
+            if (BuildConfig.DEBUG || isDeveloper) visibility = View.VISIBLE
             setOnClickListener {
                 it.context.openScreen<WidgetExperiments>()
             }
         }
 
-        dropdown.findViewById<View>(R.id.item_debug).apply {
-            if (isDeveloper) visibility = View.VISIBLE
+        dropdown.itemDebug.apply {
+            if (BuildConfig.DEBUG || isDeveloper) visibility = View.VISIBLE
             setOnClickListener {
                 it.context.openScreen<WidgetDebugging>()
                 window.dismiss()
             }
         }
 
-        dropdown.findViewById<View>(R.id.item_logout).setOnClickListener {
+        dropdown.itemLogout.setOnClickListener {
             prefs.clear("APR_auth_tok")
             nav.navigationTab = NavigationTab.HOME
             it.context.openScreen<WidgetAuthLanding>(

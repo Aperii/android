@@ -31,29 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
-                android:text="Report a bug" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/item_language"
-            style="@style/Aperii_Dropdown_Item"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_bug_report">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_lang_24dp"
-                app:tint="?attr/textOnBackground" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:text="Language" />
+                android:text="@string/report_bug" />
 
         </LinearLayout>
 
@@ -63,7 +41,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_language">
+            app:layout_constraintTop_toBottomOf="@id/item_bug_report">
 
             <ImageView
                 android:layout_width="18dp"
@@ -75,29 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
-                android:text="Discord" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/item_theme"
-            style="@style/Aperii_Dropdown_Item"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_discord">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_sun_24dp"
-                app:tint="?attr/textOnBackground" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:text="Toggle theme" />
+                android:text="@string/discord" />
 
         </LinearLayout>
 
@@ -107,7 +63,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_theme">
+            app:layout_constraintTop_toBottomOf="@id/item_discord">
 
             <ImageView
                 android:layout_width="18dp"
@@ -142,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
-                android:text="Experiments" />
+                android:text="@string/experiments" />
 
         </LinearLayout>
 
@@ -165,7 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
-                android:text="Debug" />
+                android:text="@string/debug" />
 
         </LinearLayout>
 
@@ -187,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
-                android:text="Log Out" />
+                android:text="@string/logout" />
 
         </LinearLayout>
 

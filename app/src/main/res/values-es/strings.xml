@@ -36,4 +36,9 @@
     <string name="send_report">Send Report</string>
     <string name="reload">Reload</string>
     <string name="login_error">Error logging you in</string>
+    <string name="report_bug">Report a bug</string>
+    <string name="language">Language</string>
+    <string name="discord">Discord</string>
+    <string name="experiments">Experiments</string>
+    <string name="logout">Log Out</string>
 </resources>
