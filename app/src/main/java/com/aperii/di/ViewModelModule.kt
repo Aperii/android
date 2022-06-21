@@ -10,6 +10,7 @@ import com.aperii.widgets.inbox.WidgetInboxViewModel
 import com.aperii.widgets.posts.WidgetPostViewModel
 import com.aperii.widgets.posts.create.WidgetPostCreateViewModel
 import com.aperii.widgets.posts.list.WidgetPostListViewModel
+import com.aperii.widgets.settings.WidgetSettingsViewModel
 import com.aperii.widgets.user.profile.WidgetProfileViewModel
 import com.aperii.widgets.user.profile.settings.WidgetUserProfileSettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -34,5 +35,7 @@ fun viewModelModule() = module {
 
     viewModelOf(::WidgetDebuggingViewModel)
     viewModelOf(::WidgetExperimentsViewModel)
+
+    viewModelOf(::WidgetSettingsViewModel)
 
 }

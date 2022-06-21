@@ -36,7 +36,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 open class AppActivity : AppCompatActivity() {
-    var transition = ScreenManager.Animations.SCALE_CENTER
+    private var transition = ScreenManager.Animations.SCALE_CENTER
     private val nav: StoreNavigation by inject()
 
     val viewModel: MainViewModel by viewModel()
@@ -44,7 +44,7 @@ open class AppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel.observeViewState().observe(this::configureUI)
+        viewModel.observeViewState().observe(::configureUI)
         navigate(intent)
     }
 

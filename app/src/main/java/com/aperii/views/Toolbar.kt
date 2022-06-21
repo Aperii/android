@@ -20,7 +20,6 @@ import com.aperii.databinding.ToolbarBinding
 import com.aperii.stores.StoreNavigation
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.DimenUtils.dp
-import com.aperii.utilities.Utils
 import com.aperii.utilities.Utils.openUrl
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.settings.settings
@@ -152,10 +151,17 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
             it.context.openUrl("https://discord.gg/Mryxr7zVtc")
         }
 
+        //TODO: Will re-enable once settings are complete
+//        dropdown.itemSettings.setOnClickListener {
+//            it.context.openScreen<WidgetSettings>()
+//            window.dismiss()
+//        }
+
         dropdown.itemExperiments.apply {
             if (BuildConfig.DEBUG || isDeveloper) visibility = View.VISIBLE
             setOnClickListener {
                 it.context.openScreen<WidgetExperiments>()
+                window.dismiss()
             }
         }
 
