@@ -78,6 +78,7 @@ dependencies {
     implementation("org.ocpsoft.prettytime:prettytime:4.0.4.Final")
 
     implementation("com.github.kirich1409:viewbindingpropertydelegate:1.5.6")
+    implementation("com.xenomachina:kotlin-argparser:2.0.7")
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

@@ -99,16 +99,19 @@ class WidgetDebugging : AppFragment(), KoinComponent {
         savedInstanceState: Bundle?
     ): View {
         viewModel.observeViewState().observe(::configureUI)
+        viewModel.loadAppsWithContext(binding.root.context)
         return binding.root
     }
 
     private fun configureUI(viewState: WidgetDebuggingViewModel.ViewState) {
-
         when (viewState) {
             is WidgetDebuggingViewModel.ViewState.Loaded -> {
                 configureToolbar(viewState)
                 configureLogs(viewState)
                 configureCommandInput()
+            }
+            is WidgetDebuggingViewModel.ViewState.AppLog -> {
+                send(viewState.msg)
             }
         }
     }
@@ -163,186 +166,11 @@ class WidgetDebugging : AppFragment(), KoinComponent {
     @SuppressLint("NotifyDataSetChanged")
     private fun runCommand(command: String) {
         send("> $command")
-        val args = command.split(Regex(" +"))
-        val parsedArgs =
-            if (args.size > 1) CommandArgs.fromList(args.subList(1, args.size)) else CommandArgs()
-        when (args.firstOrNull()) {
-            "sm" -> sm(parsedArgs)
-            "am" -> am(parsedArgs)
-            "ai" -> ai()
-            "echo" -> send(args.drop(1).joinToString(" "))
-            "dl" -> dl(parsedArgs)
-            "clear" -> {
-                adp.data.clear()
-                adp.notifyDataSetChanged()
-                Logger.logs.clear()
-            }
-            "ping" -> ping()
-            else -> help()
-        }
-    }
-
-    class CommandArgs {
-        private val mItems = HashMap<String, String>()
-        var subcommand = ""
-
-        operator fun get(option: String): String? = mItems[option]
-        operator fun set(option: String, value: String) = mItems.set(option, value)
-
-        fun has(option: String) = mItems[option] != null
-
-        companion object {
-            fun fromList(args: List<String>): CommandArgs {
-                val res = CommandArgs()
-                res.subcommand = args.elementAtOrNull(0) ?: ""
-                for (arg in args) {
-                    if (arg == res.subcommand) continue
-                    if (arg.startsWith("-")) {
-                        val nextArg = args.elementAtOrNull(args.indexOf(arg) + 1)
-                        res[arg.replace(Regex("^-"), "")] =
-                            if (nextArg == null || nextArg.startsWith("-")) "" else nextArg
-                    }
-                }
-                return res
-            }
-        }
-
+        viewModel.executeApp(command.split(Regex(" +")))
     }
 
     private fun send(message: String) {
         adp.addItem(Logger.LoggedItem(Logger.LoggedItem.Type.INFO, message))
         binding.logItems.scrollToPosition(adp.data.lastIndex)
-    }
-
-    private fun help() = send(
-        """
-            ======= Aperii Debug Tool (v1.1.0) =======
-            
-            sm open 
-                [-c/--full-class className] <b/--allow-back> - Open any screen
-                
-            am
-               token - Sends your token
-               me - Sends your account information
-               logout - Logs out
-               login
-                [-t/--token] Login with an account token
-                [-u/--username] [-p/--pass/--password] Login with your own information
-                
-            clear - Clear logs
-            
-            ai - Get app information
-            
-            dl upd [-v versionCode] Download/install a specific version
-    """.trimIndent()
-    )
-
-    private fun ping() = StringBuilder().apply {
-        val totalPings = api.pings.size
-        val failedPings = api.pings.filter { !it.successful }.size
-        val successfulPings = totalPings - failedPings
-        val lastPing = api.pings.last().duration
-
-        val oneMinPings =
-            api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (60 * 1000))) }
-        val oneMinAvg = oneMinPings.average()
-
-        val fiveMinPings =
-            api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (5 * 60 * 1000))) }
-        val fiveMinAvg = fiveMinPings.average()
-
-        val tenMinPings =
-            api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (10 * 60 * 1000))) }
-        val tenMinAvg = tenMinPings.average()
-
-        append(
-            """
-            Average in last:
-            10s: ${lastPing}ms
-            1m: ${oneMinAvg}ms
-            5m: ${fiveMinAvg}ms
-            10m: ${tenMinAvg}ms
-            All time: ${api.ping}ms
-            
-            Pings: $totalPings ($failedPings failed - ${(successfulPings.toFloat() / totalPings.toFloat()) * 100f}% successful)
-        """.trimIndent()
-        )
-        send(this.toString())
-    }
-
-    private fun sm(args: CommandArgs) {
-        val allowBack = args.has("b") || args.has("-allow-back")
-        val className = if (args["c"].isNullOrBlank()) args["-full-class"] else args["c"]
-        val fish = args.has("-fish")
-
-        when (args.subcommand.lowercase()) {
-            "open" -> {
-                if (fish) return send("<><")
-                if (className.isNullOrBlank()) return send("Class for screen not provided")
-                try {
-                    val c = Class.forName(className)
-                    if (c.newInstance() !is Fragment) return send("Class has to be a fragment")
-                    requireContext().openScreen(
-                        allowBack,
-                        screen = c.newInstance() as Fragment,
-                        animation = ScreenManager.Animations.SLIDE_FROM_RIGHT
-                    )
-                } catch (err: ReflectiveOperationException) {
-                    return send("Class not found")
-                }
-            }
-            else -> return send("Subcommand not found")
-        }
-
-    }
-
-    private fun am(args: CommandArgs) {
-        val username = args["u"] ?: args["-username"]
-        val password = args["p"] ?: args["-pass"] ?: args["-password"]
-        val token = args["t"] ?: args["-token"]
-        when (args.subcommand.lowercase()) {
-            "token" -> send(api.currentToken)
-            "me" -> send(GsonBuilder().setPrettyPrinting().create().toJson(users.me))
-            "logout" -> {
-                prefs.clear("APR_auth_tok")
-                appActivity.openScreen<WidgetAuthLanding>(
-                    allowBack = false,
-                    animation = ScreenManager.Animations.SCALE_CENTER
-                )
-            }
-            "login" -> {
-//                if (!(username.isNullOrBlank() || password.isNullOrBlank())) auth
-//                    .login(username, password)
-//                    . else {
-//                    if (token.isNullOrBlank()) return send("No login information provided")
-//                    RestAPI.getInstance(token).getMe().observeAndCatch({
-//                        StoreShelves.users.me = MeUser.fromApi(this)
-//                        prefs["APR_auth_tok"] = token
-//                        appActivity.openScreen<WidgetTabsHost>(
-//                            allowBack = false,
-//                            animation = ScreenManager.Animations.SCALE_CENTER
-//                        )
-//                    }) { send("Invalid token") }
-//                }
-            }
-            else -> return send("Subcommand not found")
-        }
-    }
-
-    private fun ai() = send(
-        """
-        Aperii v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})
-        
-        Debuggable: ${BuildConfig.DEBUG}
-        API Version: ${BuildConfig.BASE_URL.split("/")[3]}
-    """.trimIndent()
-    )
-
-    private fun dl(args: CommandArgs) {
-        val vc = args["v"]
-        if (vc != null) WidgetUpdater.open(
-            requireContext(),
-            UpdateUtils.Release(vc.toInt(), "v1.20 - Stable")
-        ) else send("Version is required")
     }
 }

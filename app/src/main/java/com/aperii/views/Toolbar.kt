@@ -19,6 +19,7 @@ import com.aperii.databinding.DropdownBinding
 import com.aperii.databinding.ToolbarBinding
 import com.aperii.stores.StoreExperiments
 import com.aperii.stores.StoreNavigation
+import com.aperii.stores.StorePreferences
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.DimenUtils.dp
 import com.aperii.utilities.Utils.openUrl
@@ -42,6 +43,7 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
     private val users: StoreUsers by inject()
     private val nav: StoreNavigation by inject()
     private val experiments: StoreExperiments by inject()
+    private val settings: StorePreferences by inject()
 
     var title: CharSequence
         get() = binding.toolbarTitle.text
@@ -164,7 +166,7 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
         }
 
         dropdown.itemExperiments.apply {
-            if (BuildConfig.DEBUG || isDeveloper) visibility = View.VISIBLE
+            if (settings.experimentsEnabled) visibility = View.VISIBLE
             setOnClickListener {
                 it.context.openScreen<WidgetExperiments>()
                 window.dismiss()
