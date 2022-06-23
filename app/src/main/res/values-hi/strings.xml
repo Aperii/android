@@ -16,6 +16,7 @@
     <string name="password">पासवर्ड</string>
     <string name="back">वापस</string>
     <string name="post">पोस्ट</string>
+    <string name="new_post">New Post</string>
     <string name="filter">छाँटियें</string>
     <string name="separated">\• %1$s</string>
     <string name="replyTo">Replying to @%1$s</string>

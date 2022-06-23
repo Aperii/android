@@ -16,6 +16,7 @@
     <string name="password">Contraseña</string>
     <string name="back">Volver</string>
     <string name="post">Publicar</string>
+    <string name="new_post">New Post</string>
     <string name="filter">Filtrar</string>
     <string name="separated">\• %1$s</string>
     <string name="replyTo">Replying to @%1$s</string>

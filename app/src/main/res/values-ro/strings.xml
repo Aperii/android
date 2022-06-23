@@ -16,6 +16,7 @@
     <string name="password">Parolă</string>
     <string name="back">Înapoi</string>
     <string name="post">Postează</string>
+    <string name="new_post">New Post</string>
     <string name="filter">Filtru</string>
     <string name="separated">\• %1$s</string>
     <string name="replyTo">Replying to @%1$s</string>
