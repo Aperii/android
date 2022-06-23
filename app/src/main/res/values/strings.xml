@@ -19,6 +19,7 @@
     <string name="password">Password</string>
     <string name="back">Back</string>
     <string name="post">Post</string>
+    <string name="new_post">New Post</string>
     <string name="filter">Filter</string>
 
     <string name="separated">\• %1$s</string>
@@ -53,6 +54,6 @@
     <string name="appearance_settings_description">Change the look and feel of the app</string>
     <string name="app_info">Application Info</string>
     <string name="dev_settings">Developer Settings</string>
-    <string name="dev_settings_description">Shhh… Don't tell anyone!</string>
+    <string name="dev_settings_description">Shhh… Don\'t tell anyone!</string>
 
 </resources>

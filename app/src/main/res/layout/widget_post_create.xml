@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="New Post" />
+        app:title="@string/new_post" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/compose_scrollview"
