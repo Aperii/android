@@ -28,6 +28,7 @@
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/drawable/ripple_background_dark.xml" value="0.1965" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/drawable/ripple_background_light.xml" value="0.1965" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/drawable/ripple_background_pressed.xml" value="0.196" />
+        <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/drawable/settings_item_ripple.xml" value="0.1345" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/drawable/thread_spine.xml" value="0.217" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/drawable/thread_spine_bottom.xml" value="0.217" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/drawable/thread_spine_top.xml" value="0.198" />
@@ -46,6 +47,7 @@
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/post_list_item_header.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/post_list_item_jumbo.xml" value="0.25" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/post_list_item_loading.xml" value="0.20989583333333334" />
+        <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/settings_list_item.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/tabs_host_bottom_nav.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/toolbar.xml" value="0.33" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/toolbar_layout.xml" value="0.5" />

@@ -19,4 +19,11 @@
         <attr name="menu" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="SettingsItemView">
+        <attr name="label" format="string" />
+        <attr name="description" format="string" />
+        <attr name="icon" format="reference" />
+        <attr name="name" format="string" />
+    </declare-styleable>
+
 </resources>
