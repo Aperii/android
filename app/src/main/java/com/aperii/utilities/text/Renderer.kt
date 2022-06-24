@@ -1,6 +1,7 @@
 package com.aperii.utilities.text
 
 import android.text.SpannableStringBuilder
+import com.aperii.utilities.text.TextUtils.parseSurrogates
 import com.aperii.utilities.text.nodes.BaseRenderContext
 import com.discord.simpleast.core.node.Node
 import com.discord.simpleast.core.parser.Parser
@@ -13,10 +14,12 @@ object Renderer {
         Parser<BaseRenderContext, Node<BaseRenderContext>, Any?>(false).apply {
             addRule(Rules.createUrlRule())
             addRule(Rules.createMentionRule())
+            addRule(Rules.createEmojiRule())
             addRule(SimpleMarkdownRules.createTextRule())
         }
 
     fun render(text: String, renderContext: BaseRenderContext) = SpannableStringBuilder().apply {
+        println(text.parseSurrogates())
         for (node in mParser.parse(text, ""))
             node.render(this, renderContext)
     }

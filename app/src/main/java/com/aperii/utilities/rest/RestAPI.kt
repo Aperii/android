@@ -8,8 +8,11 @@ import com.aperii.rest.RestAPIParams
 import com.aperii.utilities.Logger
 import com.aperii.utilities.Utils.average
 import com.aperii.utilities.settings.settings
+import com.google.gson.GsonBuilder
 import okhttp3.Cache
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -42,7 +45,7 @@ class RestAPI {
     private val restApi = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .client(provideOkHttp())
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().disableHtmlEscaping().create()))
         .build()
         .create(com.aperii.rest.RestAPI::class.java)
 
@@ -53,6 +56,7 @@ class RestAPI {
                     " - "
                 )[1] else BuildConfig.VERSION_CODE
             } (${Build.MODEL}/${Build.DEVICE} SDK${Build.VERSION.SDK_INT})"
+
         val EMPTY_USER = MeUser(
             "0",
             Date().time,
@@ -80,6 +84,16 @@ class RestAPI {
         }
     }
 
+    class ResponseInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val response = chain.proceed(chain.request())
+            if (response.headers["Content-Type"]?.startsWith("application/json") == false) return response
+            return response.newBuilder()
+                .addHeader("Content-Type", "application/json; charset=utf-32")
+                .build()
+        }
+    }
+
     private fun provideOkHttp() = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val original = chain.request()
@@ -101,6 +115,7 @@ class RestAPI {
             )
         )
         .retryOnConnectionFailure(true)
+        .addInterceptor(ResponseInterceptor())
         .addInterceptor(HttpLoggingInterceptor(HttpLogger(logger)).apply {
             level = HttpLoggingInterceptor.Level.BASIC
             redactHeader("authorization")

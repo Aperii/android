@@ -24,6 +24,7 @@ class Aperii : Application() {
             )
         }
         DimenUtils.density = resources.displayMetrics.density
+
         Logger.log("Application Initialized")
     }
 

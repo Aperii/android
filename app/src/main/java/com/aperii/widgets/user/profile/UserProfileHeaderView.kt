@@ -71,7 +71,7 @@ class UserProfileHeaderView(context: Context, attributeSet: AttributeSet) :
     private fun configureBio(loaded: UserProfileHeaderViewModel.ViewState.Loaded) =
         binding.bio.apply {
             visibility = if (loaded.user.bio.isNotEmpty()) VISIBLE else GONE
-            text = Renderer.render(loaded.user.bio, BioRenderContext(context))
+            text = Renderer.render(loaded.user.bio, BioRenderContext(context, lineHeight))
             if (!loaded.edit) movementMethod = LinkMovementMethod()
         }
 

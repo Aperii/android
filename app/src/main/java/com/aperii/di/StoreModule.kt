@@ -7,6 +7,7 @@ import org.koin.dsl.module
 fun storeModule() = module {
 
     singleOf(::StoreAuth)
+    singleOf(::StoreEmojis)
     singleOf(::StoreExperiments)
     singleOf(::StoreNavigation)
     singleOf(::StorePosts)
