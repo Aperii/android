@@ -16,15 +16,13 @@ object TextUtils: KoinComponent {
         val sb = StringBuilder(length)
         for (i in indices) {
             val char = this[i]
-            if(char.code < 128)
-                sb.append(char)
-            else {
-                if(char.isLowSurrogate() && emojis.twemojiList.contains(char.combine(this[i - 1]).toHexString())) {
-                    sb.append("::")
-                    sb.append(char.combine(this[i - 1]).toHexString())
-                    sb.append("::")
-                } else if((char.isHighSurrogate() && emojis.twemojiList.contains(this[i+1].combine(char).toHexString())) == false) sb.append(char)
-            }
+            
+            if(char.isLowSurrogate() && emojis.twemojiList.contains(char.combine(this[i - 1]).toHexString())) {
+                sb.append("::")
+                sb.append(char.combine(this[i - 1]).toHexString())
+                sb.append("::")
+            } else if((char.isHighSurrogate() && emojis.twemojiList.contains(this[i+1].combine(char).toHexString())) == false) sb.append(char)
+            
         }
 
         return sb.toString()
