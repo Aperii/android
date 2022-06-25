@@ -23,7 +23,7 @@ object TextUtils: KoinComponent {
                     sb.append("::")
                     sb.append(char.combine(this[i - 1]).toHexString())
                     sb.append("::")
-                } else sb.append(char)
+                } else if((char.isHighSurrogate() && emojis.twemojiList.contains(this[i+1].combine(char).toHexString())) == false) sb.append(char)
             }
         }
 
