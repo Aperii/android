@@ -23,7 +23,7 @@ object TextUtils: KoinComponent {
                     sb.append("::")
                     sb.append(char.combine(this[i - 1]).toHexString())
                     sb.append("::")
-                } else if (!char.isHighSurrogate()) sb.append(char)
+                } else sb.append(char)
             }
         }
 
