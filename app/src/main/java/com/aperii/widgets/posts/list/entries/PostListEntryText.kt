@@ -21,7 +21,7 @@ import com.aperii.api.post.Post
 import com.aperii.api.user.User
 import com.aperii.utilities.DimenUtils.getResizedDrawable
 import com.aperii.utilities.color.ColorUtils.getThemedColor
-import com.aperii.utilities.text.TextUtils.renderPost
+import com.aperii.utilities.text.TextUtils.renderDefault
 import com.aperii.utilities.time.TimeUtils
 import com.aperii.widgets.posts.WidgetPost
 import com.aperii.widgets.posts.list.adapter.items.PostListItem
@@ -141,7 +141,7 @@ class PostListEntryText(root: ViewGroup, private val shouldJumbo: Boolean) : Pos
     }
 
     private fun configureText(post: Post) = body.apply {
-        renderPost(post.body.trimIndent())
+        renderDefault(post.body.trimIndent())
         movementMethod = LinkMovementMethod()
     }
 

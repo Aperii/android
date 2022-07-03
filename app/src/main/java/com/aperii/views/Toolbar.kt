@@ -23,7 +23,6 @@ import com.aperii.stores.StorePreferences
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.DimenUtils.dp
 import com.aperii.utilities.Utils.openUrl
-import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.settings.settings
 import com.aperii.widgets.auth.WidgetAuthLanding
@@ -158,7 +157,8 @@ class Toolbar(context: Context, private val attrs: AttributeSet) :
         }
 
         dropdown.itemSettings.apply {
-            visibility = if(experiments["settings_page_06_21_22"].bucket == 1) View.VISIBLE else View.GONE
+            visibility =
+                if (experiments["settings_page_06_21_22"].bucket == 1) View.VISIBLE else View.GONE
             setOnClickListener {
                 it.context.openScreen<WidgetSettings>()
                 window.dismiss()

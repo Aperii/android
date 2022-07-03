@@ -4,4 +4,5 @@ import android.content.Context
 
 data class BioRenderContext(
     override val context: Context,
-    override val lineHeight: Int) : BaseRenderContext
+    override val lineHeight: Int
+) : BaseRenderContext

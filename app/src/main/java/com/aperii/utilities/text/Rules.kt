@@ -1,6 +1,6 @@
 package com.aperii.utilities.text
 
-import android.content.Context
+import com.aperii.stores.StoreEmojis
 import com.aperii.utilities.text.nodes.BaseRenderContext
 import com.aperii.utilities.text.nodes.EmojiNode
 import com.aperii.utilities.text.nodes.MentionNode
@@ -14,10 +14,11 @@ import org.koin.core.component.inject
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-object Rules: KoinComponent {
+object Rules : KoinComponent {
     val PATTERN_MENTIONS: Pattern = Pattern.compile("^@([a-zA-Z_0-9]{1,32})")
     val PATTERN_URL: Pattern = Pattern.compile("^(https?://[^\\s<]+[^<.,:;\"')\\]\\s])")
-    val ctx: Context by inject()
+
+    val emojis: StoreEmojis by inject()
 
     fun <S> createMentionRule(): Rule<BaseRenderContext, Node<BaseRenderContext>, S> {
         return object : Rule<BaseRenderContext, Node<BaseRenderContext>, S>(PATTERN_MENTIONS) {
@@ -44,7 +45,12 @@ object Rules: KoinComponent {
     }
 
     fun <S> createEmojiRule(): Rule<BaseRenderContext, Node<BaseRenderContext>, S> {
-        return object : Rule<BaseRenderContext, Node<BaseRenderContext>, S>(Pattern.compile(ctx.loadEmojiRegex())) {
+        return object : Rule<BaseRenderContext, Node<BaseRenderContext>, S>(
+            Pattern.compile(
+                emojis.regex,
+                Pattern.CASE_INSENSITIVE or Pattern.UNICODE_CASE
+            )
+        ) {
             override fun parse(
                 matcher: Matcher,
                 parser: Parser<BaseRenderContext, in Node<BaseRenderContext>, S>,

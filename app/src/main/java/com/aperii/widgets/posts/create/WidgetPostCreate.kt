@@ -17,7 +17,7 @@ import com.aperii.databinding.WidgetPostCreateBinding
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.screens.extras
-import com.aperii.utilities.text.TextUtils.renderPost
+import com.aperii.utilities.text.TextUtils.renderDefault
 import com.aperii.widgets.posts.preview.WidgetPostPreview
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
@@ -90,7 +90,7 @@ class WidgetPostCreate : AppFragment() {
             WidgetPostPreview.open(parentFragmentManager, replyTo.id)
         }
         binding.replyToText.run {
-            renderPost(context.getString(R.string.replyTo, replyTo.author.username))
+            renderDefault(context.getString(R.string.replyTo, replyTo.author.username))
         }
     }
 }

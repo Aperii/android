@@ -30,7 +30,8 @@ class Ping : BaseDebugApplication(), KoinComponent {
                 api.pings.filter { it.time.after(Date(System.currentTimeMillis() - (10 * 60 * 1000))) }
             val tenMinAvg = tenMinPings.average()
 
-            append("""
+            append(
+                """
                 Average in last:
                 10s: ${lastPing}ms
                 1m: ${oneMinAvg}ms
@@ -39,7 +40,8 @@ class Ping : BaseDebugApplication(), KoinComponent {
                 All time: ${api.ping}ms
             
                 Pings: $totalPings ($failedPings failed - ${(successfulPings.toFloat() / totalPings.toFloat()) * 100f}% successful)
-            """.trimIndent())
+            """.trimIndent()
+            )
             send(this.toString())
         }
     }

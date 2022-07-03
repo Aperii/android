@@ -9,6 +9,10 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import com.aperii.utilities.rest.PingEvent
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import java.io.InputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -32,5 +36,14 @@ object Utils {
         startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)))
 
     fun Iterable<PingEvent>.average() = sumOf { it.duration } / count()
+
+    inline fun <reified T> InputStream.readJson() =
+        GsonBuilder().enableComplexMapKeySerialization().create().fromJson(
+            String(readBytes()), T::class.java
+        )
+
+    fun <K, V> InputStream.readJsonMap() =
+        Gson().fromJson<Map<K, V>>(String(readBytes()), (object : TypeToken<Map<K, V>>() {}).type)
+
 
 }

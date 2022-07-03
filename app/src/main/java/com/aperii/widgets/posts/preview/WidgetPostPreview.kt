@@ -14,7 +14,7 @@ import com.aperii.stores.StorePosts
 import com.aperii.utilities.color.ColorUtils.getThemedColor
 import com.aperii.utilities.images.IconUtils.setAvatar
 import com.aperii.utilities.screens.extras
-import com.aperii.utilities.text.TextUtils.renderPost
+import com.aperii.utilities.text.TextUtils.renderDefault
 import com.aperii.utilities.time.TimeUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.android.ext.android.inject
@@ -77,7 +77,7 @@ class WidgetPostPreview : BottomSheetDialogFragment() {
     }
 
     private fun configureBody(text: String) = binding.post.postBodySpannable.run {
-        renderPost(text)
+        renderDefault(text)
     }
 
     private fun configureUserAndDisplayName(author: User) = author.run {

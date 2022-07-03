@@ -13,8 +13,9 @@ class Flags : BaseDebugApplication(), KoinComponent {
     class Args(parser: ArgParser) {
         private val flagRgx = "^([\\d\\D]+)=([\\d\\D]+)$".toRegex()
 
-        val flags: List<Pair<String,String>> by parser.adding(
-            "-s", "--set", help = "set a flag") {
+        val flags: List<Pair<String, String>> by parser.adding(
+            "-s", "--set", help = "set a flag"
+        ) {
             if (flagRgx.matches(this)) {
                 val parsed = flagRgx.matchEntire(this)
                 parsed?.groups?.get(1)!!.value to parsed.groups[2]!!.value
@@ -28,8 +29,8 @@ class Flags : BaseDebugApplication(), KoinComponent {
     override fun onExec(args: List<String>) {
         kotlin.runCatching {
             ArgParser(args.toTypedArray()).parseInto(::Args).runCatching {
-                for((flag, value) in flags) {
-                    when(flag.lowercase()) {
+                for ((flag, value) in flags) {
+                    when (flag.lowercase()) {
                         "experiments.enabled" -> {
                             value.toBooleanStrict().runCatching {
                                 send("Flag $flag set to $this")
@@ -37,7 +38,7 @@ class Flags : BaseDebugApplication(), KoinComponent {
                             }
                         }
                         else -> {
-                            if(flag.isNotBlank()) send("Flag $flag set to $value")
+                            if (flag.isNotBlank()) send("Flag $flag set to $value")
                         }
                     }
                 }

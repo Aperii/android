@@ -13,7 +13,8 @@ import com.aperii.databinding.SettingsListItemBinding
 import com.aperii.utilities.screens.ScreenManager
 import com.aperii.utilities.screens.ScreenManager.openScreen
 
-class SettingsItemView(context: Context, private val attrs: AttributeSet): ConstraintLayout(context, attrs) {
+class SettingsItemView(context: Context, private val attrs: AttributeSet) :
+    ConstraintLayout(context, attrs) {
 
     val binding: SettingsListItemBinding by viewBinding(CreateMethod.INFLATE)
     private var mDestination: Fragment? = null
@@ -63,9 +64,11 @@ class SettingsItemView(context: Context, private val attrs: AttributeSet): Const
             }
 
             getString(R.styleable.SettingsItemView_name)?.runCatching {
-                val className = if(this.startsWith(".")) "${BuildConfig.APPLICATION_ID}$this" else this
+                val className =
+                    if (this.startsWith(".")) "${BuildConfig.APPLICATION_ID}$this" else this
                 val fragment = Class.forName(className)
-                if(fragment.newInstance() is Fragment) destination = fragment.newInstance() as Fragment
+                if (fragment.newInstance() is Fragment) destination =
+                    fragment.newInstance() as Fragment
             }
 
         }

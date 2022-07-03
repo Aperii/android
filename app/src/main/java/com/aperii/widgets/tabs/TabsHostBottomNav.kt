@@ -7,11 +7,11 @@ import android.view.View
 import android.widget.LinearLayout
 import com.aperii.R
 import com.aperii.stores.StoreExperiments
-import com.aperii.utilities.settings.settings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class TabsHostBottomNav(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs), KoinComponent {
+class TabsHostBottomNav(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs),
+    KoinComponent {
 
     private val experiments: StoreExperiments by inject()
 

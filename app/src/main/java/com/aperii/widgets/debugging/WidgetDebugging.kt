@@ -8,35 +8,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.aperii.BuildConfig
 import com.aperii.R
 import com.aperii.app.AppFragment
 import com.aperii.databinding.WidgetDebuggingBinding
 import com.aperii.stores.StoreAuth
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.Logger
-import com.aperii.utilities.Utils.average
 import com.aperii.utilities.Utils.setClipboard
 import com.aperii.utilities.Utils.showToast
 import com.aperii.utilities.color.ColorUtils.getThemedColor
 import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observe
-import com.aperii.utilities.screens.ScreenManager
-import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.utilities.settings.settings
-import com.aperii.utilities.update.UpdateUtils
-import com.aperii.widgets.auth.WidgetAuthLanding
-import com.aperii.widgets.updater.WidgetUpdater
-import com.google.gson.GsonBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
 
 class WidgetDebugging : AppFragment(), KoinComponent {
 

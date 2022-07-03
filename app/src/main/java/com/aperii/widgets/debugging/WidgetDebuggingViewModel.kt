@@ -8,7 +8,8 @@ import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.widgets.debugging.apps.*
 import com.aperii.widgets.debugging.apps.base.BaseDebugApplication
 
-class WidgetDebuggingViewModel(private val prefs: StorePreferences) : AppViewModel<WidgetDebuggingViewModel.ViewState>() {
+class WidgetDebuggingViewModel(private val prefs: StorePreferences) :
+    AppViewModel<WidgetDebuggingViewModel.ViewState>() {
 
     private val applications: MutableMap<String, BaseDebugApplication> = mutableMapOf(
         "flags" to Flags(),
@@ -19,7 +20,7 @@ class WidgetDebuggingViewModel(private val prefs: StorePreferences) : AppViewMod
 
     open class ViewState {
         class Loaded(val logs: MutableList<Logger.LoggedItem>) : ViewState()
-        class AppLog(val msg: String): ViewState()
+        class AppLog(val msg: String) : ViewState()
     }
 
     fun loadAppsWithContext(context: Context) {
@@ -39,7 +40,7 @@ class WidgetDebuggingViewModel(private val prefs: StorePreferences) : AppViewMod
     }
 
     private fun listenToStdOut() {
-        for ((_,app) in applications) {
+        for ((_, app) in applications) {
             app.stdout.observe {
                 updateViewState(ViewState.AppLog(this))
             }

@@ -16,7 +16,7 @@ abstract class BaseDebugApplication {
         try {
             block()
         } catch (err: Throwable) {
-            when(err) {
+            when (err) {
                 is InvalidArgumentException -> send(err.message)
                 else -> {
                     send("Error running command")
@@ -28,4 +28,4 @@ abstract class BaseDebugApplication {
 
 }
 
-class InvalidArgumentException(override val message: String): Error()
+class InvalidArgumentException(override val message: String) : Error()

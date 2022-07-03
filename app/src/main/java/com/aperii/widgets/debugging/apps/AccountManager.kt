@@ -22,7 +22,7 @@ import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class AccountManager(private val context: Context): BaseDebugApplication(), KoinComponent {
+class AccountManager(private val context: Context) : BaseDebugApplication(), KoinComponent {
 
     private val api: RestAPI by inject()
     private val authApi: AuthAPI by inject()
@@ -30,15 +30,16 @@ class AccountManager(private val context: Context): BaseDebugApplication(), Koin
 
     class LoginArgs(parser: ArgParser) {
 
-        val creds by parser.putting("-c", "--credentials", "--username-and-password", help = "").default(null)
+        val creds by parser.putting("-c", "--credentials", "--username-and-password", help = "")
+            .default(null)
 
-        val token by parser.storing("-t", "--token", help= "").default(null)
+        val token by parser.storing("-t", "--token", help = "").default(null)
 
     }
 
     override fun onExec(args: List<String>) {
-        if(args.isEmpty()) return send("Missing subcommand")
-        when(args[0]) {
+        if (args.isEmpty()) return send("Missing subcommand")
+        when (args[0]) {
             "login" -> login(args.drop(1).toTypedArray())
             "token" -> send(api.currentToken)
             "me" -> send(GsonBuilder().setPrettyPrinting().create().toJson(users.me))
@@ -47,7 +48,7 @@ class AccountManager(private val context: Context): BaseDebugApplication(), Koin
 
     private fun login(args: Array<String>) {
         ArgParser(args).parseInto(::LoginArgs).run {
-            if(creds.isNullOrEmpty() && !token.isNullOrBlank()) {
+            if (creds.isNullOrEmpty() && !token.isNullOrBlank()) {
                 val oldToken = api.currentToken
                 api.currentToken = token as String
                 runBlocking {
@@ -87,9 +88,12 @@ class AccountManager(private val context: Context): BaseDebugApplication(), Koin
 }
 
 fun ArgParser.putting(vararg names: String, help: String) =
-    option<MutableMap<String, String>>(*names,
+    option<MutableMap<String, String>>(
+        *names,
         argNames = listOf("KEY", "VALUE"),
-        help = help) {
+        help = help
+    ) {
         value.orElse { mutableMapOf() }.apply {
-            put(arguments.first(), arguments.last()) }
+            put(arguments.first(), arguments.last())
+        }
     }

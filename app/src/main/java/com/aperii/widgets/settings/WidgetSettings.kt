@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.aperii.BuildConfig
@@ -46,7 +45,8 @@ class WidgetSettings : AppFragment(), KoinComponent {
     }
 
     private fun configureSettingsItems() {
-        binding.settingsItemInfo.description = "${requireContext().getString(R.string.app_name)} v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+        binding.settingsItemInfo.description =
+            "${requireContext().getString(R.string.app_name)} v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
     }
 
 }

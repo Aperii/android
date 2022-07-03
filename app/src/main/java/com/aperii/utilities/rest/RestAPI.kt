@@ -45,7 +45,11 @@ class RestAPI {
     private val restApi = Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
         .client(provideOkHttp())
-        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().disableHtmlEscaping().create()))
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder().disableHtmlEscaping().create()
+            )
+        )
         .build()
         .create(com.aperii.rest.RestAPI::class.java)
 
