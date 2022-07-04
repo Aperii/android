@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/midgrey" />
 
-    <TextView
+    <com.aperii.views.TwemojiTextView
         android:id="@+id/chip_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

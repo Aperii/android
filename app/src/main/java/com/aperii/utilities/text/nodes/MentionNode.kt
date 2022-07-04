@@ -17,7 +17,7 @@ class MentionNode<RC : BaseRenderContext>(private val username: String) : Node<R
             }, null)
         val i = builder.length
         builder.append("@$username")
-        builder.setSpan(span, i, builder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        if(username.lowercase() != "me") builder.setSpan(span, i, builder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
 }

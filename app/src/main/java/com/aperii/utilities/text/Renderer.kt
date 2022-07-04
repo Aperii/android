@@ -11,7 +11,7 @@ object Renderer {
     private val emojiParser = createEmojiParser()
 
     private fun Parser<BaseRenderContext, Node<BaseRenderContext>, Any?>.render(
-        text: String,
+        text: CharSequence,
         renderContext: BaseRenderContext
     ) = SpannableStringBuilder().apply {
         for (node in parse(text, ""))
@@ -35,6 +35,6 @@ object Renderer {
             addRule(SimpleMarkdownRules.createTextRule())
         }
 
-    fun renderTwemoji(text: String, renderContext: BaseRenderContext) =
+    fun renderTwemoji(text: CharSequence, renderContext: BaseRenderContext) =
         emojiParser.render(text, renderContext)
 }

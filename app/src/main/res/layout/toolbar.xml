@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.aperii.views.TwemojiTextView
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="@id/toolbar_title"
         app:layout_constraintTop_toTopOf="@id/toolbar_title"/>
 
-    <TextView
+    <com.aperii.views.TwemojiTextView
         android:id="@+id/toolbar_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

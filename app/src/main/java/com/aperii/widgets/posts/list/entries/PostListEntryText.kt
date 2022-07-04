@@ -21,7 +21,9 @@ import com.aperii.api.post.Post
 import com.aperii.api.user.User
 import com.aperii.utilities.DimenUtils.getResizedDrawable
 import com.aperii.utilities.color.ColorUtils.getThemedColor
+import com.aperii.utilities.text.Renderer
 import com.aperii.utilities.text.TextUtils.renderDefault
+import com.aperii.utilities.text.nodes.PostRenderContext
 import com.aperii.utilities.time.TimeUtils
 import com.aperii.widgets.posts.WidgetPost
 import com.aperii.widgets.posts.list.adapter.items.PostListItem
@@ -90,7 +92,7 @@ class PostListEntryText(root: ViewGroup, private val shouldJumbo: Boolean) : Pos
     private fun configureDisplayName(user: User) = author.run {
         if (shouldJumbo) text = user.displayName else {
             val builder = SpannableStringBuilder()
-            builder.append(user.displayName)
+            builder.append(Renderer.renderTwemoji(user.displayName, PostRenderContext(context, lineHeight)))
             builder.setSpan(
                 ForegroundColorSpan(context.getThemedColor(R.attr.textOnBackground)),
                 0,
