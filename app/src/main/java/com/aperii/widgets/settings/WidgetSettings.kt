@@ -47,6 +47,10 @@ class WidgetSettings : AppFragment(), KoinComponent {
     private fun configureSettingsItems() {
         binding.settingsItemInfo.description =
             "${requireContext().getString(R.string.app_name)} v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+
+        binding.settingsItemAppearance.setOnClickListener {
+            viewModel.toggleTheme()
+        }
     }
 
 }

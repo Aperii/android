@@ -3,16 +3,17 @@ import org.jetbrains.kotlin.config.KotlinCompilerVersion
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
-    compileSdkVersion(32)
+    compileSdk = 32
     buildToolsVersion = "30.0.3"
 
     defaultConfig {
         applicationId = "com.aperii"
-        minSdkVersion(21)
-        targetSdkVersion(32)
+        minSdk = 21
+        targetSdk = 33
         versionCode = 1241
         versionName = "1.41 - Alpha"
 
@@ -55,6 +56,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
 
     implementation("com.google.code.gson:gson:2.8.8")
 

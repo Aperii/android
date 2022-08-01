@@ -55,5 +55,9 @@
     <string name="app_info">Application Info</string>
     <string name="dev_settings">Developer Settings</string>
     <string name="dev_settings_description">Shhh… Don\'t tell anyone!</string>
+    <string name="oss_licenses">Open Source Licenses</string>
+    <string name="oss_licenses_description">License details for all open source libraries being used</string>
+
+    <string name="copyright">© 2022 Aperii\n\n🤩 Twemoji - Copyright 2020 Twitter, Inc and other contributors\nGraphics licensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/</string>
 
 </resources>

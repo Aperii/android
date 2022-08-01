@@ -41,7 +41,7 @@
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/fragment_notifications.xml" value="0.12409420289855072" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/fragment_profile.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/loading_image_button.xml" value="0.5" />
-        <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/log_item.xml" value="0.5" />
+        <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/log_item.xml" value="0.44779116465863456" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/post_list_item.xml" value="0.385146804835924" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/post_list_item_empty.xml" value="0.2869791666666667" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/post_list_item_header.xml" value="0.20989583333333334" />
@@ -68,6 +68,7 @@
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/widget_post_preview.xml" value="0.22864583333333333" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/widget_profile.xml" value="0.22" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/widget_settings.xml" value="0.20989583333333334" />
+        <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/widget_settings_app_info.xml" value="0.259375" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/widget_splash.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/widget_tabs_host.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/gamec/AndroidStudioProjects/Aperii/app/src/main/res/layout/widget_updater.xml" value="0.33" />

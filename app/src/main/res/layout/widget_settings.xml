@@ -25,6 +25,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
             <com.aperii.views.settings.SettingsItemView
                 android:id="@+id/settings_item_account"
                 android:layout_width="match_parent"
@@ -40,8 +41,7 @@
                 android:layout_height="wrap_content"
                 app:label="@string/appearance"
                 app:description="@string/appearance_settings_description"
-                app:icon="@drawable/ic_theme_24px"
-                app:name=".widgets.settings.WidgetSettings" />
+                app:icon="@drawable/ic_theme_24px" />
 
             <com.aperii.views.settings.SettingsItemView
                 android:id="@+id/settings_item_info"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 app:label="@string/app_info"
                 app:icon="@drawable/ic_info_24dp"
-                app:name=".widgets.settings.WidgetSettings" />
+                app:name=".widgets.settings.WidgetSettingsAppInfo" />
 
             <com.aperii.views.settings.SettingsItemView
                 android:id="@+id/settings_item_developers"

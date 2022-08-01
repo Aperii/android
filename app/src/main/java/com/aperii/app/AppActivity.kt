@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewModelScope
 import coil.Coil
@@ -16,7 +19,9 @@ import com.aperii.api.error.ErrorResponse
 import com.aperii.api.user.User
 import com.aperii.models.user.MeUser
 import com.aperii.stores.StoreNavigation
+import com.aperii.stores.StorePreferences
 import com.aperii.stores.StoreUsers
+import com.aperii.stores.Theme
 import com.aperii.utilities.Logger
 import com.aperii.utilities.rest.HttpUtils.fold
 import com.aperii.utilities.rest.RestAPI
@@ -34,18 +39,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.system.exitProcess
 
 open class AppActivity : AppCompatActivity() {
     private var transition = ScreenManager.Animations.SCALE_CENTER
     private val nav: StoreNavigation by inject()
+    protected val prefs: StorePreferences by inject()
 
     val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel.observeViewState().observe(::configureUI)
         navigate(intent)
+    }
+
+    private fun setTheme() {
+        when(prefs.theme) {
+            Theme.LIGHT -> AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+            Theme.DARK -> AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+        }
     }
 
     open fun configureUI(state: MainViewModel.MainState) {
@@ -84,6 +99,8 @@ open class AppActivity : AppCompatActivity() {
     }
 
     class Main : AppActivity() {
+        private val lastTheme: Theme = prefs.theme
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             try {
@@ -104,6 +121,21 @@ open class AppActivity : AppCompatActivity() {
                 openScreen<WidgetFatalCrash>()
             }
         }
+
+        override fun onResume() {
+            super.onResume()
+            if(lastTheme != prefs.theme) {
+                startActivity(
+                    Intent.makeRestartActivityTask(
+                        packageManager.getLaunchIntentForPackage(
+                            packageName
+                        )!!.component
+                    )
+                )
+                exitProcess(0)
+            }
+        }
+
     }
 
     class Action : AppActivity() {

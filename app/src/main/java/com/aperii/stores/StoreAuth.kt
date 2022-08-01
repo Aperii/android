@@ -2,6 +2,7 @@ package com.aperii.stores
 
 import com.aperii.models.user.User
 import com.aperii.rest.RestAPIParams
+import com.aperii.utilities.Logger
 import com.aperii.utilities.rest.AuthAPI
 import com.aperii.utilities.rest.RestAPI
 

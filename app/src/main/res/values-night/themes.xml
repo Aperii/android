@@ -1,33 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Aperii" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/rustblood</item>
-        <item name="colorPrimaryVariant">@color/rustblood</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="backgroundColor">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/midgrey</item>
-        <item name="colorSecondaryVariant">@color/midgrey</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?android:attr/windowBackground</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <!-- Customize your theme here. -->
-        <item name="actionOverflowMenuStyle">@style/Aperii_Popup</item>
-        <item name="badgeColor">@color/white</item>
-        <item name="textOnBackground">@color/white</item>
-        <item name="iconOnBackground">@color/white</item>
-        <item name="android:windowBackground">@color/darkle</item>
-        <item name="bottomSheetBackground">@color/darkle</item>
-        <item name="colorBackgroundSecondary">@color/darkle_bright_2</item>
-        <item name="bg_pressed_highlight">@drawable/ripple_background_pressed</item>
-        <item name="colorSuccess">@color/green</item>
-        <item name="dropdownBackground">@color/darkle_bright_2</item>
-        <item name="colorInteractiveNormal">@color/white</item>
-        <item name="mentionAndLink">@color/mentionAndLink</item>
-
-        <item name="font">@font/arial</item>
-        <item name="android:letterSpacing">0</item>
-    </style>
+    <style name="Theme.Aperii" parent="Theme.Aperii.Dark" />
 </resources>
