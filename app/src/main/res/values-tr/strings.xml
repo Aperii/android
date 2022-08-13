@@ -19,7 +19,7 @@
     <string name="new_post">Yeni Makale</string>
     <string name="filter">Filtre</string>
     <string name="separated">\• %1$s</string>
-    <string name="replyTo">\@%1$s\'ya yanıt veriliyor</string>
+    <string name="replyTo">\@%1$s\'a yanıt veriliyor</string>
     <string name="updating">Updating...</string>
     <string name="new_update">Yeni bir güncelleme kullanılabilir!</string>
     <string name="version_change"><![CDATA[%1$s->%2$s]]></string>
