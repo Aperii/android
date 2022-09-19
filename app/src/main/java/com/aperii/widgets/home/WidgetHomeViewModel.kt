@@ -22,7 +22,7 @@ class WidgetHomeViewModel(private val api: RestAPI) :
     init {
         updateViewState(ViewState.Loading())
         viewModelScope.launch(Dispatchers.IO) {
-            api.getFeed().body()?.let {
+            api.getFeed().ifSuccessful {
                 updateViewState(ViewState.Loaded(it))
             }
         }

@@ -24,7 +24,7 @@ class WidgetPostListViewModel(
     }
 
     suspend fun fetchMePosts() {
-        api.getMePosts().body()?.let {
+        api.getMePosts().ifSuccessful {
             ViewState.Loaded().apply {
                 posts = it
                 user = me
@@ -34,7 +34,7 @@ class WidgetPostListViewModel(
     }
 
     suspend fun fetchFeed() {
-        api.getFeed().body()?.let {
+        api.getFeed().ifSuccessful {
             ViewState.Loaded().apply {
                 posts = it
                 updateViewState(this)

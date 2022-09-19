@@ -25,4 +25,18 @@ object HttpUtils {
         } catch (e: Throwable) {
         }
     }
+
+    inline fun <T, reified E> getResponse(apiCall: (() -> Response<T>)): com.aperii.models.base.Response<T> {
+        return try {
+            val res = apiCall()
+            if (res.isSuccessful)
+                com.aperii.models.base.Response.Success(res.body()!!)
+            else
+                com.aperii.models.base.Response.Error(
+                    RestAPI.gson.fromJson(res.errorBody()!!.string(), E::class.java)
+                )
+        } catch (e: Throwable) {
+            com.aperii.models.base.Response.Failure(e)
+        }
+    }
 }

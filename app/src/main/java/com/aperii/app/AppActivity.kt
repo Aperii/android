@@ -16,14 +16,12 @@ import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import com.aperii.R
 import com.aperii.api.error.ErrorResponse
-import com.aperii.api.user.User
 import com.aperii.models.user.MeUser
 import com.aperii.stores.StoreNavigation
 import com.aperii.stores.StorePreferences
 import com.aperii.stores.StoreUsers
 import com.aperii.stores.Theme
 import com.aperii.utilities.Logger
-import com.aperii.utilities.rest.HttpUtils.fold
 import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.rx.RxUtils.observe
 import com.aperii.utilities.screens.ScreenManager
@@ -57,7 +55,7 @@ open class AppActivity : AppCompatActivity() {
     }
 
     private fun setTheme() {
-        when(prefs.theme) {
+        when (prefs.theme) {
             Theme.LIGHT -> AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
             Theme.DARK -> AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
         }
@@ -67,6 +65,10 @@ open class AppActivity : AppCompatActivity() {
         when (state) {
             is MainViewModel.MainState.LoggedOut -> openScreen<WidgetAuthLanding>()
             is MainViewModel.MainState.LoggedIn -> onAction(intent.action, true)
+            is MainViewModel.MainState.Error -> (supportFragmentManager.findFragmentById(R.id.widget_host_fragment) as WidgetSplash).onSaveInstanceState(
+                Bundle().apply {
+                    putBoolean("canRefresh", true)
+                })
         }
     }
 
@@ -124,7 +126,7 @@ open class AppActivity : AppCompatActivity() {
 
         override fun onResume() {
             super.onResume()
-            if(lastTheme != prefs.theme) {
+            if (lastTheme != prefs.theme) {
                 startActivity(
                     Intent.makeRestartActivityTask(
                         packageManager.getLaunchIntentForPackage(
@@ -173,6 +175,10 @@ open class AppActivity : AppCompatActivity() {
             when (state) {
                 is MainViewModel.MainState.LoggedOut -> openScreen<WidgetAuthLanding>()
                 is MainViewModel.MainState.LoggedIn -> onAction(intent.action, true)
+                is MainViewModel.MainState.Error -> (supportFragmentManager.findFragmentById(R.id.widget_host_fragment) as WidgetSplash).onSaveInstanceState(
+                    Bundle().apply {
+                        putBoolean("canRefresh", true)
+                    })
             }
         }
 
@@ -192,6 +198,7 @@ class MainViewModel(private val api: RestAPI, private val users: StoreUsers) :
         class Uninitialized : MainState()
         class LoggedOut : MainState()
         class LoggedIn : MainState()
+        class Error : MainState()
     }
 
     init {
@@ -201,7 +208,7 @@ class MainViewModel(private val api: RestAPI, private val users: StoreUsers) :
     fun checkAuth() {
         if (api.currentToken.isBlank()) return updateViewState(MainState.LoggedOut())
         viewModelScope.launch(Dispatchers.IO) {
-            api.getMe().fold<User, ErrorResponse>(
+            api.getMe().fold<ErrorResponse>(
                 onError = {
                     if (it.code == 403) {
                         api.currentToken = ""
@@ -211,6 +218,9 @@ class MainViewModel(private val api: RestAPI, private val users: StoreUsers) :
                 onSuccess = {
                     users.me = MeUser.fromApi(it)
                     updateViewState(MainState.LoggedIn())
+                },
+                onFailure = {
+                    updateViewState(MainState.Error())
                 }
             )
         }

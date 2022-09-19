@@ -20,7 +20,7 @@ class WidgetProfileViewModel(
     private var source = ""
         set(value) = ViewState.Loaded().run {
             viewModelScope.launch(Dispatchers.IO) {
-                api.getUserPosts(value).body()?.let {
+                api.getUserPosts(value).ifSuccessful {
                     this@run.posts = it
                     updateViewState(this@run)
                 }

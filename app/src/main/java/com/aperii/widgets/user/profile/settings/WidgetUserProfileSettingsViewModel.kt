@@ -6,7 +6,6 @@ import com.aperii.api.user.user.EditedProfile
 import com.aperii.app.AppViewModel
 import com.aperii.models.user.MeUser
 import com.aperii.stores.StoreUsers
-import com.aperii.utilities.rest.HttpUtils.fold
 import com.aperii.utilities.rest.RestAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +26,7 @@ class WidgetUserProfileSettingsViewModel(private val users: StoreUsers, private 
     fun save() {
         viewModelScope.launch(Dispatchers.IO) {
             api.editProfile(changedDisplayName, changedBio, changedPronouns)
-                .fold<EditedProfile, EditedProfile>(
+                .fold<EditedProfile>(
                     onSuccess = {
                         users.me = MeUser.fromApi(it.profile)
                         updateViewState(ViewState.Saved(MeUser.fromApi(it.profile), null))

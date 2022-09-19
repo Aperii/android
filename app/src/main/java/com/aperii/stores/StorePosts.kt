@@ -13,10 +13,10 @@ class StorePosts(private val api: RestAPI) {
     suspend fun create(text: String, replyTo: String = "") = api.createPost(text, replyTo)
 
     suspend fun fetchPost(id: String): Post? =
-        this[id] ?: api.getPost(id).body()?.also { this[it.id] = it }
+        this[id] ?: api.getPost(id).bodyOrNull()?.also { this[it.id] = it }
 
     suspend fun fetchPostReplies(id: String): List<Post> =
-        (api.getReplies(id).body() ?: emptyList()).also {
+        (api.getReplies(id).bodyOrNull() ?: emptyList()).also {
             for (post in it)
                 this[post.id] = post
         }

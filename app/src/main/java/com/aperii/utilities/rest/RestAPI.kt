@@ -1,8 +1,14 @@
 package com.aperii.utilities.rest
 
+//import okhttp3.Response
 import android.os.Build
 import com.aperii.BuildConfig
+import com.aperii.api.error.ErrorResponse
+import com.aperii.api.post.Post
+import com.aperii.api.post.PostPartial
+import com.aperii.api.user.User
 import com.aperii.api.user.UserFlags
+import com.aperii.api.user.user.EditedProfile
 import com.aperii.models.user.MeUser
 import com.aperii.rest.RestAPIParams
 import com.aperii.utilities.Logger
@@ -10,9 +16,7 @@ import com.aperii.utilities.Utils.average
 import com.aperii.utilities.settings.settings
 import com.google.gson.GsonBuilder
 import okhttp3.Cache
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -46,14 +50,13 @@ class RestAPI {
         .baseUrl(BuildConfig.BASE_URL)
         .client(provideOkHttp())
         .addConverterFactory(
-            GsonConverterFactory.create(
-                GsonBuilder().disableHtmlEscaping().create()
-            )
+            GsonConverterFactory.create(gson)
         )
         .build()
         .create(com.aperii.rest.RestAPI::class.java)
 
     companion object {
+        val gson = GsonBuilder().disableHtmlEscaping().create()
         val USER_AGENT =
             "Aperii/Mobile-Android@${
                 if (BuildConfig.VERSION_CODE == 1300) BuildConfig.VERSION_NAME.split(
@@ -88,16 +91,6 @@ class RestAPI {
         }
     }
 
-    class ResponseInterceptor : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val response = chain.proceed(chain.request())
-            if (response.headers["Content-Type"]?.startsWith("application/json") == false) return response
-            return response.newBuilder()
-                .addHeader("Content-Type", "application/json; charset=utf-32")
-                .build()
-        }
-    }
-
     private fun provideOkHttp() = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val original = chain.request()
@@ -119,7 +112,6 @@ class RestAPI {
             )
         )
         .retryOnConnectionFailure(true)
-        .addInterceptor(ResponseInterceptor())
         .addInterceptor(HttpLoggingInterceptor(HttpLogger(logger)).apply {
             level = HttpLoggingInterceptor.Level.BASIC
             redactHeader("authorization")
@@ -132,7 +124,7 @@ class RestAPI {
         return try {
             Socket(
                 InetAddress.getByName(URL(BuildConfig.BASE_URL + "hello").host).hostAddress,
-                443
+                80
             ).close()
             PingEvent(true, System.currentTimeMillis() - start)
         } catch (e: Throwable) {
@@ -141,29 +133,40 @@ class RestAPI {
         }
     }
 
-    suspend fun getMe() = restApi.getMe()
+    suspend fun getMe() = HttpUtils.getResponse<User, ErrorResponse> { restApi.getMe() }
 
-    suspend fun getMePosts() = restApi.getMePosts()
+    suspend fun getMePosts() =
+        HttpUtils.getResponse<List<Post>, ErrorResponse> { restApi.getMePosts() }
 
     suspend fun editProfile(displayName: String?, bio: String?, pronouns: String?) =
-        restApi.editProfile(
-            RestAPIParams.EditProfileBody(
-                displayName, bio, pronouns
+        HttpUtils.getResponse<EditedProfile, EditedProfile> {
+            restApi.editProfile(
+                RestAPIParams.EditProfileBody(
+                    displayName, bio, pronouns
+                )
             )
-        )
+        }
 
-    suspend fun getUser(userId: String) = restApi.getUser(userId)
+    suspend fun getUser(userId: String) =
+        HttpUtils.getResponse<User, ErrorResponse> { restApi.getUser(userId) }
 
-    suspend fun getUserPosts(userId: String) = restApi.getUserPosts(userId)
+    suspend fun getUserPosts(userId: String) =
+        HttpUtils.getResponse<List<Post>, ErrorResponse> { restApi.getUserPosts(userId) }
 
-    suspend fun getPost(id: String) = restApi.getPost(id)
+    suspend fun getPost(id: String) =
+        HttpUtils.getResponse<Post, ErrorResponse> { restApi.getPost(id) }
 
-    suspend fun getReplies(id: String) = restApi.getReplies(id)
+    suspend fun getReplies(id: String) =
+        HttpUtils.getResponse<List<Post>, ErrorResponse> { restApi.getReplies(id) }
 
     suspend fun createPost(body: String, replyTo: String = "") =
-        restApi.createPost(RestAPIParams.PostBody(body), replyTo)
+        HttpUtils.getResponse<PostPartial, ErrorResponse> {
+            restApi.createPost(
+                RestAPIParams.PostBody(body), replyTo
+            )
+        }
 
-    suspend fun getFeed() = restApi.getFeed()
+    suspend fun getFeed() = HttpUtils.getResponse<List<Post>, ErrorResponse> { restApi.getFeed() }
 
 }
 

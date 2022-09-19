@@ -3,13 +3,11 @@ package com.aperii.widgets.debugging.apps
 import android.content.Context
 import com.aperii.api.auth.LoginResult
 import com.aperii.api.error.ErrorResponse
-import com.aperii.api.user.User
 import com.aperii.models.user.MeUser
 import com.aperii.rest.RestAPIParams
 import com.aperii.stores.StoreUsers
 import com.aperii.utilities.rest.AuthAPI
 import com.aperii.utilities.rest.HttpUtils.fold
-import com.aperii.utilities.rest.HttpUtils.ifSuccessful
 import com.aperii.utilities.rest.RestAPI
 import com.aperii.utilities.screens.ScreenManager.openScreen
 import com.aperii.widgets.debugging.apps.base.BaseDebugApplication
@@ -52,7 +50,7 @@ class AccountManager(private val context: Context) : BaseDebugApplication(), Koi
                 val oldToken = api.currentToken
                 api.currentToken = token as String
                 runBlocking {
-                    api.getMe().fold<User, ErrorResponse>(
+                    api.getMe().fold<ErrorResponse>(
                         onSuccess = {
                             users.me = MeUser.fromApi(it)
                             context.openScreen<WidgetTabsHost>(allowBack = false)
